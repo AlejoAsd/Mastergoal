@@ -1,0 +1,65 @@
+Instaladores de Git:
+http://git-scm.com/downloads
+
+Para obtener el repositorio:
+    git clone https://github.com/AlejoAsd/Mastergoal.git
+
+Proceso:
+Pull -> Cambios -> Commit -> Push
+            ↑        ↓    |
+            ----------    -> Pull (Merge) -> Push
+
+Un repositorio contiene los archivos de proyecto que todos los usuarios con permisos pueden modificar. Al clonar un repositorio, se crea una copia local que se puede modificar libremente sin peligro. Git lleva cuenta de todos los cambios realizados al clon del repositorio. Cuando se realizan cambios, es posible indicar a Git que los archivos modificados representan una nueva versión del proyecto. A esta nueva versión se le denomina commit.
+
+Al haber realizado cambios, se debe realizar un commit. Un commit es un punto específico del proyecto en el tiempo. Es un conjunto de cambios al proyecto. Cuando se hace un commit Git guarda el estado de todos los archivos del proyecto. Es posible volver a un commit anterior en cualquier momento. Cuando se completa una funcionalidad, o se prevé que se van a hacer cambios grandes al proyecto se recomienda hacer un commit, guardando así el estado del proyecto para poder volver en caso que se de algún inconveniente. Los commits crean una línea de tiempo ordenada de cambios. Para poder actualizar el repositorio principal se debe tener al menos un commit, puesto que este contiene los cambios realizados. En caso de hacer más de un commit, Git se encarga de incluir todos los commits realizados que permitieron llegar del commit del que se partió hasta el más reciente.
+
+Los commits son locales hasta que se actualize el repositorio principal. La acción de llevar los commits al repositorio se denomina Push. Para pushear, es necesario tener al menos un commit hecho.
+
+Un remote es un repositorio externo, al cual se puede realizar un Push. Al realizar un Clone (el comando que se utiliza para obtener el repositorio) se agrega el repositorio del cual se clona automáticamente con el nombre origin. Para realizar un Push es necesario indicar el repositorio al cual se desea pushear. Típicamente se utilizará el repositorio origin.
+
+En caso de realizar un Push, se puede dar el caso que el repositorio externo esté en una versión más nueva de la que se partió para hacer los cambios locales. Este conflicto no permite terminar el Push hasta que se resuelva la inconsistencia. Para resolver la inconsistencia generalmente es suficiente con actualizar el clon local con los nuevos cambios realizados al repositorio. La acción de actualizar los archivos locales del proyecto con respecto al nuevo estado del repositorio externo se denomina Pull. El pull se encarga de actualizar los archivos correspondientes. Se recomienda hacer un Pull del proyecto al comienzo del día y antes de realizar un commit, para actualizar en caso que se hayan realizado cambios.
+
+Comandos importantes:
+    git help <tema>
+        Muestra la documentación de algún comando de Git.
+
+    git pull <repositorio>
+        Obtiene los cambios y actualiza el proyecto en base a los archivos de proyecto del repositorio indicado.
+
+    git status
+        Muestra los cambios detectados en archivos, archivos borrados, nuevos archivos incluidos y archivos borrados/ignorados por Git.
+
+    git add <archivo>
+        Incluye el archivo definido al commit. Se pueden utilizar wildcards.
+        Ej.:
+            git add src/modulo.cpp
+            git add src/* (Todos los archivos en la carpeta src)
+    git add -A
+        Añade todos los cambios detectados al commit.
+
+    git rm <archivo>
+        Elimina un archivo marcado para incluirse en el commit. Se pueden utilizar wildcards.
+        Ej.:
+            git rm src/modulo.cpp
+            git rm src/* (Todos los archivos en la carpeta src)
+    git rm -A
+        Eliminar todos los cambios detectados del commit.
+
+    git commit
+        Crea un commit con todo lo incluido actualmente en el commit. (Todo lo listado en git status) Los commits deben tener un mensaje explicando a grandes rasgos los cambios incluidos. En este caso se abrirá un editor de texto para indicar el commit.
+    git commit -m "<mensaje>"
+        Crea un commit utilizando el mensaje definido con todo lo incluido actualmente en el commit (todo lo listado en git status)
+    git commit -a -m "<mensaje>"
+        Crea un commit utilizando el mensaje definido y agrega todos los cambios percibidos al commit.
+
+    git remote
+        Lista los repositorio externos disponibles.
+    git remote -v
+        Lista los repositorio externos disponibles. Provee más información acerca de los repositorios.
+    git remote add <dirección>
+        Agrega un nuevo repositorio.
+    git remote rm <dirección>
+        Elimina un repositorio.
+
+    git push <remote>
+        Pushea los commits locales al repositorio definido. Típicamente se utilizará el repositorio origin.
