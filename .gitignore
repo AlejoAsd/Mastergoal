@@ -29,6 +29,8 @@
 
 # Visual Studio
 *.suo
+*.sdf
+*.opensdf
 
 Mastergoal/Binaries
 Mastergoal/Intermediate

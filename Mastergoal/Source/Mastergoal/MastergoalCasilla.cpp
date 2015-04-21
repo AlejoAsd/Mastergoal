@@ -11,7 +11,7 @@ AMastergoalCasilla::AMastergoalCasilla(const FObjectInitializer& ObjectInitializ
 	Root = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
 	RootComponent = Root;
 
-	ComponenteMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("BlockMesh0"));
+	ComponenteMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
 }
 
 void AMastergoalCasilla::Inicializar(class AMastergoalTablero* Tablero, UStaticMesh* Mesh, UMaterialInstance* Material)
@@ -23,17 +23,8 @@ void AMastergoalCasilla::Inicializar(class AMastergoalTablero* Tablero, UStaticM
 
 	ActualizarComponenteMesh();
 	ComponenteMesh->SetRelativeScale3D(FVector(1.f, 1.f, 0.25f));
-	ComponenteMesh->SetRelativeLocation(FVector(0.f, 0.f, 25.f));
+	ComponenteMesh->SetRelativeLocation(FVector(0.f, 0.f, 0.f));
 	ComponenteMesh->AttachTo(Root);
-	ComponenteMesh->OnClicked.AddDynamic(this, &AMastergoalCasilla::OnClick);
-	ComponenteMesh->OnInputTouchBegin.AddDynamic(this, &AMastergoalCasilla::OnTouch);
-}
-
-void AMastergoalCasilla::ActualizarComponenteMesh()
-{
-	// Actualizar el modelo y el material de la casilla
-	ComponenteMesh->SetStaticMesh(Mesh);
-	ComponenteMesh->SetMaterial(0, Material);
 }
 
 /// Helpers
@@ -48,14 +39,9 @@ FVector AMastergoalCasilla::GetSize()
 	return max - min;
 }
 
-/// Handlers
-void AMastergoalCasilla::OnClick(UPrimitiveComponent* ClickedComp)
+void AMastergoalCasilla::ActualizarComponenteMesh()
 {
-	
-}
-
-// Handler del evento touch para una casilla
-void AMastergoalCasilla::OnTouch(ETouchIndex::Type FingerIndex, UPrimitiveComponent* TouchedComponent)
-{
-	OnClick(TouchedComponent);
+	// Actualizar el modelo y el material de la casilla
+	ComponenteMesh->SetStaticMesh(Mesh);
+	ComponenteMesh->SetMaterial(0, Material);
 }

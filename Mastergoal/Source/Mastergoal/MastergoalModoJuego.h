@@ -13,7 +13,6 @@ class MASTERGOAL_API AMastergoalModoJuego : public AGameMode
 {
 	GENERATED_BODY()
 	
-	
-	
-	
+public:
+	AMastergoalModoJuego(const FObjectInitializer& ObjectInitializer);
 };
