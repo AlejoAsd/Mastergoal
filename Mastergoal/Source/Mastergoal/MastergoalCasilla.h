@@ -31,6 +31,10 @@ public:
 	// Tablero al que pertenece la casilla
 	UPROPERTY(Category = Tablero, VisibleDefaultsOnly, BlueprintReadOnly)
 	class AMastergoalTablero* Tablero;
+	UPROPERTY(Category = Tablero, VisibleDefaultsOnly, BlueprintReadOnly)
+	int32 Fila;
+	UPROPERTY(Category = Tablero, VisibleDefaultsOnly, BlueprintReadOnly)
+	int32 Columna;
 
 	// Modelo (Mesh) de la casilla
 	UPROPERTY(Category = Modelo, VisibleDefaultsOnly, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
@@ -42,10 +46,19 @@ public:
 
 	/// Métodos
 	// Inicializa el objeto
-	void Inicializar(class AMastergoalTablero* Tablero, UStaticMesh* Mesh, UMaterialInstance* Material);
+	void Inicializar(class AMastergoalTablero* Tablero, int32 Fila, int32 Columna, UStaticMesh* Mesh, UMaterialInstance* Material);
 	// Actualiza el modelo y material del objeto
 	void ActualizarComponenteMesh();
 	// Obtiene el tamaño del modelo
 	UFUNCTION(Category = Modelo, BlueprintCallable)
 	FVector GetSize();
+
+	/// Handlers
+	// Click
+	UFUNCTION()
+	void OnClick(UPrimitiveComponent* ClickedComp);
+
+	// Touch
+	UFUNCTION()
+	void OnTouch(ETouchIndex::Type FingerIndex, UPrimitiveComponent* TouchedComponent);
 };

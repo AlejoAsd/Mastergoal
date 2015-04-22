@@ -32,25 +32,27 @@ class MASTERGOAL_API AMastergoalTablero : public AActor
 	class UCameraComponent* Camara;
 
 public:	
-	// Define los valores default de la instancia
+	// Define los valores por defecto de la instancia
 	AMastergoalTablero(const FObjectInitializer& ObjectInitializer);
 
 	/// Definiciones
-	typedef enum EstadoCasilla
+	typedef enum EstadoJuego
 	{
-		NO_VALIDO,
-		LIBRE,
-		OCUPADO
-	} EstadoCasilla;
+		JUEGO,
+		MOVIMIENTO,
+		FIN
+	} EstadoJuego;
 
 	typedef enum TipoFicha
 	{
 		VACIO,
 		PELOTA,
 		BLANCO_FICHA,
-		BLANCO_ARQUERO,
+		BLANCO_ARQUERO_EN_AREA,
+		BLANCO_ARQUERO_FUERA_AREA,
 		ROJO_FICHA,
-		ROJO_ARQUERO
+		ROJO_ARQUERO_EN_AREA,
+		ROJO_ARQUERO_FUERA_AREA
 	} TipoFicha;
 
 	/// Accesores
@@ -63,10 +65,8 @@ public:
 	class AMastergoalCasilla *Casillas[15][11];
 
 	// Estado del tablero
-	int32 Estado[13][11];
-
-	//UPROPERTY(Category = Juego, VisibleDefaultsOnly, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
-	//class AMastergoalFicha* FichaSeleccionada;
+	int32 EstadoTablero[13][11];
+	class AMastergoalFicha* FichaSeleccionada;
 	
 	/// Tablero
 	//Propiedades
@@ -127,7 +127,15 @@ public:
 	void FichaDestruirLista(TipoFicha**& Lista);
 	
 	/// Juego
+	// Propiedades
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
+	int32 Turno;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
+	int32 Estado;
+
 	// Métodos
+	// Pasa el turno
+	void PasarTurno();
 	// Intenta mover una ficha del tablero. Devuelve true en caso de haberse realizado el movimiento.
 	bool MoverFicha(AMastergoalFicha* Ficha, int32 Fila, int32 Columna);
 	// Valida un posible movimiento

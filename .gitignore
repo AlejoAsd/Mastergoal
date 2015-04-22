@@ -33,5 +33,6 @@
 *.opensdf
 
 Mastergoal/Binaries
+Mastergoal/Build
 Mastergoal/Intermediate
 Mastergoal/Saved

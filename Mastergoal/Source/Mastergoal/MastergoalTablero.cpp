@@ -61,7 +61,7 @@ void AMastergoalTablero::BeginPlay()
 	AMastergoalCasilla* Casilla = GetWorld()->SpawnActor<AMastergoalCasilla>(FVector(0, 0, 0), FRotator(0, 0, 0));
 	if (Casilla == NULL) return;
 
-	Casilla->Inicializar(this, CasillaModelo, CasillaMaterial);
+	Casilla->Inicializar(this, 0, 0, CasillaModelo, CasillaMaterial);
 
 	Origen = Casilla->GetSize();
 
@@ -118,7 +118,7 @@ class AMastergoalCasilla* AMastergoalTablero::CasillaCrear(int32 Fila, int32 Col
 			Material = CasillaMaterialAlternativo;
 
 		// Inicializar la casilla
-		Casilla->Inicializar(this, CasillaModelo, Material);
+		Casilla->Inicializar(this, Fila, Columna, CasillaModelo, Material);
 
 		// Definir la posición de la casilla				
 		const FVector BlockLocation = Origen + GetActorLocation() +
@@ -143,41 +143,46 @@ class AMastergoalFicha* AMastergoalTablero::FichaCrear(int32 Tipo, int32 Fila, i
 	if (Ficha != NULL)
 	{
 		// Definir el modelo y material a usar
+		int32 Equipo;
 		class UStaticMesh* Modelo;
 		class UMaterialInstance* Material;
 		if (Tipo == PELOTA)
 		{
+			Equipo = -1;
 			Modelo = FichaModeloPelota;
 			Material = FichaMaterialPelota;
 		}
 		else if (Tipo == BLANCO_FICHA)
 		{
+			Equipo = 0;
 			Modelo = FichaModeloJugador;
 			Material = FichaMaterialJugador;
 		}
-		else if (Tipo == BLANCO_ARQUERO)
+		else if (Tipo == BLANCO_ARQUERO_EN_AREA || Tipo == BLANCO_ARQUERO_FUERA_AREA)
 		{
+			Equipo = 0;
 			Modelo = FichaModeloArquero;
 			Material = FichaMaterialJugador;
 		}
 		else if (Tipo == ROJO_FICHA)
 		{
+			Equipo = 1;
 			Modelo = FichaModeloJugador;
 			Material = FichaMaterialJugadorAlternativo;
 		}
-		else if (Tipo == ROJO_ARQUERO)
+		else if (Tipo == ROJO_ARQUERO_EN_AREA || Tipo == ROJO_ARQUERO_FUERA_AREA)
 		{
+			Equipo = 1;
 			Modelo = FichaModeloArquero;
 			Material = FichaMaterialJugadorAlternativo;
 		}
 		else
 		{
-			UE_LOG(LogTemp, Warning, TEXT("Error de creación de Ficha: Tipo de ficha inválido"));
 			return NULL;
 		}
 
 		// Inicializar la casilla
-		Ficha->Inicializar(this, Fila, Columna, Tipo, Modelo, Material);
+		Ficha->Inicializar(this, Equipo, Fila, Columna, Tipo, Modelo, Material);
 
 		FVector Size = Ficha->GetSize();
 
@@ -225,10 +230,10 @@ AMastergoalTablero::TipoFicha** AMastergoalTablero::FichaObtenerLista()
 	{
 		// Blanco
 		Fichas[4][5] = BLANCO_FICHA;
-		Fichas[2][5] = BLANCO_ARQUERO;
+		Fichas[2][5] = BLANCO_ARQUERO_EN_AREA;
 		// Rojo
 		Fichas[10][5] = ROJO_FICHA;
-		Fichas[12][5] = ROJO_ARQUERO;
+		Fichas[12][5] = ROJO_ARQUERO_EN_AREA;
 	}
 	else if (Nivel == 3)
 	{
@@ -237,16 +242,24 @@ AMastergoalTablero::TipoFicha** AMastergoalTablero::FichaObtenerLista()
 		Fichas[4][7] = BLANCO_FICHA;
 		Fichas[6][2] = BLANCO_FICHA;
 		Fichas[6][8] = BLANCO_FICHA;
-		Fichas[2][5] = BLANCO_ARQUERO;
+		Fichas[2][5] = BLANCO_ARQUERO_EN_AREA;
 		// Rojo
 		Fichas[8][2] = ROJO_FICHA;
 		Fichas[8][8] = ROJO_FICHA;
 		Fichas[10][3] = ROJO_FICHA;
 		Fichas[10][7] = ROJO_FICHA;
-		Fichas[12][5] = ROJO_ARQUERO;
+		Fichas[12][5] = ROJO_ARQUERO_EN_AREA;
 	}
 	
 	return Fichas;
+}
+
+/*
+ * Pasa el turno 
+ */
+void AMastergoalTablero::PasarTurno()
+{
+	Turno = !Turno;
 }
 
 /*
@@ -254,11 +267,33 @@ AMastergoalTablero::TipoFicha** AMastergoalTablero::FichaObtenerLista()
  */
 bool AMastergoalTablero::MoverFicha(AMastergoalFicha* Ficha, int32 Fila, int32 Columna)
 {
-	// Validar que el movimiento sea posible
-	return ValidarMovimiento(Ficha, Fila, Columna);
+	if (Estado != JUEGO)
+		return false;
 
-	// Validar la jugada con respecto al estado del juego
-	//ValidarJugada(Ficha, Fila, Columna);
+	// Validar que el movimiento sea posible
+	bool Valido = ValidarMovimiento(Ficha, Fila, Columna);
+
+	// Mover la ficha
+	if (Valido)
+	{
+		// Definir el estado de movimiento
+		FichaSeleccionada = NULL;
+		Estado = MOVIMIENTO;
+
+		// Actualizar el estado del tablero
+		EstadoTablero[Ficha->Fila][Ficha->Columna] = VACIO;
+		EstadoTablero[Fila][Columna] = Ficha->Tipo;
+
+		// Obtener el punto objetivo
+		FVector Destino = FVector((Fila - Ficha->Fila) * AltoCasillas,
+			(Columna - Ficha->Columna) * AnchoCasillas,
+			0);
+		Destino += Ficha->GetActorLocation();
+
+		Ficha->Mover(Fila, Columna, Destino);
+	}
+
+	return Valido;
 }
 
 /*
@@ -281,18 +316,25 @@ bool AMastergoalTablero::ValidarMovimiento(AMastergoalFicha* Ficha, int32 Fila, 
 		return false;
 
 	/// Validar movimiento
-	int32 DeltaFila = std::abs(Fila - Ficha->Fila);
-	int32 DeltaColumna = std::abs(Columna - Ficha->Columna);
+	int32 DeltaFila = Fila - Ficha->Fila;
+	if (DeltaFila < 0) DeltaFila *= -1;
+	int32 DeltaColumna = Columna - Ficha->Columna;
+	if (DeltaColumna < 0) DeltaColumna *= -1;
 	int32 MaximoMovimientos = Ficha->Tipo == PELOTA ? 4 : 2;
 
 	// El movimiento es en línea recta
 	if ((!DeltaFila && !DeltaColumna) ||
-		 DeltaFila != DeltaColumna)
+		(DeltaFila && DeltaColumna &&
+		 DeltaFila != DeltaColumna))
 		return false;
 
 	// El movimiento está dentro del rango de la ficha
 	if (DeltaFila > MaximoMovimientos ||
 		DeltaColumna > MaximoMovimientos)
+		return false;
+
+	// La casilla objetivo está libre
+	if (EstadoTablero[Fila][Columna] != VACIO)
 		return false;
 
 	/// Determinar dirección
@@ -317,7 +359,20 @@ bool AMastergoalTablero::ValidarMovimiento(AMastergoalFicha* Ficha, int32 Fila, 
 		Fila += DireccionFila;
 		Columna += DireccionColumna;
 
-		//if (Estado[Fila][Columna] == OCUPADO)
+		if (EstadoTablero[Fila][Columna])
+		{
+			// En caso de ser la pelota debe saltar fichas
+			if (Ficha->Tipo == PELOTA &&
+				EstadoTablero[Fila][Columna] != BLANCO_ARQUERO_EN_AREA &&
+				EstadoTablero[Fila][Columna] != ROJO_ARQUERO_EN_AREA &&
+				i != CantidadMovimientos - 1)
+				Ficha->MovimientoSaltar = true;
+			else
+			{
+				Ficha->MovimientoSaltar = false;
+				return false;
+			}
+		}
 	}
 
 	return true;
@@ -331,25 +386,25 @@ bool AMastergoalTablero::ValidarMovimiento(AMastergoalFicha* Ficha, int32 Fila, 
  */
 bool AMastergoalTablero::Seleccionar(AMastergoalFicha* Ficha)
 {
-	/*if (Ficha == NULL)
+	if (Ficha == NULL || Estado != JUEGO)
 	{
 		return false;
 	}
-
-	UE_LOG(LogTemp, Warning, TEXT("Selecting piece of type %d in cell %d %d"), Ficha->Tipo, Ficha->Fila, Ficha->Columna);
-
+	
 	// Seleccionar
 	if (FichaSeleccionada == NULL || FichaSeleccionada != Ficha)
 	{
+		UE_LOG(LogTemp, Warning, TEXT("Selected Piece at %d %d"), Ficha->Fila, Ficha->Columna);
 		FichaSeleccionada = Ficha;
 		return true;
 	}
 	// Deseleccionar
 	else if (FichaSeleccionada == Ficha)
 	{
+		UE_LOG(LogTemp, Warning, TEXT("Deselected Piece at %d %d"), Ficha->Fila, Ficha->Columna);
 		FichaSeleccionada = NULL;
 		return false;
-	}*/
+	}
 
 	return false;
 }

@@ -19,7 +19,7 @@ class MASTERGOAL_API AMastergoalFicha : public AActor
 	class UStaticMeshComponent* ComponenteMesh;
 	
 public:	
-	// Sets default values for this actor's properties
+	// Define los valores por defecto de la instancia
 	AMastergoalFicha(const FObjectInitializer& ObjectInitializer);
 
 	/// Accesores
@@ -29,25 +29,26 @@ public:
 
 	/// Propiedades
 	UPROPERTY(Category = Ficha, VisibleDefaultsOnly, BlueprintReadOnly)
+	int32 Equipo;
+	UPROPERTY(Category = Ficha, VisibleDefaultsOnly, BlueprintReadOnly)
+	int32 Tipo;
+	UPROPERTY(Category = Ficha, VisibleDefaultsOnly, BlueprintReadOnly)
 	int32 Fila;
 	UPROPERTY(Category = Ficha, VisibleDefaultsOnly, BlueprintReadOnly)
 	int32 Columna;
-	UPROPERTY(Category = Ficha, VisibleDefaultsOnly, BlueprintReadOnly)
-	int32 Tipo;
 
 	// Tablero al que pertenece la casilla
 	UPROPERTY(Category = Tablero, VisibleDefaultsOnly, BlueprintReadOnly)
 	class AMastergoalTablero* Tablero;
-
-	/// Métodos
-	// Inicializa el objeto
-	void Inicializar(class AMastergoalTablero* Tablero, int32 Fila, int32 Columna, 
-					 int32 Tipo, UStaticMesh* Mesh, UMaterialInstance* Material);
-	// Actualiza el modelo y material del objeto
-	void ActualizarComponenteMesh();
-	// Obtiene el tamaño del modelo
-	UFUNCTION(Category = Modelo, BlueprintCallable)
-	FVector GetSize();
+	// Indica si la ficha se está moviendo actualmente
+	UPROPERTY(Category = Movimiento, VisibleDefaultsOnly, BlueprintReadOnly)
+	bool Movimiento;
+	// Indica is la ficha debe saltar sobre otras fichas en el camino
+	UPROPERTY(Category = Movimiento, VisibleDefaultsOnly, BlueprintReadOnly)
+	bool MovimientoSaltar;
+	// Destino del movimiento
+	UPROPERTY(Category = Movimiento, VisibleDefaultsOnly, BlueprintReadOnly)
+	FVector MovimientoDestino;
 
 	// Modelo (Mesh) de la casilla
 	UPROPERTY(Category = Modelo, VisibleDefaultsOnly, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
@@ -55,9 +56,22 @@ public:
 	// Material del modelo de la casilla
 	UPROPERTY(Category = Modelo, VisibleDefaultsOnly, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	class UMaterialInstance* Material;
-	
-	// Called every frame
-	//virtual void Tick( float DeltaSeconds ) override;
+
+	/// Métodos
+	// Inicializa el objeto
+	void Inicializar(class AMastergoalTablero* Tablero, int32 Equipo, int32 Fila, int32 Columna, 
+					 int32 Tipo, UStaticMesh* Mesh, UMaterialInstance* Material);
+
+	// Actualiza el modelo y material del objeto
+	void ActualizarComponenteMesh();
+
+	// Obtiene el tamaño del modelo
+	UFUNCTION(Category = Modelo, BlueprintCallable)
+	FVector GetSize();
+
+	// Mueve la ficha. No chequea la lógica de juego, simplemente se realiza la transición gráfica 
+	// y se sobreescribe el valor en la casilla final
+	void Mover(int32 Fila, int32 Columna, FVector Destino);
 
 	/// Handlers
 	// Click
@@ -67,4 +81,7 @@ public:
 	// Touch
 	UFUNCTION()
 	void OnTouch(ETouchIndex::Type FingerIndex, UPrimitiveComponent* TouchedComponent);
+
+	/// Update
+	virtual void Tick(float DeltaSeconds) override;
 };

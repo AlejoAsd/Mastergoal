@@ -9,21 +9,26 @@
 AMastergoalFicha::AMastergoalFicha(const FObjectInitializer& ObjectInitializer)
 : Super(ObjectInitializer)
 {
+	// Activar la función de update
+	PrimaryActorTick.bCanEverTick = true;
+
 	// Crear el componente base y definirlo como la raíz
 	Root = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
 	RootComponent = Root;
 
 	ComponenteMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
+
+	MovimientoSaltar = false;
 }
 
-void AMastergoalFicha::Inicializar(class AMastergoalTablero* Tablero, int32 Fila, int32 Columna, 
+void AMastergoalFicha::Inicializar(class AMastergoalTablero* Tablero, int32 Equipo, int32 Fila, int32 Columna, 
 								   int32 Tipo, UStaticMesh* Mesh, UMaterialInstance* Material)
 {
+	this->Tablero = Tablero;
+	this->Equipo = Equipo;
+	this->Tipo = Tipo;
 	this->Fila = Fila;
 	this->Columna = Columna;
-	this->Tipo = Tipo;
-
-	this->Tablero = Tablero;
 
 	this->Mesh = Mesh;
 	this->Material = Material;
@@ -36,15 +41,43 @@ void AMastergoalFicha::Inicializar(class AMastergoalTablero* Tablero, int32 Fila
 	ComponenteMesh->OnInputTouchBegin.AddDynamic(this, &AMastergoalFicha::OnTouch);
 
 	// Registrar posición en el tablero
-	this->Tablero->Estado[Fila][Columna] = Tipo;
+	this->Tablero->EstadoTablero[Fila][Columna] = Tipo;
 }
 
-// Called every frame
-/*void AMastergoalFicha::Tick( float DeltaTime )
+void AMastergoalFicha::Mover(int32 Fila, int32 Columna, FVector Destino)
 {
-	Super::Tick( DeltaTime );
+	Movimiento = true;
+	MovimientoDestino = Destino;
+	
+	this->Fila = Fila;
+	this->Columna = Columna;
+}
 
-}*/
+void AMastergoalFicha::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+	if (Movimiento)
+	{
+		FVector Posicion = GetActorLocation();
+
+		// Mover hacia el punto destino
+		Posicion = FMath::VInterpTo(Posicion, MovimientoDestino, DeltaTime, 10);
+		SetActorLocation(Posicion);
+
+		// Detener el movimiento cuando se esté dentro del margen
+		if (FVector::Dist(Posicion, MovimientoDestino) <= 1)
+		{
+			UE_LOG(LogTemp, Warning, TEXT(""));
+			UE_LOG(LogTemp, Warning, TEXT("Turn"));
+			Tablero->Estado = AMastergoalTablero::JUEGO;
+			Movimiento = false;
+			MovimientoSaltar = false;
+
+			SetActorLocation(MovimientoDestino);
+		}	
+	}
+}
 
 /// Helpers
 FVector AMastergoalFicha::GetSize()
@@ -68,7 +101,7 @@ void AMastergoalFicha::ActualizarComponenteMesh()
 /// Handlers
 void AMastergoalFicha::OnClick(UPrimitiveComponent* ClickedComp)
 {
-	//Tablero->Seleccionar(this);
+	Tablero->Seleccionar(this);
 }
 
 // Handler del evento touch para una casilla
