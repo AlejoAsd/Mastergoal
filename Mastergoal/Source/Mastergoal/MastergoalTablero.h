@@ -24,12 +24,15 @@ class MASTERGOAL_API AMastergoalTablero : public AActor
 	class USceneComponent* Root;
 
 	// Brazo de Cámara - Encargado de atajar la cámara
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camara, meta = (AllowPrivateAccess = "true"))
 	class USpringArmComponent* BrazoCamara;
 
 	// Cámara
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camara, meta = (AllowPrivateAccess = "true"))
 	class UCameraComponent* Camara;
+
+	UPROPERTY(Category = LineasTablero, VisibleDefaultsOnly, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	class UStaticMeshComponent* LineasTablero;
 
 public:	
 	// Define los valores por defecto de la instancia
@@ -59,6 +62,7 @@ public:
 	FORCEINLINE class USceneComponent* GetRoot() const { return Root; }
 	FORCEINLINE class USpringArmComponent* GetBrazoCamara() const { return BrazoCamara; }
 	FORCEINLINE class UCameraComponent* GetCamara() const { return Camara; }
+	FORCEINLINE class UStaticMeshComponent* GetLineasTablero() const { return LineasTablero; }
 
 	/// Referencias del tablero
 	// Casillas con las fichas del tablero
@@ -72,8 +76,11 @@ public:
 	//Propiedades
 	FVector Origen;
 
+	// Nivel
 	UPROPERTY(Category = Propiedades, EditAnywhere, BlueprintReadWrite,
 	  		  meta = (ClampMin = "1", ClampMax = "3", UIMin = "1", UIMax = "3"))
+
+	// Dimensiones
 	int32 Nivel;
 	UPROPERTY(Category = Dimensiones, EditAnywhere, BlueprintReadWrite)
 	int32 Alto;
@@ -81,13 +88,18 @@ public:
 	int32 Ancho;
 	UPROPERTY(Category = Dimensiones, EditAnywhere, BlueprintReadWrite)
 	int32 AnchoArco;
-	UPROPERTY(Category = Dimensiones, EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(Category = Dimensiones, VisibleAnywhere, BlueprintReadOnly)
 	int32 AltoCasillas;
-	UPROPERTY(Category = Dimensiones, EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(Category = Dimensiones, VisibleAnywhere, BlueprintReadOnly)
 	int32 AnchoCasillas;
-	UPROPERTY(Category = Dimensiones, EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(Category = Dimensiones, VisibleAnywhere, BlueprintReadOnly)
 	int32 ProfundidadCasillas;
 
+	// Lineas de Tablero
+	UPROPERTY(Category = LineasTablero, EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	class UStaticMesh* LineasTableroMesh;
+	UPROPERTY(Category = LineasTablero, EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	class UMaterialInstance* LineasTableroMaterial;
 
 	/// Casillas
 	// Propiedades

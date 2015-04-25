@@ -17,7 +17,7 @@ AMastergoalTablero::AMastergoalTablero(const FObjectInitializer& ObjectInitializ
 
 	// Crear el brazo de cámara
 	BrazoCamara = CreateDefaultSubobject<USpringArmComponent>(TEXT("CamaraBrazo"));
-	BrazoCamara->AttachTo(RootComponent);
+	BrazoCamara->AttachTo(Root);
 	BrazoCamara->bAbsoluteRotation = true;
 	BrazoCamara->TargetArmLength = 4000.f;
 	BrazoCamara->RelativeRotation = FRotator(-60.f, 0.f, 0.f);
@@ -27,6 +27,11 @@ AMastergoalTablero::AMastergoalTablero(const FObjectInitializer& ObjectInitializ
 	Camara = CreateDefaultSubobject<UCameraComponent>(TEXT("Camara"));
 	Camara->AttachTo(BrazoCamara, USpringArmComponent::SocketName);
 	Camara->bUsePawnControlRotation = false;
+
+	// Crear la líneas del tablero
+	LineasTablero = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("LineasTablero"));
+	LineasTablero->AttachTo(Root);
+	LineasTablero->SetRelativeLocation(FVector(0.f, 0.f, 0.f));
 
 	// Valores por defecto
 	Nivel = 3;
@@ -74,6 +79,7 @@ void AMastergoalTablero::BeginPlay()
 
 	Casilla->Destroy();
 
+	// Crear las fichas y casillas
 	for (int32 i = 0; i < Alto; i++)
 	{
 		for (int32 j = 0; j < Ancho; j++)
@@ -85,6 +91,17 @@ void AMastergoalTablero::BeginPlay()
 				FichaCrear(FichaLista[i][j], i, j);
 			}
 		}
+	}
+
+	// Crear las líneas de tablero
+	if (LineasTableroMesh != NULL && LineasTableroMaterial != NULL)
+	{
+		LineasTablero->SetStaticMesh(LineasTableroMesh);
+		LineasTablero->SetMaterial(0, LineasTableroMaterial);
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("No se pudieron cargar las líneas del tablero. El modelo o el material no están definidos."))
 	}
 }
 
