@@ -31,7 +31,7 @@ AMastergoalTablero::AMastergoalTablero(const FObjectInitializer& ObjectInitializ
 	// Crear la líneas del tablero
 	LineasTablero = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("LineasTablero"));
 	LineasTablero->AttachTo(Root);
-	LineasTablero->SetRelativeLocation(FVector(0.f, 0.f, 0.f));
+	LineasTablero->CastShadow = false;
 
 	// Valores por defecto
 	Nivel = 3;
@@ -98,6 +98,9 @@ void AMastergoalTablero::BeginPlay()
 	{
 		LineasTablero->SetStaticMesh(LineasTableroMesh);
 		LineasTablero->SetMaterial(0, LineasTableroMaterial);
+		LineasTablero->SetRelativeLocation(FVector(-119.f, -101.f, 90.f));
+		LineasTablero->SetRelativeScale3D(FVector(1.02f, 1.02f, 1.02f));
+		LineasTablero->SetRelativeRotation(FRotator(0.f, 90.f, 0.f));
 	}
 	else
 	{
@@ -207,7 +210,7 @@ class AMastergoalFicha* AMastergoalTablero::FichaCrear(int32 Tipo, int32 Fila, i
 		const FVector BlockLocation = Origen + GetActorLocation() +
 			FVector(Fila * AltoCasillas, 
 					Columna * AnchoCasillas, 
-					Size.Z / 2);
+					(ProfundidadCasillas + Size.Z) / 2);
 
 		// Posicionar la casilla
 		Ficha->SetActorLocation(BlockLocation);

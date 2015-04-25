@@ -28,7 +28,7 @@ void AMastergoalCasilla::Inicializar(class AMastergoalTablero* Tablero, int32 Fi
 	this->Material = Material;
 
 	ActualizarComponenteMesh();
-	ComponenteMesh->SetRelativeScale3D(FVector(1.f, 1.f, 0.25f));
+	ComponenteMesh->SetRelativeScale3D(FVector(1.f, 1.f, 1.f));
 	ComponenteMesh->SetRelativeLocation(FVector(0.f, 0.f, 0.f));
 	ComponenteMesh->AttachTo(Root);
 	ComponenteMesh->OnClicked.AddDynamic(this, &AMastergoalCasilla::OnClick);
