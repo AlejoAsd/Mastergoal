@@ -18,9 +18,17 @@ AMastergoalCasilla::AMastergoalCasilla(const FObjectInitializer& ObjectInitializ
 	Columna = -1;
 }
 
-void AMastergoalCasilla::Inicializar(class AMastergoalTablero* Tablero, int32 Fila, int32 Columna, UStaticMesh* Mesh, UMaterialInstance* Material)
+void AMastergoalCasilla::Inicializar(class AMastergoalTablero* Tablero, int32 Equipo, bool Area, bool Corner, bool Arco, 
+									 bool Especial, int32 Fila, int32 Columna, UStaticMesh* Mesh, UMaterialInstance* Material)
 {
 	this->Tablero = Tablero;
+	this->Equipo = Equipo;
+
+	this->Area = Area;
+	this->Corner = Corner;
+	this->Arco = Arco;
+	this->Especial = Especial;
+
 	this->Fila = Fila;
 	this->Columna = Columna;
 
@@ -57,10 +65,10 @@ void AMastergoalCasilla::ActualizarComponenteMesh()
 /// Handlers
 void AMastergoalCasilla::OnClick(UPrimitiveComponent* ClickedComp)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Clicked cell"));
+	UE_LOG(LogTemp, Warning, TEXT("==="));
+	UE_LOG(LogTemp, Warning, TEXT("Clicked cell %d,%d A:%d G:%d C:%d T:%d S:%d"), this->Fila, this->Columna, Area, Arco, Corner, Equipo, Especial);
 	if (Tablero->FichaSeleccionada != NULL)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Moving selected piece to %d,%d"), Fila, Columna);
 		bool result = Tablero->MoverFicha(Tablero->FichaSeleccionada, Fila, Columna);
 		if (result)
 		{

@@ -21,7 +21,7 @@ AMastergoalFicha::AMastergoalFicha(const FObjectInitializer& ObjectInitializer)
 	MovimientoSaltar = false;
 }
 
-void AMastergoalFicha::Inicializar(class AMastergoalTablero* Tablero, int32 Equipo, int32 Fila, int32 Columna, 
+void AMastergoalFicha::Inicializar(class AMastergoalTablero* Tablero, int32 Equipo, int32 Fila, int32 Columna,
 								   int32 Tipo, UStaticMesh* Mesh, UMaterialInstance* Material)
 {
 	this->Tablero = Tablero;
@@ -48,6 +48,8 @@ void AMastergoalFicha::Mover(int32 Fila, int32 Columna, FVector Destino)
 {
 	Movimiento = true;
 	MovimientoDestino = Destino;
+
+	Tablero->Estado = AMastergoalTablero::MOVIMIENTO;
 	
 	this->Fila = Fila;
 	this->Columna = Columna;
@@ -68,7 +70,7 @@ void AMastergoalFicha::Tick(float DeltaTime)
 		// Detener el movimiento cuando se esté dentro del margen
 		if (FVector::Dist(Posicion, MovimientoDestino) <= 1)
 		{
-			UE_LOG(LogTemp, Warning, TEXT(""));
+			UE_LOG(LogTemp, Warning, TEXT("\n"));
 			UE_LOG(LogTemp, Warning, TEXT("Turn"));
 			Tablero->Estado = AMastergoalTablero::JUEGO;
 			Movimiento = false;

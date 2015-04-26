@@ -31,6 +31,18 @@ public:
 	// Tablero al que pertenece la casilla
 	UPROPERTY(Category = Tablero, VisibleDefaultsOnly, BlueprintReadOnly)
 	class AMastergoalTablero* Tablero;
+
+	UPROPERTY(Category = Juego, VisibleDefaultsOnly, BlueprintReadOnly)
+	int32 Equipo;
+	UPROPERTY(Category = Juego, VisibleDefaultsOnly, BlueprintReadOnly)
+	bool Area;
+	UPROPERTY(Category = Juego, VisibleDefaultsOnly, BlueprintReadOnly)
+	bool Corner;
+	UPROPERTY(Category = Juego, VisibleDefaultsOnly, BlueprintReadOnly)
+	bool Arco;
+	UPROPERTY(Category = Juego, VisibleDefaultsOnly, BlueprintReadOnly)
+	bool Especial;
+
 	UPROPERTY(Category = Tablero, VisibleDefaultsOnly, BlueprintReadOnly)
 	int32 Fila;
 	UPROPERTY(Category = Tablero, VisibleDefaultsOnly, BlueprintReadOnly)
@@ -46,7 +58,8 @@ public:
 
 	/// Métodos
 	// Inicializa el objeto
-	void Inicializar(class AMastergoalTablero* Tablero, int32 Fila, int32 Columna, UStaticMesh* Mesh, UMaterialInstance* Material);
+	void Inicializar(class AMastergoalTablero* Tablero, int32 Equipo, bool Area, bool Corner, bool Arco, bool Especial,
+					 int32 Fila, int32 Columna, UStaticMesh* Mesh, UMaterialInstance* Material);
 	// Actualiza el modelo y material del objeto
 	void ActualizarComponenteMesh();
 	// Obtiene el tamaño del modelo

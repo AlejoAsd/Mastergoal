@@ -34,14 +34,26 @@ class MASTERGOAL_API AMastergoalTablero : public AActor
 	UPROPERTY(Category = LineasTablero, VisibleDefaultsOnly, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	class UStaticMeshComponent* LineasTablero;
 
+	UPROPERTY(Category = Seleccion, VisibleDefaultsOnly, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	class UStaticMeshComponent* Seleccion;
+
 public:	
 	// Define los valores por defecto de la instancia
 	AMastergoalTablero(const FObjectInitializer& ObjectInitializer);
 
 	/// Definiciones
+	typedef enum Equipo
+	{
+		NINGUNO = -1,
+		BLANCO,
+		ROJO,
+		AMBOS
+	} Equipo;
+
 	typedef enum EstadoJuego
 	{
 		JUEGO,
+		PASE,
 		MOVIMIENTO,
 		FIN
 	} EstadoJuego;
@@ -63,13 +75,14 @@ public:
 	FORCEINLINE class USpringArmComponent* GetBrazoCamara() const { return BrazoCamara; }
 	FORCEINLINE class UCameraComponent* GetCamara() const { return Camara; }
 	FORCEINLINE class UStaticMeshComponent* GetLineasTablero() const { return LineasTablero; }
+	FORCEINLINE class UStaticMeshComponent* GetSeleccion() const { return Seleccion; }
 
 	/// Referencias del tablero
 	// Casillas con las fichas del tablero
 	class AMastergoalCasilla *Casillas[15][11];
 
 	// Estado del tablero
-	int32 EstadoTablero[13][11];
+	int32 EstadoTablero[15][11];
 	class AMastergoalFicha* FichaSeleccionada;
 	
 	/// Tablero
@@ -101,6 +114,12 @@ public:
 	UPROPERTY(Category = LineasTablero, EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	class UMaterialInstance* LineasTableroMaterial;
 
+	// Selección de Fichas
+	UPROPERTY(Category = Seleccion, EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	class UStaticMesh* SeleccionMesh;
+	UPROPERTY(Category = Seleccion, EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	class UMaterialInstance* SeleccionMaterial;
+
 	/// Casillas
 	// Propiedades
 	UPROPERTY(Category = Casillas, EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
@@ -111,8 +130,7 @@ public:
 	class UMaterialInstance* CasillaMaterialAlternativo;
 
 	// Métodos
-	UFUNCTION()
-	class AMastergoalCasilla* CasillaCrear(int32 Fila, int32 Columna);
+	class AMastergoalCasilla* CrearCasilla(int32 Fila, int32 Columna);
 
 	/// Fichas
 	// Propiedades
@@ -133,7 +151,7 @@ public:
 	class UMaterialInstance* FichaMaterialJugadorAlternativo;
 
 	// Métodos
-	class AMastergoalFicha* FichaCrear(int32 Tipo, int32 Fila, int32 Columna);
+	class AMastergoalFicha* CrearFicha(int32 Tipo, int32 Fila, int32 Columna);
 
 	AMastergoalTablero::TipoFicha** FichaObtenerLista();
 	void FichaDestruirLista(TipoFicha**& Lista);

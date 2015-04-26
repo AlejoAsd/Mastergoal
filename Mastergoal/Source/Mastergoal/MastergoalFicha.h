@@ -28,8 +28,9 @@ public:
 	FORCEINLINE class UStaticMeshComponent* GetComponenteMesh() const { return ComponenteMesh; };
 
 	/// Propiedades
-	UPROPERTY(Category = Ficha, VisibleDefaultsOnly, BlueprintReadOnly)
+	UPROPERTY(Category = Juego, VisibleDefaultsOnly, BlueprintReadOnly)
 	int32 Equipo;
+
 	UPROPERTY(Category = Ficha, VisibleDefaultsOnly, BlueprintReadOnly)
 	int32 Tipo;
 	UPROPERTY(Category = Ficha, VisibleDefaultsOnly, BlueprintReadOnly)
