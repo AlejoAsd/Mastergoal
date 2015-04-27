@@ -42,6 +42,20 @@ void AMastergoalFicha::Inicializar(class AMastergoalTablero* Tablero, int32 Equi
 
 	// Registrar posición en el tablero
 	this->Tablero->EstadoTablero[Fila][Columna] = Tipo;
+	if (Tipo == AMastergoalTablero::ROJO_ARQUERO_EN_AREA ||
+		Tipo == AMastergoalTablero::ROJO_ARQUERO_FUERA_AREA ||
+		Tipo == AMastergoalTablero::BLANCO_ARQUERO_EN_AREA ||
+		Tipo == AMastergoalTablero::BLANCO_ARQUERO_FUERA_AREA)
+	{
+		if (Columna > 0)
+		{
+			Tablero->EstadoTablero[Fila][Columna - 1] = Tipo;
+		}
+		if (Columna < (Tablero->Ancho - 1))
+		{
+			Tablero->EstadoTablero[Fila][Columna + 1] = Tipo;
+		}
+	}
 }
 
 void AMastergoalFicha::Mover(int32 Fila, int32 Columna, FVector Destino)
@@ -70,7 +84,6 @@ void AMastergoalFicha::Tick(float DeltaTime)
 		// Detener el movimiento cuando se esté dentro del margen
 		if (FVector::Dist(Posicion, MovimientoDestino) <= 1)
 		{
-			UE_LOG(LogTemp, Warning, TEXT("\n"));
 			UE_LOG(LogTemp, Warning, TEXT("Turn"));
 			Tablero->Estado = AMastergoalTablero::JUEGO;
 			Movimiento = false;

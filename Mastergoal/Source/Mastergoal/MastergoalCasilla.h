@@ -35,6 +35,8 @@ public:
 	UPROPERTY(Category = Juego, VisibleDefaultsOnly, BlueprintReadOnly)
 	int32 Equipo;
 	UPROPERTY(Category = Juego, VisibleDefaultsOnly, BlueprintReadOnly)
+	int32 Influencia;
+	UPROPERTY(Category = Juego, VisibleDefaultsOnly, BlueprintReadOnly)
 	bool Area;
 	UPROPERTY(Category = Juego, VisibleDefaultsOnly, BlueprintReadOnly)
 	bool Corner;

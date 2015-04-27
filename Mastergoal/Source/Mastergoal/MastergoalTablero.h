@@ -44,8 +44,8 @@ public:
 	/// Definiciones
 	typedef enum Equipo
 	{
-		NINGUNO = -1,
-		BLANCO,
+		BLANCO = -1,
+		NINGUNO,
 		ROJO,
 		AMBOS
 	} Equipo;
@@ -134,6 +134,9 @@ public:
 
 	/// Fichas
 	// Propiedades
+	UPROPERTY(Category = Fichas, VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	TArray<class AMastergoalFicha*> Fichas;
+
 	TipoFicha** FichaLista;
 
 	UPROPERTY(Category = Fichas, EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
@@ -166,6 +169,8 @@ public:
 	// Métodos
 	// Pasa el turno
 	void PasarTurno();
+	// Modifica la influencia de las casillas adyacentes a la ficha.
+	void ModificarInfluencia(AMastergoalFicha* Ficha, bool Inverso);
 	// Intenta mover una ficha del tablero. Devuelve true en caso de haberse realizado el movimiento.
 	bool MoverFicha(AMastergoalFicha* Ficha, int32 Fila, int32 Columna);
 	// Valida un posible movimiento
