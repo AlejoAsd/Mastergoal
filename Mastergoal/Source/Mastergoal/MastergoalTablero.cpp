@@ -4,6 +4,8 @@
 #include "MastergoalTablero.h"
 #include "MastergoalCasilla.h"
 #include "MastergoalFicha.h"
+#include "IA/Game.h"
+#include "IA/Agent.h"
 
 // Define los valores por defecto del objeto
 AMastergoalTablero::AMastergoalTablero(const FObjectInitializer& ObjectInitializer)
@@ -132,6 +134,8 @@ void AMastergoalTablero::BeginPlay()
 	{
 		UE_LOG(LogTemp, Warning, TEXT("No se pudo cargar el selector. El modelo o el material no están definidos."))
 	}
+
+	Jugar();
 }
 
 void AMastergoalTablero::BeginDestroy()
@@ -627,6 +631,178 @@ bool AMastergoalTablero::Seleccionar(AMastergoalFicha* Ficha)
 	}
 
 	return false;
+}
+
+int AMastergoalTablero::Jugar()
+{
+	ficha BallAnterior, LeftAnterior[5], RightAnterior[5], 
+		  Ball, Left[5], Right[5];
+	int32 il = 0, ir = 0;
+
+	// Inicializar la pelota 
+	BallAnterior.row = Ball.row = 0;
+	BallAnterior.col = Ball.col = 0;
+
+	// Crear la lista de posiciones
+	for (auto Iter(Fichas.CreateIterator()); Iter; Iter++)
+	{
+		if (!(*Iter)->IsValidLowLevel()) continue;
+
+		if ((*Iter)->Equipo == BLANCO)
+		{
+			if (il >= 5)
+			{
+				UE_LOG(LogTemp, Warning, TEXT("Se intentó cargar una ficha blanca más de la esperada al intentar jugar."))
+				break;
+			}
+
+			LeftAnterior[il].row = Left[il].row = Alto - 1 - (*Iter)->Fila;
+			LeftAnterior[il].col = Left[il].col = Ancho - 1 - (*Iter)->Columna;
+
+			il++;
+		}
+		else if ((*Iter)->Equipo == ROJO)
+		{
+			if (ir >= 5)
+			{
+				UE_LOG(LogTemp, Warning, TEXT("Se intentó cargar una ficha roja más de la esperada al intentar jugar."))
+				break;
+			}
+
+			RightAnterior[ir].row = Right[ir].row = Alto - 1 - (*Iter)->Fila;
+			RightAnterior[ir].col = Right[ir].col = Ancho - 1 - (*Iter)->Columna;
+
+			ir++;
+		}
+		else
+		{
+			BallAnterior.row = Ball.row = Alto - 1 - (*Iter)->Fila;
+			BallAnterior.col = Ball.col = Ancho - 1 - (*Iter)->Columna;
+		}
+	}
+
+	UE_LOG(LogTemp, Warning, TEXT("Ball %d,%d"), Ball.row, Ball.col)
+	UE_LOG(LogTemp, Warning, TEXT("BallAnterior %d,%d"), BallAnterior.row, BallAnterior.col)
+	for (int i = 0; i < 5; i++)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("%d Left %d,%d"), i, Left[i].row, Left[i].col)
+		UE_LOG(LogTemp, Warning, TEXT("%d Right %d,%d"), i, Right[i].row, Right[i].col)
+		UE_LOG(LogTemp, Warning, TEXT("%d LeftAnterior %d,%d"), i, LeftAnterior[i].row, LeftAnterior[i].col)
+		UE_LOG(LogTemp, Warning, TEXT("%d RightAnterior %d,%d"), i, RightAnterior[i].row, RightAnterior[i].col)
+	}
+
+	UE_LOG(LogTemp, Warning, TEXT("= Realizando jugada de pc"))
+	Agent* agentL = new Agent(Nivel, LEFT, 3, "agentL1_1");
+	Agent* agentR = new Agent(Nivel, RIGHT, 3, "agentL1_2");
+	Game game1(Nivel, RIGHT, agentL, agentR);
+
+	/*if (game1.DoPlay(Nivel, Ball, Left, Right))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Se realizó una jugada."));
+		///////////Aca hay que obtener las nuevas posiciones de las fichas
+		/*printf("\nDespues del movimiento\n");
+		printf("ball: %d, %d\n", game1.ball.row, game1.ball.col);
+		printf("leftPiece: %d, %d\n", game1.left[0].row, game1.left[0].col);
+		printf("rightPiece: %d, %d\n", game1.right[0].row, game1.right[0].col);
+
+		if (nivel == 2 || nivel == 3){
+			printf("leftPiece1: %d, %d\n", game1.left[1].row, game1.left[1].col);
+			printf("rightPiece1: %d, %d\n", game1.right[1].row, game1.right[1].col);
+		}
+
+		if (nivel == 3){
+			printf("leftPiece2: %d, %d\n", game1.left[2].row, game1.left[2].col);
+			printf("rightPiece2: %d, %d\n", game1.right[2].row, game1.right[2].col);
+
+			printf("leftPiece3: %d, %d\n", game1.left[3].row, game1.left[3].col);
+			printf("rightPiece3: %d, %d\n", game1.right[3].row, game1.right[3].col);
+
+			printf("leftPiece4: %d, %d\n", game1.left[4].row, game1.left[4].col);
+			printf("rightPiece4: %d, %d\n", game1.right[4].row, game1.right[4].col);
+		}
+		/////////////////
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Hubo un gol, bucle o pelota ahogada."));
+	}
+	/*
+	/////////////////Aca hay que leer el tablero e ir guardando las posiciones de las fichas
+	//pelota
+	ball.row = 7;
+	ball.col = 5;
+
+	//ficha 1 (player y pc)
+	left[0].row = 12;
+	left[0].col = 5;
+	right[0].row = 2;
+	right[0].col = 5;
+
+	//ficha 2 (player y pc)
+	if (nivel == 2 || nivel == 3){
+		left[1].row = 10;
+		left[1].col = 3;
+		right[1].row = 4;
+		right[1].col = 3;
+	}
+
+	//fichas 3, 4 y 5 (player y pc)
+	if (nivel == 3){
+		left[2].row = 10;
+		left[2].col = 7;
+		right[2].row = 4;
+		right[2].col = 7;
+
+		left[3].row = 8;
+		left[3].col = 2;
+		right[3].row = 6;
+		right[3].col = 2;
+
+		left[4].row = 8;
+		left[4].col = 8;
+		right[4].row = 6;
+		right[4].col = 8;
+	}
+
+	////////////////////////////////////////////
+
+	Agent* agentL = new Agent(nivel, LEFT, 1, "agentL1_1");
+	Agent* agentR = new Agent(nivel, RIGHT, 1, "agentL1_2");
+	Game game1(nivel, RIGHT, agentL, agentR);
+
+	if (game1.DoPlay(nivel, ball, left, right))
+	{
+		///////////Aca hay que obtener las nuevas posiciones de las fichas
+		printf("\nDespues del movimiento\n");
+		printf("ball: %d, %d\n", game1.ball.row, game1.ball.col);
+		printf("leftPiece: %d, %d\n", game1.left[0].row, game1.left[0].col);
+		printf("rightPiece: %d, %d\n", game1.right[0].row, game1.right[0].col);
+
+		if (nivel == 2 || nivel == 3){
+			printf("leftPiece1: %d, %d\n", game1.left[1].row, game1.left[1].col);
+			printf("rightPiece1: %d, %d\n", game1.right[1].row, game1.right[1].col);
+		}
+
+		if (nivel == 3){
+			printf("leftPiece2: %d, %d\n", game1.left[2].row, game1.left[2].col);
+			printf("rightPiece2: %d, %d\n", game1.right[2].row, game1.right[2].col);
+
+			printf("leftPiece3: %d, %d\n", game1.left[3].row, game1.left[3].col);
+			printf("rightPiece3: %d, %d\n", game1.right[3].row, game1.right[3].col);
+
+			printf("leftPiece4: %d, %d\n", game1.left[4].row, game1.left[4].col);
+			printf("rightPiece4: %d, %d\n", game1.right[4].row, game1.right[4].col);
+		}
+		/////////////////
+	}
+	else
+	{
+		printf("\nDespues del movimiento\n");
+		printf("Hubo gol, bucle o pelota ahogada\n");
+	}
+
+	getchar();*/
+	return 0;
 }
 
 /*

@@ -54,9 +54,6 @@
     <ClCompile Include="EvoGoal.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="stdafx.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Definitions.cpp">
       <Filter>Source Files\Mastergoal</Filter>
     </ClCompile>

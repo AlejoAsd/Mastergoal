@@ -82,28 +82,6 @@ namespace Common
 			this->currentState->board->leftPieces[4]->SetPosition(left[4].row, left[4].col);
 			this->currentState->board->rightPieces[4]->SetPosition(right[4].row, right[4].col);
 		}
-
-		/**********Imprimo posiciones antes de realizar la jugada**********/
-		printf("Antes del movimiento\n");
-		printf("ball: %d, %d\n", this->currentState->GetBoard()->GetBall()->GetRow(), this->currentState->GetBoard()->GetBall()->GetCol());
-		printf("leftPiece: %d, %d\n", this->currentState->GetBoard()->GetLeftPieces()[0]->GetRow(), this->currentState->GetBoard()->GetLeftPieces()[0]->GetCol());
-		printf("rightPiece: %d, %d\n", this->currentState->GetBoard()->GetRightPieces()[0]->GetRow(), this->currentState->GetBoard()->GetRightPieces()[0]->GetCol());
-
-		if (nivel == 2 || nivel == 3){
-			printf("leftPiece1: %d, %d\n", this->currentState->GetBoard()->GetLeftPieces()[1]->GetRow(), this->currentState->GetBoard()->GetLeftPieces()[1]->GetCol());
-			printf("rightPiece1: %d, %d\n", this->currentState->GetBoard()->GetRightPieces()[1]->GetRow(), this->currentState->GetBoard()->GetRightPieces()[1]->GetCol());
-		}
-
-		if (nivel == 3){
-			printf("leftPiece2: %d, %d\n", this->currentState->GetBoard()->GetLeftPieces()[2]->GetRow(), this->currentState->GetBoard()->GetLeftPieces()[2]->GetCol());
-			printf("rightPiece2: %d, %d\n", this->currentState->GetBoard()->GetRightPieces()[2]->GetRow(), this->currentState->GetBoard()->GetRightPieces()[2]->GetCol());
-
-			printf("leftPiece3: %d, %d\n", this->currentState->GetBoard()->GetLeftPieces()[3]->GetRow(), this->currentState->GetBoard()->GetLeftPieces()[3]->GetCol());
-			printf("rightPiece3: %d, %d\n", this->currentState->GetBoard()->GetRightPieces()[3]->GetRow(), this->currentState->GetBoard()->GetRightPieces()[3]->GetCol());
-
-			printf("leftPiece4: %d, %d\n", this->currentState->GetBoard()->GetLeftPieces()[4]->GetRow(), this->currentState->GetBoard()->GetLeftPieces()[4]->GetCol());
-			printf("rightPiece4: %d, %d\n", this->currentState->GetBoard()->GetRightPieces()[4]->GetRow(), this->currentState->GetBoard()->GetRightPieces()[4]->GetCol());
-		}
 		
 		// Si juega el agenteL
 		if (this->currentState->GetTurn() == LEFT)

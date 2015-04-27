@@ -177,6 +177,8 @@ public:
 	bool ValidarMovimiento(AMastergoalFicha* Ficha, int32 Fila, int32 Columna);
 	// Selecciona una ficha para realizar un movimiento
 	bool Seleccionar(AMastergoalFicha* Ficha);
+	// Juega por la computadora
+	int Jugar();
 
 	/// Interfaz AActor
 	// Llamado cuando inicia el juego o se crea la instancia

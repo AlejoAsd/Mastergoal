@@ -1,0 +1,53 @@
+﻿Build started 27/04/2015 06:29:03 p.m..
+     1>Project "C:\Users\Asd\Documents\Unreal Projects\Mastergoal\Mastergoal\Source\IA\EvoGoal.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         D:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /IC:\GALib\include /ZI /nologo /W3 /WX- /Od /Oy- /D _CRT_SECURE_NO_DEPRECATE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MTd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt EvoGoal.cpp
+         EvoGoal.cpp
+     1>c:\users\asd\documents\unreal projects\mastergoal\mastergoal\source\ia\definitions.h(59): warning C4005: 'INFINITY' : macro redefinition
+                 d:\program files (x86)\microsoft visual studio 12.0\vc\include\math.h(102) : see previous definition of 'INFINITY'
+       Lib:
+         D:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\Lib.exe /OUT:"C:\Users\Asd\Documents\Unreal Projects\Mastergoal\Mastergoal\Debug\EvoGoal.lib" /NOLOGO Debug\EvoGoal.obj
+         Debug\Definitions.obj
+         Debug\RulesManager.obj
+         Debug\BallMovement.obj
+         Debug\Board.obj
+         Debug\Game.obj
+         Debug\Movement.obj
+         Debug\Piece.obj
+         Debug\Play.obj
+         Debug\Player.obj
+         Debug\PlayerMovement.obj
+         Debug\PlayerPiece.obj
+         Debug\Square.obj
+         Debug\State.obj
+         Debug\AbstractSearcher.obj
+         Debug\ActionSearcher.obj
+         Debug\Agent.obj
+         Debug\DeltaEvaluatorLevel1.obj
+         Debug\DeltaEvaluatorLevel2.obj
+         Debug\DeltaEvaluatorLevel3.obj
+         Debug\DeltaEvaluatorLevel4.obj
+         Debug\EvaluatorLevel1.obj
+         Debug\EvaluatorLevel2.obj
+         Debug\EvaluatorLevel3.obj
+         Debug\EvaluatorLevel4.obj
+         Debug\NegamaxSearcher.obj
+         Debug\SuccessorGenerator.obj
+         Debug\HallOfFame.obj
+         Debug\History.obj
+         Debug\SampleTourGA.obj
+         Debug\EliminatoryTournament.obj
+         Debug\Encoder.obj
+         Debug\FullCompTournament.obj
+         Debug\OneVsOneTournament.obj
+         Debug\SamplePopData.obj
+         Debug\SampleTourData.obj
+         Debug\SampleTournament.obj
+         Debug\SampParTournament.obj
+         Debug\Tournament.obj
+         EvoGoal.vcxproj -> C:\Users\Asd\Documents\Unreal Projects\Mastergoal\Mastergoal\Debug\EvoGoal.lib
+     1>Done Building Project "C:\Users\Asd\Documents\Unreal Projects\Mastergoal\Mastergoal\Source\IA\EvoGoal.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:00.57
