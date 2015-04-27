@@ -4,8 +4,6 @@
 #include "MastergoalTablero.h"
 #include "MastergoalCasilla.h"
 #include "MastergoalFicha.h"
-#include "MemoryBase.h"
-#include <iostream>
 
 // Define los valores por defecto del objeto
 AMastergoalTablero::AMastergoalTablero(const FObjectInitializer& ObjectInitializer)

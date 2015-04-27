@@ -1,0 +1,125 @@
+#ifndef DEFINITIONS_H
+#define DEFINITIONS_H
+
+#include <fstream>
+using namespace std;
+
+// Cuando está descomentado lee un archivo para recuperar el estado actual
+//#define RESTORE
+
+// Si se juegan dos partidos o solamente uno (eligiendo el que comienza al azar)
+#define DOUBLE_MATCH
+
+// Si se deben evaluar los estados o las acciones
+//#define EVAL_ACTIONS
+
+// Tamaño de la población
+#define POP_SIZE 300
+
+// Tamaño de la población de muestra (~=10% POP_SIZE) 
+#define SAMP_SIZE 30
+
+// Cantidad de individuos seleccionados del salón de la fama
+#define N_HALL_OF_FAME 15
+
+// Cantidad de individuos a ser considerados en el elitismo (~= 2,5% POP_SIZE)
+#define ELITE_SIZE 3
+
+// Número de generaciones a correr
+#define N_GENERATIONS 300
+
+// Tamaño del salón de la fama
+#define HALL_SIZE 1002
+
+// Tamaño de la muestra para el mini test de brood crossover
+#define MINI_SAMP_SIZE 0
+
+// Cantidad de hijos que tendrá cada pareja en el cruzammiento
+#define N_OFFSPRINGS 2
+
+// Número máximo de jugadas en un partido
+#define MAX_PLAYS 40
+
+// Nivel de juego por defecto
+#define GAME_LEVEL 1
+
+// Profundidad de búsqueda del algoritmo minimax de los agentes
+#define MINIMAX_DEPTH 1
+
+// Probabilidad de mutación
+#define P_MUT 0.2f
+
+// Score por ganar un partido
+#define WIN_SCORE 3.0f
+
+// Score por empatar un partido
+#define DRAW_SCORE 1.0f
+
+// Máximo valor posible para un estado (gol)
+#define INFINITY 200000.0f
+
+// Mínimo valor posible para un peso
+#define MIN_WEIGHT -100.0f
+
+// Máximo valor posible para un peso
+#define MAX_WEIGHT 100.0f
+
+// Archivo donde se guardará las características del programa (las constantes definidas en Definitions.h)
+#define CONFIG_FILE "config.txt"
+
+// Archivo donde se guardarán las estadísticas del algoritmo
+#define STATS_FILE "stats.aux"
+
+// Archivo donde se guardará el estado del Hall of Fame
+#define HOF_FILE "hof.aux"
+
+// Archivo donde se guardará el historial History
+#define HISTORY_FILE "history.aux"
+
+// Archivo donde se guardará el estado de la población actual
+#define POP_FILE "pop.aux"
+
+// Archivo donde se guardará el estado de la población de muestra (sample)
+#define SAMP_FILE "samp.aux"
+
+// Archivo de donde se recuperará el proceso anterior interrumpido
+#define RECOVER_FILE "recov.aux"
+
+// Cada cuántas generaciones debe guardarse el estado del GA
+#define SAVE_FREQ 1
+
+// Cada cuántas generaciones hace un backup del estado
+#define BACK_FREQ 1
+
+#ifdef DOUBLE_MATCH
+	// Si se juegan dos partidos es 2, si se juega 1 es 1
+	#define TOUR_DATA_MULT 2
+#else
+	#define  TOUR_DATA_MULT 1
+#endif
+
+// GAIDs
+#define GAID_SAMPLE_TOUR_GA 201
+#define GAID_SAMPLE_SCALING 202
+
+#ifndef max
+#define max(a,b)            (((a) > (b)) ? (a) : (b))
+#endif
+
+#ifndef min
+#define min(a,b)            (((a) < (b)) ? (a) : (b))
+#endif
+
+#ifndef Abs
+#define Abs(a) ((a) >= 0 ? (a) : (-(a)))
+#endif
+
+#ifndef Swap
+#define Swap(Type, a, b) { Type aux = a; a = b; b = aux; }
+#endif
+
+void WriteConfig();
+
+int GetNFeatures();
+
+#endif

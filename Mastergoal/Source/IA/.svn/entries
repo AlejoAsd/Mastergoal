@@ -1,0 +1,1156 @@
+8
+
+dir
+22
+file:///\x5cAlberto-pc/Repositorios/EvoGoal/EvoGoal
+file:///\x5cAlberto-pc/Repositorios/EvoGoal
+
+
+
+2008-05-02T08:55:51.687500Z
+22
+Administrador
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+ce8f2928-78aa-0546-81c4-85b146f39d56
+
+Agent.cpp
+file
+27
+
+
+
+2008-05-17T21:27:10.000000Z
+00bedef5f6627352dca354fe3e42a424
+2008-06-08T20:37:10.859375Z
+27
+Alberto Samaniego
+
+History.cpp
+file
+23
+
+
+
+2008-05-03T22:50:02.000000Z
+b262cd523e9248dc8bc9e521626c8308
+2008-05-03T05:15:33.640625Z
+23
+Alberto Samaniego
+
+SampleTourGA.cpp
+file
+37
+
+
+
+2008-06-13T04:07:40.000000Z
+eb70e3bff857de4a5a0de12ebd62f92e
+2008-06-13T05:57:59.578125Z
+37
+Alberto Samaniego
+
+Evaluator.h
+file
+37
+
+
+
+2008-06-12T05:22:50.000000Z
+880a122b4ade9d7ada50a4afdcc8b2d5
+2008-06-13T05:57:59.578125Z
+37
+Alberto Samaniego
+
+EliminatoryTournament.cpp
+file
+
+
+
+
+2008-01-29T04:57:36.000000Z
+333217c79bf9fd63bceefad37e94b9c2
+2008-01-28T23:47:45.968750Z
+2
+Administrador
+
+Play.h
+file
+
+
+
+
+2008-01-29T04:57:36.000000Z
+1a10947c9d3eaa161e0b76ccc5630c5b
+2008-01-28T23:47:45.968750Z
+2
+Administrador
+
+PlayerMovement.h
+file
+
+
+
+
+2008-01-29T04:57:36.000000Z
+98c1cfe6033fe426ca533b2671b2a5bf
+2008-01-28T23:47:45.968750Z
+2
+Administrador
+
+SuccessorGenerator.cpp
+file
+
+
+
+
+2008-01-29T04:57:36.000000Z
+54863905fef7fa70b7d1e8d137df0865
+2008-01-28T23:47:45.968750Z
+2
+Administrador
+
+DeltaEvaluator.h
+file
+37
+
+
+
+2008-06-12T05:54:38.000000Z
+718d964aacff282872652bc651570b44
+2008-06-13T05:57:59.578125Z
+37
+Alberto Samaniego
+
+Tournaments.h
+file
+
+
+
+
+2008-01-29T04:57:36.000000Z
+476b3bdc282ea0840d3582d416a2ea4c
+2008-01-28T23:47:45.968750Z
+2
+Administrador
+
+ComParams.h
+file
+40
+
+
+
+2008-06-15T19:54:42.000000Z
+4a7f89519c47b050a6f72175c3fb56b4
+2008-06-15T21:37:22.218750Z
+40
+Alberto Samaniego
+
+SamplePopData.cpp
+file
+
+
+
+
+2008-01-29T04:57:36.000000Z
+b1ad096278b5bd5d6e5e68aafd1392d2
+2008-01-28T23:47:45.968750Z
+2
+Administrador
+
+Evaluators.h
+file
+27
+
+
+
+2008-05-15T01:34:18.000000Z
+1fcf79470fea62cde82e77d3548367d1
+2008-06-08T20:37:10.859375Z
+27
+Alberto Samaniego
+
+Tournament.cpp
+file
+37
+
+
+
+2008-06-12T06:17:32.000000Z
+0adb142076cb136c798b8d815aeb55cc
+2008-06-13T05:57:59.578125Z
+37
+Alberto Samaniego
+
+Player.cpp
+file
+
+
+
+
+2008-01-29T04:57:36.000000Z
+2038a9847dc7f61c9fe83bb8f040538d
+2008-01-28T23:47:45.968750Z
+2
+Administrador
+
+EvoGoal.cpp
+file
+37
+
+
+
+2008-06-13T00:01:52.000000Z
+5d009825f2aa016719e0a258de62e300
+2008-06-13T05:57:59.578125Z
+37
+Alberto Samaniego
+
+HallOfFame.cpp
+file
+27
+
+
+
+2008-06-06T05:48:20.000000Z
+bb214a139e441cfa70ec551875821dff
+2008-06-08T20:37:10.859375Z
+27
+Alberto Samaniego
+
+Movement.h
+file
+
+
+
+
+2008-01-29T04:57:36.000000Z
+a7673c939df7e8dfe022224533f45acd
+2008-01-28T23:47:45.968750Z
+2
+Administrador
+
+ActionSearcher.h
+file
+37
+
+
+
+2008-06-12T05:45:34.000000Z
+f21c6ac83e655c74c0c5747b3a5a9970
+2008-06-13T05:57:59.578125Z
+37
+Alberto Samaniego
+
+Square.cpp
+file
+
+
+
+
+2008-01-29T04:57:36.000000Z
+403dc2b17ce6ce78da056485b3482289
+2008-01-28T23:47:45.968750Z
+2
+Administrador
+
+PlayerPiece.cpp
+file
+
+
+
+
+2008-01-29T04:57:36.000000Z
+4fc10db0cbabb08baef35cf14fa7373b
+2008-01-28T23:47:45.968750Z
+2
+Administrador
+
+Agent.h
+file
+37
+
+
+
+2008-06-13T02:50:10.000000Z
+a274402d40eb5bb23e707f4115bea56d
+2008-06-13T05:57:59.578125Z
+37
+Alberto Samaniego
+
+Play.cpp
+file
+
+
+
+
+2008-01-29T04:57:36.000000Z
+b1fde1b1c8bb8d6899d59f3724e6106e
+2008-01-28T23:47:45.968750Z
+2
+Administrador
+
+PlayerMovement.cpp
+file
+
+
+
+
+2008-01-29T04:57:36.000000Z
+77b980c63a57b02979e449cf1d2a7743
+2008-01-28T23:47:45.968750Z
+2
+Administrador
+
+MovementIterator.h
+file
+
+
+
+
+2008-01-29T04:57:36.000000Z
+1af76b564feb1f4d2b6c0f2077ac94c8
+2008-01-28T23:47:45.968750Z
+2
+Administrador
+
+Pieces.h
+file
+
+
+
+
+2008-01-29T04:57:36.000000Z
+056595ab355d545544d277f9a1cafd5f
+2008-01-28T23:47:45.968750Z
+2
+Administrador
+
+OneVsOneTournament.h
+file
+28
+
+
+
+2008-06-06T03:35:20.000000Z
+04e3f1a398879675426f85e766dba6bf
+2008-06-09T18:53:29.609375Z
+28
+Alberto Samaniego
+
+State.cpp
+file
+
+
+
+
+2008-05-31T06:29:08.000000Z
+24549521edf8f94554a1aaff19532a8c
+2008-01-28T23:47:45.968750Z
+2
+Administrador
+
+AbstractSearcher.cpp
+file
+27
+
+
+
+2008-05-17T21:18:34.000000Z
+38e8b089083d91fa0f1f36f2dee7077e
+2008-06-08T20:37:10.859375Z
+27
+Alberto Samaniego
+
+EvaluatorLevel1.h
+file
+37
+
+
+
+2008-06-12T05:25:00.000000Z
+3723d2a6d61d7d601cb636ca10e75fac
+2008-06-13T05:57:59.578125Z
+37
+Alberto Samaniego
+
+Movements.h
+file
+
+
+
+
+2008-01-29T04:57:36.000000Z
+2a9af782ebec120c4c706598e945cfaa
+2008-01-28T23:47:45.968750Z
+2
+Administrador
+
+EvaluatorLevel3.h
+file
+37
+
+
+
+2008-06-12T05:25:02.000000Z
+a3ad93695a4a60959eaffd9054764647
+2008-06-13T05:57:59.578125Z
+37
+Alberto Samaniego
+
+SampleScaling.cpp
+file
+
+
+
+
+2008-01-29T04:57:36.000000Z
+7ba5b4b441842e652d0008bbfc9e5674
+2008-01-28T23:47:45.968750Z
+2
+Administrador
+
+SuccessorGenerator.h
+file
+
+
+
+
+2008-01-29T04:57:36.000000Z
+8fe2fd54a9e3e67bcb63b0c98b01f659
+2008-01-28T23:47:45.968750Z
+2
+Administrador
+
+DeltaEvaluatorLevel1.h
+file
+37
+
+
+
+2008-06-12T05:28:20.000000Z
+018a558134c24d96ed4ace2c9404c67d
+2008-06-13T05:57:59.578125Z
+37
+Alberto Samaniego
+
+SampleTourData.h
+file
+27
+
+
+
+2008-05-07T23:40:44.000000Z
+d762eae35ccd5c804590f21b5efa0c1a
+2008-06-08T20:37:10.859375Z
+27
+Alberto Samaniego
+
+ReadMe.txt
+file
+
+
+
+
+2008-01-29T04:57:36.000000Z
+9515b6f2d20c6234a9e473b2764cef52
+2008-01-28T23:47:45.968750Z
+2
+Administrador
+
+Piece.h
+file
+
+
+
+
+2008-01-29T04:57:36.000000Z
+5a6dd3d88ea60a2569d7908f0678feb2
+2008-01-28T23:47:45.968750Z
+2
+Administrador
+
+DeltaEvaluatorLevel3.h
+file
+37
+
+
+
+2008-06-12T05:28:34.000000Z
+199fcaead4909f663b77df0b8ccae7f9
+2008-06-13T05:57:59.578125Z
+37
+Alberto Samaniego
+
+FullCompTournament.cpp
+file
+37
+
+
+
+2008-06-12T18:54:10.000000Z
+05b2023bb0384e6001c089f67f1bec07
+2008-06-13T05:57:59.578125Z
+37
+Alberto Samaniego
+
+SampleTournament.cpp
+file
+27
+
+
+
+2008-06-07T18:43:40.000000Z
+c621363c2e220d8884161f48f7e491e8
+2008-06-08T20:37:10.859375Z
+27
+Alberto Samaniego
+
+stdafx.h
+file
+
+
+
+
+2008-01-29T04:57:36.000000Z
+1e95ff86e9e7fd489572e6441c5015d5
+2008-01-28T23:47:45.968750Z
+2
+Administrador
+
+SamplePopData.h
+file
+
+
+
+
+2008-01-29T04:57:36.000000Z
+72f291a27d83fa502224956175f4a0b4
+2008-01-28T23:47:45.968750Z
+2
+Administrador
+
+Tournament.h
+file
+37
+
+
+
+2008-06-13T02:51:26.000000Z
+53758f6312f0ed9a79054b8b1db28d95
+2008-06-13T05:57:59.578125Z
+37
+Alberto Samaniego
+
+Player.h
+file
+
+
+
+
+2008-01-29T04:57:36.000000Z
+0dbac234b3a9d94e5e5295aadd6f4dff
+2008-01-28T23:47:45.968750Z
+2
+Administrador
+
+HallOfFame.h
+file
+27
+
+
+
+2008-05-12T03:57:06.000000Z
+7918b7ccc0ea79b9c0f2e0fedf99a0fc
+2008-06-08T20:37:10.859375Z
+27
+Alberto Samaniego
+
+Square.h
+file
+
+
+
+
+2008-01-29T04:57:36.000000Z
+9544e54882e82cb3e99ba33bb7647f49
+2008-01-28T23:47:45.968750Z
+2
+Administrador
+
+PlayerPiece.h
+file
+
+
+
+
+2008-01-29T04:57:36.000000Z
+3fed06dcb1eaa91da777539d4d09f329
+2008-01-28T23:47:45.968750Z
+2
+Administrador
+
+OneVsOneTournament.cpp
+file
+28
+
+
+
+2008-06-06T04:08:36.000000Z
+c0585f250dc1e264747899dd2179a3a0
+2008-06-09T18:53:29.609375Z
+28
+Alberto Samaniego
+
+EvaluatorLevel1.cpp
+file
+37
+
+
+
+2008-06-12T05:26:22.000000Z
+7e4f8bc82d701fbc21143ac1db79fc44
+2008-06-13T05:57:59.578125Z
+37
+Alberto Samaniego
+
+EvaluatorLevel2.cpp
+file
+37
+
+
+
+2008-06-12T05:26:22.000000Z
+8dbab519455acd91a50ef1394c90c438
+2008-06-13T05:57:59.578125Z
+37
+Alberto Samaniego
+
+EvaluatorLevel3.cpp
+file
+37
+
+
+
+2008-06-12T05:26:22.000000Z
+52a2a24be1a3c8ea18c471381b94b886
+2008-06-13T05:57:59.578125Z
+37
+Alberto Samaniego
+
+EvaluatorLevel4.cpp
+file
+37
+
+
+
+2008-06-12T05:27:06.000000Z
+adf1739d96fd02e799a0c5a27b09dea9
+2008-06-13T05:57:59.578125Z
+37
+Alberto Samaniego
+
+Game.h
+file
+37
+
+
+
+2008-06-13T02:52:50.000000Z
+609404735bbf8338c11d62435c6335da
+2008-06-13T05:57:59.578125Z
+37
+Alberto Samaniego
+
+Definitions.h
+file
+40
+
+
+
+2008-06-15T21:24:52.000000Z
+d2b9fe924e5744d759bf27bdd52400f5
+2008-06-15T21:37:22.218750Z
+40
+Alberto Samaniego
+
+SampParTournament.cpp
+file
+40
+
+
+
+2008-06-15T10:32:02.000000Z
+dbfdb8339eaf8f02b9573dc798c07fd3
+2008-06-15T21:37:22.218750Z
+40
+Alberto Samaniego
+
+Encoder.h
+file
+40
+
+
+
+2008-06-14T03:01:44.000000Z
+b5433861a943ec5053ffd4ee43c7f0dd
+2008-06-15T21:37:22.218750Z
+40
+Alberto Samaniego
+
+State.h
+file
+
+
+
+
+2008-05-31T06:29:06.000000Z
+5d5a28047aa8e2267ac7f9377e9719d6
+2008-01-28T23:47:45.968750Z
+2
+Administrador
+
+SampleTourData.cpp
+file
+27
+
+
+
+2008-05-07T08:29:24.000000Z
+68009845a6068c0ac86f96733142a2cc
+2008-06-08T20:37:10.859375Z
+27
+Alberto Samaniego
+
+BallPiece.h
+file
+
+
+
+
+2008-01-29T04:57:36.000000Z
+b56a784727be0f749e7424289e7c9681
+2008-01-28T23:47:45.968750Z
+2
+Administrador
+
+AbstractSearcher.h
+file
+27
+
+
+
+2008-05-17T21:19:42.000000Z
+28de7eef3e40129784f98cb0c96a0ea4
+2008-06-08T20:37:10.859375Z
+27
+Alberto Samaniego
+
+Piece.cpp
+file
+
+
+
+
+2008-01-29T04:57:36.000000Z
+59b1cbf2526bf8fc36479e4beb11d4fa
+2008-01-28T23:47:45.968750Z
+2
+Administrador
+
+DeltaEvaluatorLevel1.cpp
+file
+37
+
+
+
+2008-06-12T05:30:36.000000Z
+b9cc5d9739e95893bb7d33ac07b19c45
+2008-06-13T05:57:59.578125Z
+37
+Alberto Samaniego
+
+DeltaEvaluatorLevel2.cpp
+file
+37
+
+
+
+2008-06-12T05:30:36.000000Z
+7e39fcd1af99a42fcf312b8d34108ed1
+2008-06-13T05:57:59.578125Z
+37
+Alberto Samaniego
+
+SampleScaling.h
+file
+
+
+
+
+2008-01-29T04:57:36.000000Z
+771d583024286bfd2794b586f34b2020
+2008-01-28T23:47:45.968750Z
+2
+Administrador
+
+DeltaEvaluatorLevel3.cpp
+file
+37
+
+
+
+2008-06-12T05:30:36.000000Z
+54b84b207ecb1d5755d3258753a59c23
+2008-06-13T05:57:59.578125Z
+37
+Alberto Samaniego
+
+DeltaEvaluatorLevel4.cpp
+file
+37
+
+
+
+2008-06-12T05:30:36.000000Z
+c5dc4107bdbbce01d53be68336e1ccb0
+2008-06-13T05:57:59.578125Z
+37
+Alberto Samaniego
+
+stdafx.cpp
+file
+
+
+
+
+2008-01-29T04:57:36.000000Z
+fcc912194e1515a3ec254d700d4d5254
+2008-01-28T23:47:45.968750Z
+2
+Administrador
+
+RulesManager.h
+file
+
+
+
+
+2008-05-07T07:47:58.000000Z
+d0d9ea07121dcc3a29b33a0cd029a9b7
+2008-04-27T00:45:19.484375Z
+17
+Alberto Samaniego
+
+BallMovement.h
+file
+
+
+
+
+2008-01-29T04:57:36.000000Z
+19f36e2caa6f4ebb8090324e5d10cc15
+2008-01-28T23:47:45.968750Z
+2
+Administrador
+
+Board.h
+file
+
+
+
+
+2008-01-29T04:57:36.000000Z
+bb6ba0595ebbe308756dd1d9c9eb284f
+2008-01-28T23:47:45.968750Z
+2
+Administrador
+
+NegamaxSearcher.h
+file
+27
+
+
+
+2008-05-17T21:20:26.000000Z
+2b18e1c2b0a8da2a8119d9018030a17d
+2008-06-08T20:37:10.859375Z
+27
+Alberto Samaniego
+
+FullCompTournament.h
+file
+
+
+
+
+2008-04-30T20:53:28.000000Z
+5e8164372f010e3be7ae6dc61ba710c4
+2008-05-01T02:19:28.078125Z
+19
+Alberto Samaniego
+
+SampleTournament.h
+file
+27
+
+
+
+2008-06-12T06:13:30.000000Z
+8bbc881182a2ed2d567d5ab39ec5abb5
+2008-06-08T20:37:10.859375Z
+27
+Alberto Samaniego
+
+History.h
+file
+24
+
+
+
+2008-05-03T22:50:10.000000Z
+c9224464d56130062e240f37d75aab40
+2008-05-03T18:58:20.406250Z
+24
+Alberto Samaniego
+
+SampleTourGA.h
+file
+27
+
+
+
+2008-06-03T20:39:50.000000Z
+582851bbd810047209f672065c4f8ff1
+2008-06-08T20:37:10.859375Z
+27
+Alberto Samaniego
+
+Game.cpp
+file
+27
+
+
+
+2008-06-03T20:37:14.000000Z
+a940d4630d0b972af1e25e91ac798f34
+2008-06-08T20:37:10.859375Z
+27
+Alberto Samaniego
+
+Definitions.cpp
+file
+37
+
+
+
+2008-06-10T08:36:28.000000Z
+57917de896453f8781075976b80d3f6b
+2008-06-13T05:57:59.578125Z
+37
+Alberto Samaniego
+
+EvoGoal.vcproj
+file
+37
+
+
+
+2008-06-12T05:30:36.000000Z
+4cd263a76aab3ade4e937ecb55fd4a87
+2008-06-13T05:57:59.578125Z
+37
+Alberto Samaniego
+
+EliminatoryTournament.h
+file
+
+
+
+
+2008-01-29T04:57:36.000000Z
+f503a80c0b06201bd1f8ca7ec54727a8
+2008-01-28T23:47:45.968750Z
+2
+Administrador
+
+Encoder.cpp
+file
+40
+
+
+
+2008-06-14T03:41:20.000000Z
+9e1285236c58a0d47a815def5739b516
+2008-06-15T21:37:22.218750Z
+40
+Alberto Samaniego
+
+EvaluatorLevel2.h
+file
+37
+
+
+
+2008-06-12T05:25:00.000000Z
+da32726cd26aabd634d2751ebd7c4b9b
+2008-06-13T05:57:59.578125Z
+37
+Alberto Samaniego
+
+EvaluatorLevel4.h
+file
+37
+
+
+
+2008-06-13T02:39:10.000000Z
+26f2882bb1664b154bd68ec80c87ff21
+2008-06-13T05:57:59.578125Z
+37
+Alberto Samaniego
+
+RulesManager.cpp
+file
+
+
+
+
+2008-01-29T04:57:36.000000Z
+98e5ec2ab65b1cba6f5c5f3a2486d507
+2008-01-28T23:47:45.968750Z
+2
+Administrador
+
+BallMovement.cpp
+file
+
+
+
+
+2008-01-29T04:57:36.000000Z
+c86ab7cb4b69bb2998e05d645adf114e
+2008-01-28T23:47:45.968750Z
+2
+Administrador
+
+Scaling.h
+file
+
+
+
+
+2008-01-29T04:57:36.000000Z
+bd247f6a2b030913dc79a3ad3e250189
+2008-01-28T23:47:45.968750Z
+2
+Administrador
+
+SampParTournament.h
+file
+40
+
+
+
+2008-06-14T03:32:08.000000Z
+3a3c6fe5cf600050f63c62623f9a409c
+2008-06-15T21:37:22.218750Z
+40
+Alberto Samaniego
+
+Sample.h
+file
+
+
+
+
+2008-01-29T04:57:36.000000Z
+a33f25c9532d1d90996c2b0e033b058b
+2008-01-28T23:47:45.968750Z
+2
+Administrador
+
+Board.cpp
+file
+27
+
+
+
+2008-06-06T02:08:46.000000Z
+c16fb34d375e68126938004d989a2b9a
+2008-06-08T20:37:10.859375Z
+27
+Alberto Samaniego
+
+Movement.cpp
+file
+
+
+
+
+2008-01-29T04:57:36.000000Z
+83a10a69928381063778e63c7834cdb3
+2008-01-28T23:47:45.968750Z
+2
+Administrador
+
+ActionSearcher.cpp
+file
+28
+
+
+
+2008-05-17T21:27:10.000000Z
+b08076e3b29c431fb3b765a1a470b638
+2008-06-09T18:53:29.609375Z
+28
+Alberto Samaniego
+
+DeltaEvaluatorLevel2.h
+file
+37
+
+
+
+2008-06-12T05:28:28.000000Z
+8c8462909e7bddd9c7d3149546f2b714
+2008-06-13T05:57:59.578125Z
+37
+Alberto Samaniego
+
+NegamaxSearcher.cpp
+file
+27
+
+
+
+2008-05-17T21:20:16.000000Z
+a51b0811bc8f7afd484d48c4fd6a5e62
+2008-06-08T20:37:10.859375Z
+27
+Alberto Samaniego
+
+DeltaEvaluatorLevel4.h
+file
+37
+
+
+
+2008-06-12T05:28:10.000000Z
+2531d4af089f860305b1016062e734eb
+2008-06-13T05:57:59.578125Z
+37
+Alberto Samaniego
+

@@ -1,0 +1,56 @@
+﻿Build started 27/04/2015 04:12:51 p.m..
+     1>Project "D:\Facultad\SE2\AI\Mastergoal\IA\EvoGoal.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         D:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /IC:\GALib\include /Zi /nologo /W3 /WX- /O2 /Oy- /GL /D _CRT_SECURE_NO_DEPRECATE /D _UNICODE /D UNICODE /Gm- /EHsc /MTd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Release\\" /Fd"Release\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt EvoGoal.cpp
+         EvoGoal.cpp
+     1>d:\facultad\se2\ai\mastergoal\ia\Definitions.h(59): warning C4005: 'INFINITY' : macro redefinition
+                 D:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\math.h(102) : see previous definition of 'INFINITY'
+       Link:
+         D:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"D:\Facultad\SE2\AI\Mastergoal\IA\Release\EvoGoal.exe" /INCREMENTAL:NO /NOLOGO /LIBPATH:C:\GALib\lib kernel32.lib ga.lib ws2_32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:\Facultad\SE2\AI\Mastergoal\IA\Release\EvoGoal.pdb" /SUBSYSTEM:CONSOLE /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\Facultad\SE2\AI\Mastergoal\IA\Release\EvoGoal.lib" /MACHINE:X86 /SAFESEH Release\EvoGoal.obj
+         Release\stdafx.obj
+         Release\Definitions.obj
+         Release\RulesManager.obj
+         Release\BallMovement.obj
+         Release\Board.obj
+         Release\Game.obj
+         Release\Movement.obj
+         Release\Piece.obj
+         Release\Play.obj
+         Release\Player.obj
+         Release\PlayerMovement.obj
+         Release\PlayerPiece.obj
+         Release\Square.obj
+         Release\State.obj
+         Release\AbstractSearcher.obj
+         Release\ActionSearcher.obj
+         Release\Agent.obj
+         Release\DeltaEvaluatorLevel1.obj
+         Release\DeltaEvaluatorLevel2.obj
+         Release\DeltaEvaluatorLevel3.obj
+         Release\DeltaEvaluatorLevel4.obj
+         Release\EvaluatorLevel1.obj
+         Release\EvaluatorLevel2.obj
+         Release\EvaluatorLevel3.obj
+         Release\EvaluatorLevel4.obj
+         Release\NegamaxSearcher.obj
+         Release\SuccessorGenerator.obj
+         Release\HallOfFame.obj
+         Release\History.obj
+         Release\SampleTourGA.obj
+         Release\EliminatoryTournament.obj
+         Release\Encoder.obj
+         Release\FullCompTournament.obj
+         Release\OneVsOneTournament.obj
+         Release\SamplePopData.obj
+         Release\SampleTourData.obj
+         Release\SampleTournament.obj
+         Release\SampParTournament.obj
+         Release\Tournament.obj
+         Generating code
+         Finished generating code
+         EvoGoal.vcxproj -> D:\Facultad\SE2\AI\Mastergoal\IA\Release\EvoGoal.exe
+     1>Done Building Project "D:\Facultad\SE2\AI\Mastergoal\IA\EvoGoal.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:03.06

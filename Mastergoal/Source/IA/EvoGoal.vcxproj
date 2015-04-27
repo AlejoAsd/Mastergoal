@@ -1,0 +1,191 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{1820CD21-4E98-478B-8838-32C0CE150D0F}</ProjectGuid>
+    <RootNamespace>EvoGoal</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v120</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v120</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>12.0.21005.1</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir>$(Configuration)\</IntDir>
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir>$(Configuration)\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>C:\GALib\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <PrecompiledHeader />
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>kernel32.lib;ga.lib;ws2_32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\GALib\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\GALib\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_DEPRECATE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <PrecompiledHeader />
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <CompileAs>CompileAsCpp</CompileAs>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>kernel32.lib;ga.lib;ws2_32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\GALib\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="EvoGoal.cpp" />
+    <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="Definitions.cpp" />
+    <ClCompile Include="RulesManager.cpp" />
+    <ClCompile Include="BallMovement.cpp" />
+    <ClCompile Include="Board.cpp" />
+    <ClCompile Include="Game.cpp" />
+    <ClCompile Include="Movement.cpp" />
+    <ClCompile Include="Piece.cpp" />
+    <ClCompile Include="Play.cpp" />
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PlayerMovement.cpp" />
+    <ClCompile Include="PlayerPiece.cpp" />
+    <ClCompile Include="Square.cpp" />
+    <ClCompile Include="State.cpp" />
+    <ClCompile Include="AbstractSearcher.cpp" />
+    <ClCompile Include="ActionSearcher.cpp" />
+    <ClCompile Include="Agent.cpp" />
+    <ClCompile Include="DeltaEvaluatorLevel1.cpp" />
+    <ClCompile Include="DeltaEvaluatorLevel2.cpp" />
+    <ClCompile Include="DeltaEvaluatorLevel3.cpp" />
+    <ClCompile Include="DeltaEvaluatorLevel4.cpp" />
+    <ClCompile Include="EvaluatorLevel1.cpp" />
+    <ClCompile Include="EvaluatorLevel2.cpp" />
+    <ClCompile Include="EvaluatorLevel3.cpp" />
+    <ClCompile Include="EvaluatorLevel4.cpp" />
+    <ClCompile Include="NegamaxSearcher.cpp" />
+    <ClCompile Include="SuccessorGenerator.cpp" />
+    <ClCompile Include="HallOfFame.cpp" />
+    <ClCompile Include="History.cpp" />
+    <ClCompile Include="SampleTourGA.cpp" />
+    <ClCompile Include="EliminatoryTournament.cpp" />
+    <ClCompile Include="Encoder.cpp" />
+    <ClCompile Include="FullCompTournament.cpp" />
+    <ClCompile Include="OneVsOneTournament.cpp" />
+    <ClCompile Include="SamplePopData.cpp" />
+    <ClCompile Include="SampleTourData.cpp" />
+    <ClCompile Include="SampleTournament.cpp" />
+    <ClCompile Include="SampParTournament.cpp" />
+    <ClCompile Include="Tournament.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="ComParams.h" />
+    <ClInclude Include="Definitions.h" />
+    <ClInclude Include="RulesManager.h" />
+    <ClInclude Include="BallMovement.h" />
+    <ClInclude Include="BallPiece.h" />
+    <ClInclude Include="Board.h" />
+    <ClInclude Include="Game.h" />
+    <ClInclude Include="Movement.h" />
+    <ClInclude Include="MovementIterator.h" />
+    <ClInclude Include="Movements.h" />
+    <ClInclude Include="Piece.h" />
+    <ClInclude Include="Pieces.h" />
+    <ClInclude Include="Play.h" />
+    <ClInclude Include="Player.h" />
+    <ClInclude Include="PlayerMovement.h" />
+    <ClInclude Include="PlayerPiece.h" />
+    <ClInclude Include="Square.h" />
+    <ClInclude Include="State.h" />
+    <ClInclude Include="AbstractSearcher.h" />
+    <ClInclude Include="ActionSearcher.h" />
+    <ClInclude Include="Agent.h" />
+    <ClInclude Include="DeltaEvaluator.h" />
+    <ClInclude Include="DeltaEvaluatorLevel1.h" />
+    <ClInclude Include="DeltaEvaluatorLevel2.h" />
+    <ClInclude Include="DeltaEvaluatorLevel3.h" />
+    <ClInclude Include="DeltaEvaluatorLevel4.h" />
+    <ClInclude Include="Evaluator.h" />
+    <ClInclude Include="EvaluatorLevel1.h" />
+    <ClInclude Include="EvaluatorLevel2.h" />
+    <ClInclude Include="EvaluatorLevel3.h" />
+    <ClInclude Include="EvaluatorLevel4.h" />
+    <ClInclude Include="Evaluators.h" />
+    <ClInclude Include="NegamaxSearcher.h" />
+    <ClInclude Include="SuccessorGenerator.h" />
+    <ClInclude Include="HallOfFame.h" />
+    <ClInclude Include="History.h" />
+    <ClInclude Include="SampleTourGA.h" />
+    <ClInclude Include="EliminatoryTournament.h" />
+    <ClInclude Include="Encoder.h" />
+    <ClInclude Include="FullCompTournament.h" />
+    <ClInclude Include="OneVsOneTournament.h" />
+    <ClInclude Include="SamplePopData.h" />
+    <ClInclude Include="SampleTourData.h" />
+    <ClInclude Include="SampleTournament.h" />
+    <ClInclude Include="SampParTournament.h" />
+    <ClInclude Include="Tournament.h" />
+    <ClInclude Include="Tournaments.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
