@@ -74,8 +74,9 @@ public:
 	// Obtiene el tamaño del modelo
 	UFUNCTION(Category = Modelo, BlueprintCallable)
 	FVector GetSize();
-	bool CeroInfluencia();
-	bool TieneInfluencia(int32 Equipo);
+	bool InfluenciaNeutra();
+	bool InfluenciaCero();
+	bool TieneInfluencia(int32 Equipo, bool Estricto);
 
 	/// Handlers
 	// Click

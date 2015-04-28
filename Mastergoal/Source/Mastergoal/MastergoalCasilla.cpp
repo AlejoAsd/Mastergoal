@@ -62,11 +62,21 @@ FVector AMastergoalCasilla::GetSize()
 }
 
 /*
- * Indica si ningún equipo influye en la casilla.
+ * Indica si la influencia de los equipos se neutraliza en la casilla.
+ * Una casilla sin influencia también es considerada neutral.
+ * En caso de querer estar seguro que no hay ningún tipo de influencia en la casilla usar InfluenciaCero().
  */
-bool AMastergoalCasilla::CeroInfluencia()
+bool AMastergoalCasilla::InfluenciaNeutra()
 {
-	return InfluenciaBlanco == 0 && InfluenciaRojo == 0;
+	return (InfluenciaRojo - InfluenciaBlanco) == 0;
+}
+
+/*
+ * Indica si la casilla no está bajo influencia alguna
+ */
+bool AMastergoalCasilla::InfluenciaCero()
+{
+	return InfluenciaRojo == 0 && InfluenciaBlanco == 0;
 }
 
 /*
@@ -76,9 +86,16 @@ bool AMastergoalCasilla::CeroInfluencia()
  * Retorna: 
  * true si hay un empate o mayoría de influencia del equipo
  */
-bool AMastergoalCasilla::TieneInfluencia(int32 Equipo)
+bool AMastergoalCasilla::TieneInfluencia(int32 Equipo, bool Estricto)
 {
-	return ((InfluenciaRojo - InfluenciaBlanco) * Equipo) >= 0;
+	if (Estricto)
+	{
+		return ((InfluenciaRojo - InfluenciaBlanco) * Equipo) > 0;
+	}
+	else
+	{
+		return ((InfluenciaRojo - InfluenciaBlanco) * Equipo) >= 0;
+	}
 }
 
 /*

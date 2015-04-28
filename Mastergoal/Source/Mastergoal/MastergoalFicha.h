@@ -40,7 +40,11 @@ public:
 	UPROPERTY(Category = Ficha, VisibleDefaultsOnly, BlueprintReadOnly)
 	int32 Fila;
 	UPROPERTY(Category = Ficha, VisibleDefaultsOnly, BlueprintReadOnly)
+	int32 FilaInicial;
+	UPROPERTY(Category = Ficha, VisibleDefaultsOnly, BlueprintReadOnly)
 	int32 Columna;
+	UPROPERTY(Category = Ficha, VisibleDefaultsOnly, BlueprintReadOnly)
+	int32 ColumnaInicial;
 
 	// Tablero al que pertenece la casilla
 	UPROPERTY(Category = Tablero, VisibleDefaultsOnly, BlueprintReadOnly)
@@ -80,7 +84,7 @@ public:
 
 	// Mueve la ficha. No chequea la lógica de juego, simplemente se realiza la transición gráfica 
 	// y se sobreescribe el valor en la casilla final
-	void Mover(int32 Fila, int32 Columna, FVector Destino);
+	void Mover(int32 Fila, int32 Columna);
 
 	/// Handlers
 	// Click

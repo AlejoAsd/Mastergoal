@@ -55,6 +55,7 @@ public:
 		JUEGO,
 		PASE,
 		MOVIMIENTO,
+		REINICIANDO,
 		FIN
 	} EstadoJuego;
 
@@ -167,9 +168,17 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	int32 Turno;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
+	int32 CantidadTurnos;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	int32 Pases;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
+	int32 GolesBlanco;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
+	int32 GolesRojo;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	int32 Estado;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
+	int32 FichasEnMovimiento;
 
 	// Métodos
 	// Chequea la lógica para saber si se debe pasar el turno
@@ -184,6 +193,12 @@ public:
 	bool ValidarMovimiento(AMastergoalFicha* Ficha, int32 Fila, int32 Columna);
 	// Selecciona una ficha para realizar un movimiento
 	bool Seleccionar(AMastergoalFicha* Ficha);
+	// Verifica que sea obligatorio el movimiento de una ficha hacia la pelota
+	bool AMastergoalTablero::NecesidadRoturaInfluencia();
+	// Reinicia los estados de la partida, manteniendo los goles
+	void Reiniciar(int32 Turno);
+	// Termina el juego
+	void TerminarJuego(bool Invalido);
 	// Obtiene el jugador que realizó el pase
 	class AMastergoalFicha* ObtenerFichaPase(int Fila, int Columna);
 

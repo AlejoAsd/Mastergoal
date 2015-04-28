@@ -1,13 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Engine", "Engine", "{A5152F23-709F-40E5-8926-A69E770B5978}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Games", "Games", "{8B424EE6-8F24-48E5-8A0B-063997D87FEC}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Mastergoal", "Intermediate\ProjectFiles\Mastergoal.vcxproj", "{068AA4C9-A06A-4F42-8ACA-C33045AAB66B}"
-	ProjectSection(ProjectDependencies) = postProject
-	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UE4", "Intermediate\ProjectFiles\UE4.vcxproj", "{820E24A4-657A-4BA4-99D9-1A4E023E68E3}"
 EndProject
@@ -43,6 +43,16 @@ Global
 		{068AA4C9-A06A-4F42-8ACA-C33045AAB66B}.Shipping|Android.Build.0 = Android_Shipping_Game|Win32
 		{068AA4C9-A06A-4F42-8ACA-C33045AAB66B}.Shipping|Windows.ActiveCfg = Shipping_Game|Win32
 		{068AA4C9-A06A-4F42-8ACA-C33045AAB66B}.Shipping|Windows.Build.0 = Shipping_Game|Win32
+		{820E24A4-657A-4BA4-99D9-1A4E023E68E3}.DebugGame Editor|Android.ActiveCfg = BuiltWithUnrealBuildTool|Win32
+		{820E24A4-657A-4BA4-99D9-1A4E023E68E3}.DebugGame Editor|Windows.ActiveCfg = BuiltWithUnrealBuildTool|Win32
+		{820E24A4-657A-4BA4-99D9-1A4E023E68E3}.DebugGame|Android.ActiveCfg = BuiltWithUnrealBuildTool|Win32
+		{820E24A4-657A-4BA4-99D9-1A4E023E68E3}.DebugGame|Windows.ActiveCfg = BuiltWithUnrealBuildTool|Win32
+		{820E24A4-657A-4BA4-99D9-1A4E023E68E3}.Development Editor|Android.ActiveCfg = BuiltWithUnrealBuildTool|Win32
+		{820E24A4-657A-4BA4-99D9-1A4E023E68E3}.Development Editor|Windows.ActiveCfg = BuiltWithUnrealBuildTool|Win32
+		{820E24A4-657A-4BA4-99D9-1A4E023E68E3}.Development|Android.ActiveCfg = BuiltWithUnrealBuildTool|Win32
+		{820E24A4-657A-4BA4-99D9-1A4E023E68E3}.Development|Windows.ActiveCfg = BuiltWithUnrealBuildTool|Win32
+		{820E24A4-657A-4BA4-99D9-1A4E023E68E3}.Shipping|Android.ActiveCfg = BuiltWithUnrealBuildTool|Win32
+		{820E24A4-657A-4BA4-99D9-1A4E023E68E3}.Shipping|Windows.ActiveCfg = BuiltWithUnrealBuildTool|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

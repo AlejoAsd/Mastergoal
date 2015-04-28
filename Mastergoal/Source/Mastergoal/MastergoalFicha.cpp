@@ -28,7 +28,9 @@ void AMastergoalFicha::Inicializar(class AMastergoalTablero* Tablero, int32 Equi
 	this->Equipo = Equipo;
 	this->Tipo = Tipo;
 	this->Fila = Fila;
+	this->FilaInicial = Fila;
 	this->Columna = Columna;
+	this->ColumnaInicial = Columna;
 
 	if (Tipo == AMastergoalTablero::BLANCO_ARQUERO_EN_AREA || 
 		Tipo == AMastergoalTablero::ROJO_ARQUERO_EN_AREA)
@@ -68,12 +70,18 @@ void AMastergoalFicha::Inicializar(class AMastergoalTablero* Tablero, int32 Equi
 	}
 }
 
-void AMastergoalFicha::Mover(int32 Fila, int32 Columna, FVector Destino)
+void AMastergoalFicha::Mover(int32 Fila, int32 Columna)
 {
+	/// Obtener el punto objetivo
+	MovimientoDestino = FVector((Fila - this->Fila) * Tablero->AltoCasillas,
+		(Columna - this->Columna) * Tablero->AnchoCasillas,
+		0);
+	MovimientoDestino += GetActorLocation();
+
 	Movimiento = true;
-	MovimientoDestino = Destino;
 
 	Tablero->Estado = AMastergoalTablero::MOVIMIENTO;
+	Tablero->FichasEnMovimiento++;
 	
 	this->Fila = Fila;
 	this->Columna = Columna;
@@ -95,11 +103,13 @@ void AMastergoalFicha::Tick(float DeltaTime)
 		if (FVector::Dist(Posicion, MovimientoDestino) <= 1)
 		{
 			UE_LOG(LogTemp, Warning, TEXT("Turn"));
-			Tablero->Estado = AMastergoalTablero::JUEGO;
+
 			Movimiento = false;
 			MovimientoSaltar = false;
 
 			SetActorLocation(MovimientoDestino);
+
+			Tablero->FichasEnMovimiento--;
 
 			Tablero->PasarTurno();
 		}	
@@ -147,7 +157,10 @@ void AMastergoalFicha::ActualizarComponenteMesh()
 /// Handlers
 void AMastergoalFicha::OnClick(UPrimitiveComponent* ClickedComp)
 {
-	Tablero->Seleccionar(this);
+	if (Tablero->Estado == AMastergoalTablero::JUEGO)
+	{
+		Tablero->Seleccionar(this);
+	}
 }
 
 // Handler del evento touch para una casilla
