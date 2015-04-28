@@ -30,6 +30,10 @@ public:
 	/// Propiedades
 	UPROPERTY(Category = Juego, VisibleDefaultsOnly, BlueprintReadOnly)
 	int32 Equipo;
+	UPROPERTY(Category = Juego, VisibleDefaultsOnly, BlueprintReadOnly)
+	bool Arquero;
+	UPROPERTY(Category = Juego, VisibleDefaultsOnly, BlueprintReadOnly)
+	bool ArqueroEnArea;
 
 	UPROPERTY(Category = Ficha, VisibleDefaultsOnly, BlueprintReadOnly)
 	int32 Tipo;
@@ -69,6 +73,10 @@ public:
 	// Obtiene el tamaño del modelo
 	UFUNCTION(Category = Modelo, BlueprintCallable)
 	FVector GetSize();
+
+	// Chequea si es arquero o no, y si está en el área
+	bool EsArquero(bool EstaEnArea);
+	bool EsArqueroFueraDeArea();
 
 	// Mueve la ficha. No chequea la lógica de juego, simplemente se realiza la transición gráfica 
 	// y se sobreescribe el valor en la casilla final

@@ -44,6 +44,8 @@ AMastergoalTablero::AMastergoalTablero(const FObjectInitializer& ObjectInitializ
 	Alto = 13;
 	Ancho = 11;
 	AnchoArco = 5;
+
+	Turno = BLANCO;
 }
 
 // Función llamada cuando inicia el juego o se crea la instancia. 
@@ -63,14 +65,14 @@ void AMastergoalTablero::BeginPlay()
 	{
 		for (int32 j = 0; j < Ancho; j++)
 		{
-			Casillas[i][j] = NULL;
+			Casillas[i][j] = nullptr;
 			EstadoTablero[i][j] = VACIO;
 		}
 	}
 
 	// Definir el tamaño de las casillas
 	AMastergoalCasilla* Casilla = GetWorld()->SpawnActor<AMastergoalCasilla>(FVector(0, 0, 0), FRotator(0, 0, 0));
-	if (Casilla == NULL) return;
+	if (Casilla == nullptr) return;
 
 	Casilla->Inicializar(this, 0, false, false, false, false, 0, 0, CasillaModelo, CasillaMaterial);
 
@@ -109,7 +111,7 @@ void AMastergoalTablero::BeginPlay()
 	}
 
 	// Crear las líneas de tablero
-	if (LineasTableroMesh != NULL && LineasTableroMaterial != NULL)
+	if (LineasTableroMesh != nullptr && LineasTableroMaterial != nullptr)
 	{
 		LineasTablero->SetStaticMesh(LineasTableroMesh);
 		LineasTablero->SetMaterial(0, LineasTableroMaterial);
@@ -123,7 +125,7 @@ void AMastergoalTablero::BeginPlay()
 	}
 
 	// Crear selección
-	if (SeleccionMesh != NULL && SeleccionMaterial != NULL)
+	if (SeleccionMesh != nullptr && SeleccionMaterial != nullptr)
 	{
 		Seleccion->SetStaticMesh(SeleccionMesh);
 		Seleccion->SetMaterial(0, SeleccionMaterial);
@@ -151,12 +153,15 @@ class AMastergoalCasilla* AMastergoalTablero::CrearCasilla(int32 Fila, int32 Col
 	// En las filas de arcos, se deben saltar las casillas que no correspondan al arco
 	if ((Fila == 0 || Fila == (Alto - 1)) &&
 		(Columna < ArcoOffset || Columna >= ArcoOffset + AnchoArco))
-		return NULL;
+	{
+		Casillas[Fila][Columna] = nullptr;
+		return nullptr;
+	}
 
 	// Crear el bloque
 	AMastergoalCasilla* Casilla = GetWorld()->SpawnActor<AMastergoalCasilla>(FVector(0, 0, 0), FRotator(0, 0, 0));
 
-	if (Casilla != NULL)
+	if (Casilla != nullptr)
 	{
 		// Definir el material a usar
 		class UMaterialInstance* Material;
@@ -211,7 +216,7 @@ class AMastergoalFicha* AMastergoalTablero::CrearFicha(int32 Tipo, int32 Fila, i
 	// Crear la ficha
 	AMastergoalFicha* Ficha = GetWorld()->SpawnActor<AMastergoalFicha>(FVector(0, 0, 0), FRotator(0, 0, 0));
 
-	if (Ficha != NULL)
+	if (Ficha != nullptr)
 	{
 		// Definir el modelo y material a usar
 		int32 Equipo;
@@ -249,7 +254,8 @@ class AMastergoalFicha* AMastergoalTablero::CrearFicha(int32 Tipo, int32 Fila, i
 		}
 		else
 		{
-			return NULL;
+			UE_LOG(LogTemp, Warning, TEXT("Se intentó crear una ficha de tipo desconocido: %d."), Tipo)
+			return nullptr;
 		}
 
 		// Inicializar la casilla
@@ -278,12 +284,12 @@ AMastergoalTablero::TipoFicha** AMastergoalTablero::FichaObtenerLista()
 	// Crear la estructura
 	TipoFicha** Fichas = (TipoFicha**)FMemory::Malloc(sizeof(TipoFicha*) * Alto);
 
-	if (Fichas == NULL) return NULL;
+	if (Fichas == nullptr) return nullptr;
 
 	for (int32 i = 0; i < Alto; i++)
 	{
 		Fichas[i] = (TipoFicha*)FMemory::Malloc(sizeof(TipoFicha)* Ancho);
-		if (Fichas[i] == NULL) return NULL;
+		if (Fichas[i] == nullptr) return nullptr;
 
 		for (int32 j = 0; j < Ancho; j++)
 		{
@@ -329,11 +335,22 @@ AMastergoalTablero::TipoFicha** AMastergoalTablero::FichaObtenerLista()
 }
 
 /*
- * Pasa el turno 
+ * Decide el próximo turno. Toma en cuenta la existencia de un pase.
  */
 void AMastergoalTablero::PasarTurno()
 {
-	Turno = !Turno;
+	
+}
+
+/*
+ * Cambia el turno 
+ */
+void AMastergoalTablero::CambiarTurno()
+{
+	if (Turno == BLANCO)
+		Turno = ROJO;
+	else
+		Turno = BLANCO;
 }
 
 void AMastergoalTablero::ModificarInfluencia(AMastergoalFicha* Ficha, bool Inverso)
@@ -349,9 +366,12 @@ void AMastergoalTablero::ModificarInfluencia(AMastergoalFicha* Ficha, bool Inver
 	{
 		for (int j = (Ficha->Columna - 1); j <= (Ficha->Columna + 1); j++)
 		{
+			if (!Ficha->EsArquero(false))
+				continue;
 			if ((i != Ficha->Fila || j != Ficha->Columna) &&
 				(i >= 0 || i < Alto) &&
-				(j >= 0 || j < Ancho))
+				(j >= 0 || j < Ancho) &&
+				Casillas[i][j] != NULL)
 			{
 				Casillas[i][j]->Influencia += Cantidad * (Inverso ? -1 : 1);
 			}
@@ -382,53 +402,73 @@ bool AMastergoalTablero::MoverFicha(AMastergoalFicha* Ficha, int32 Fila, int32 C
 		/// Limpiar el estado anterior
 		ModificarInfluencia(Ficha, true);
 		EstadoTablero[Ficha->Fila][Ficha->Columna] = AMastergoalTablero::VACIO;
+		Casillas[Ficha->Fila][Ficha->Columna]->Arquero = false;
 		// Arquero
-		if (Ficha->Tipo == AMastergoalTablero::ROJO_ARQUERO_EN_AREA || 
-			Ficha->Tipo == AMastergoalTablero::BLANCO_ARQUERO_EN_AREA)
+		if (Ficha->EsArquero(false))
 		{
 			if (Ficha->Columna > 0)
 			{
 				EstadoTablero[Ficha->Fila][Ficha->Columna - 1] = AMastergoalTablero::VACIO;
+				Casillas[Ficha->Fila][Ficha->Columna]->Arquero = false;
 			}
 			if (Ficha->Columna < Ancho)
 			{
 				EstadoTablero[Ficha->Fila][Ficha->Columna + 1] = AMastergoalTablero::VACIO;
+				Casillas[Ficha->Fila][Ficha->Columna]->Arquero = false;
 			}
 		}
 
 		/// Actualizar Tipos
 		// Arquero
 		// Saliendo del área
-		if ((Ficha->Tipo == AMastergoalTablero::ROJO_ARQUERO_EN_AREA ||
-			Ficha->Tipo == AMastergoalTablero::BLANCO_ARQUERO_EN_AREA) &&
+		if (Ficha->EsArquero(true) &&
 			(!Casillas[Fila][Columna]->Area ||
 			 Casillas[Fila][Columna]->Equipo != Ficha->Equipo))
 		{
 			Ficha->Tipo++;
+			Ficha->ArqueroEnArea = false;
 		}
 		// Entrando al área
-		if ((Ficha->Tipo == AMastergoalTablero::ROJO_ARQUERO_FUERA_AREA ||
-			Ficha->Tipo == AMastergoalTablero::BLANCO_ARQUERO_FUERA_AREA) &&
+		if (Ficha->EsArqueroFueraDeArea() &&
 			Casillas[Fila][Columna]->Area &&
 			Casillas[Fila][Columna]->Equipo == Ficha->Equipo)
 		{
 			Ficha->Tipo--;
+			Ficha->ArqueroEnArea = true;
 		}
 
 		/// Escribir el estado actual
 		EstadoTablero[Fila][Columna] = Ficha->Tipo;
-		if (Ficha->Tipo == AMastergoalTablero::ROJO_ARQUERO_EN_AREA ||
-			Ficha->Tipo == AMastergoalTablero::BLANCO_ARQUERO_EN_AREA)
+		if (Ficha->EsArquero(false))
 		{
 			// Brazo izquierdo
 			if (Columna > 0)
 			{
-				EstadoTablero[Fila][Columna - 1] = Ficha->Tipo;
+				if (Ficha->EsArquero(true) && Casillas[Fila][Columna - 1]->Area)
+				{
+					EstadoTablero[Fila][Columna - 1] = Ficha->Tipo;
+					Casillas[Fila][Columna - 1]->Arquero = true;
+				}
+				else
+				{
+					EstadoTablero[Fila][Columna - 1] = Ficha->Tipo + (Ficha->EsArquero(true) ? 1 : 0);
+					Casillas[Fila][Columna - 1]->Arquero = false;
+				}
+
 			}
 			// Brazo derecho
 			if (Columna < (Ancho - 1))
 			{
-				EstadoTablero[Fila][Columna + 1] = Ficha->Tipo;
+				if (Ficha->EsArquero(true) && Casillas[Fila][Columna + 1]->Area)
+				{
+					EstadoTablero[Fila][Columna + 1] = Ficha->Tipo;
+					Casillas[Fila][Columna + 1]->Arquero = true;
+				}
+				else
+				{
+					EstadoTablero[Fila][Columna + 1] = Ficha->Tipo + (Ficha->EsArquero(true) ? 1 : 0);
+					Casillas[Fila][Columna + 1]->Arquero = false;
+				}
 			}
 		}
 
@@ -459,17 +499,28 @@ bool AMastergoalTablero::ValidarMovimiento(AMastergoalFicha* Ficha, int32 Fila, 
 	const int32 ArcoOffset = (Ancho - AnchoArco) / 2;
 
 	/// Validar destino
-	// Asegurar que esté dentro del tablero
-	if (Fila < 0 || Fila > (Alto - 1) ||
-		Ficha < 0 || Columna > Ancho)
+	// Asegurar que esté dentro del tablero. Los tableros cuentan como fuera del arco excepto en el caso de la pelota.
+	if (Fila < 0 || Fila >= Alto ||
+		Columna < 0 || Columna >= Ancho)
 	{
+		UE_LOG(LogTemp, Warning, TEXT("Invalid destination"))
 		return false;
 	}
 
 	// Asegurar que exista una casilla para la posición indicada
-	if ((Fila == 0 || Fila == (Alto - 1)) &&
-		(Columna < ArcoOffset || Columna >= ArcoOffset + AnchoArco))
+	if (Ficha->Tipo != PELOTA && 
+		(Fila == 0 || Fila == (Alto - 1)) &&
+		(Columna >= ArcoOffset || Columna <= ArcoOffset + AnchoArco))
 	{
+		UE_LOG(LogTemp, Warning, TEXT("Players cannot enter the goal"))
+		return false;
+	}
+
+	// Asegurar que no sea un corner del equipo
+	if (Ficha->Equipo == Casillas[Fila][Columna]->Equipo &&
+		Casillas[Fila][Columna]->Corner)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Cannot move to own corner"))
 		return false;
 	}
 
@@ -501,11 +552,8 @@ bool AMastergoalTablero::ValidarMovimiento(AMastergoalFicha* Ficha, int32 Fila, 
 	{
 		bool Valido = false;
 
-		// Excepción para perimitir a un arquero moverse a los costados
-		if ((Ficha->Tipo == ROJO_ARQUERO_EN_AREA ||
-			Ficha->Tipo == ROJO_ARQUERO_FUERA_AREA ||
-			Ficha->Tipo == BLANCO_ARQUERO_EN_AREA ||
-			Ficha->Tipo == BLANCO_ARQUERO_FUERA_AREA) &&
+		// Excepción para permitir a un arquero moverse a los costados
+		if (Ficha->EsArquero(false) &&
 			DeltaFila == 0 && DeltaColumna == 1 &&
 			(EstadoTablero[Fila][Columna + DeltaColumna] == Ficha->Tipo ||
 			EstadoTablero[Fila][Columna + DeltaColumna] == (Ficha->Tipo + 1) ||
@@ -521,17 +569,22 @@ bool AMastergoalTablero::ValidarMovimiento(AMastergoalFicha* Ficha, int32 Fila, 
 			return false;
 		}
 	}
-
-	// No permitir a un arquero mover a una casilla donde hayan fichas adyacentes
-	if ((Ficha->Tipo == ROJO_ARQUERO_EN_AREA ||
-		Ficha->Tipo == ROJO_ARQUERO_FUERA_AREA ||
-		Ficha->Tipo == BLANCO_ARQUERO_EN_AREA ||
-		Ficha->Tipo == BLANCO_ARQUERO_FUERA_AREA) &&
-		Columna > 0 && EstadoTablero[Fila][Columna - 1] != VACIO &&
-		Columna < (Ancho - 1) && EstadoTablero[Fila][Columna + 1] != VACIO)
+	else
 	{
-		UE_LOG(LogTemp, Warning, TEXT("ET:%d Existing piece at an adjacent cell"), EstadoTablero[Fila][Columna])
-		return false;
+		// No permitir a un arquero mover a una casilla donde hayan fichas adyacentes
+		if (Ficha->EsArquero(false) &&
+			((Columna > 0 &&
+			EstadoTablero[Fila][Columna - 1] != VACIO &&
+			EstadoTablero[Fila][Columna - 1] != Ficha->Tipo &&
+			EstadoTablero[Fila][Columna - 1] != (Ficha->Tipo + 1)) ||
+			(Columna < (Ancho - 1) &&
+			EstadoTablero[Fila][Columna + 1] != VACIO &&
+			EstadoTablero[Fila][Columna + 1] != Ficha->Tipo &&
+			EstadoTablero[Fila][Columna + 1] != (Ficha->Tipo + 1))))
+		{
+			UE_LOG(LogTemp, Warning, TEXT("ET:%d Existing piece at an adjacent cell"), EstadoTablero[Fila][Columna])
+			return false;
+		}
 	}
 
 
@@ -593,18 +646,18 @@ bool AMastergoalTablero::ValidarMovimiento(AMastergoalFicha* Ficha, int32 Fila, 
  */
 bool AMastergoalTablero::Seleccionar(AMastergoalFicha* Ficha)
 {
-	if (Ficha == NULL || Estado != JUEGO)
+	if (Ficha == nullptr || Estado != JUEGO)
 	{
 		return false;
 	}
 	
 	// Seleccionar
-	if (FichaSeleccionada == NULL || FichaSeleccionada != Ficha)
+	if (FichaSeleccionada == nullptr || FichaSeleccionada != Ficha)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Selecting piece at %d,%d Type:%d T:%d"), Ficha->Fila, Ficha->Columna, Ficha->Tipo, Ficha->Equipo);
 		FichaSeleccionada = Ficha;
 
-		if (Seleccion != NULL)
+		if (Seleccion != nullptr)
 		{
 			FVector Posicion = Ficha->GetActorLocation();
 			FVector Size = Ficha->GetSize() + ProfundidadCasillas;
@@ -621,7 +674,7 @@ bool AMastergoalTablero::Seleccionar(AMastergoalFicha* Ficha)
 	else if (FichaSeleccionada == Ficha)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Deselecting piece at %d,%d"), Ficha->Fila, Ficha->Columna);
-		FichaSeleccionada = NULL;
+		FichaSeleccionada = nullptr;
 
 		Seleccion->SetVisibility(false);
 
@@ -636,7 +689,7 @@ bool AMastergoalTablero::Seleccionar(AMastergoalFicha* Ficha)
  */
 void AMastergoalTablero::FichaDestruirLista(TipoFicha**& Lista)
 {
-	if (Lista == NULL) return;
+	if (Lista == nullptr) return;
 
 	for (int32 i = 0; i < Alto; i++)
 	{

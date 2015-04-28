@@ -44,6 +44,8 @@ public:
 	bool Arco;
 	UPROPERTY(Category = Juego, VisibleDefaultsOnly, BlueprintReadOnly)
 	bool Especial;
+	UPROPERTY(Category = Juego, VisibleDefaultsOnly, BlueprintReadOnly)
+	bool Arquero;
 
 	UPROPERTY(Category = Tablero, VisibleDefaultsOnly, BlueprintReadOnly)
 	int32 Fila;

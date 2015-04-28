@@ -15,6 +15,7 @@ AMastergoalCasilla::AMastergoalCasilla(const FObjectInitializer& ObjectInitializ
 
 	// Valores por defecto
 	Influencia = 0;
+	Arquero = 0;
 
 	Fila = -1;
 	Columna = -1;
@@ -68,7 +69,7 @@ void AMastergoalCasilla::ActualizarComponenteMesh()
 void AMastergoalCasilla::OnClick(UPrimitiveComponent* ClickedComp)
 {
 	UE_LOG(LogTemp, Warning, TEXT("==="));
-	UE_LOG(LogTemp, Warning, TEXT("Clicked cell %d,%d {STATE: %d} I:%d A:%d G:%d C:%d T:%d S:%d"), Fila, Columna, Tablero->EstadoTablero[Fila][Columna], Influencia, Area, Arco, Corner, Equipo, Especial);
+	UE_LOG(LogTemp, Warning, TEXT("Clicked cell %d,%d {STATE: %d} Inf:%d Area:%d Goalie:%d Goal:%d Corner:%d Team:%d Special:%d"), Fila, Columna, Tablero->EstadoTablero[Fila][Columna], Influencia, Area, Arquero, Arco, Corner, Equipo, Especial);
 	if (Tablero->FichaSeleccionada != NULL)
 	{
 		bool result = Tablero->MoverFicha(Tablero->FichaSeleccionada, Fila, Columna);

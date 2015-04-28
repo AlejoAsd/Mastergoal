@@ -167,8 +167,10 @@ public:
 	int32 Estado;
 
 	// Métodos
-	// Pasa el turno
+	// Chequea la lógica para saber si se debe pasar el turno
 	void PasarTurno();
+	// Cambia el turno
+	void CambiarTurno();
 	// Modifica la influencia de las casillas adyacentes a la ficha.
 	void ModificarInfluencia(AMastergoalFicha* Ficha, bool Inverso);
 	// Intenta mover una ficha del tablero. Devuelve true en caso de haberse realizado el movimiento.

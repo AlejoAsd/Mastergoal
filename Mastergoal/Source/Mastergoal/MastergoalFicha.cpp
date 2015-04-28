@@ -30,6 +30,19 @@ void AMastergoalFicha::Inicializar(class AMastergoalTablero* Tablero, int32 Equi
 	this->Fila = Fila;
 	this->Columna = Columna;
 
+	if (Tipo == AMastergoalTablero::BLANCO_ARQUERO_EN_AREA || 
+		Tipo == AMastergoalTablero::ROJO_ARQUERO_EN_AREA)
+	{
+		Arquero = true;
+		ArqueroEnArea = true;
+	}
+	else if (Tipo == AMastergoalTablero::BLANCO_ARQUERO_FUERA_AREA ||
+			 Tipo == AMastergoalTablero::ROJO_ARQUERO_FUERA_AREA)
+	{
+		Arquero = true;
+		ArqueroEnArea = false;
+	}
+
 	this->Mesh = Mesh;
 	this->Material = Material;
 
@@ -42,10 +55,7 @@ void AMastergoalFicha::Inicializar(class AMastergoalTablero* Tablero, int32 Equi
 
 	// Registrar posición en el tablero
 	this->Tablero->EstadoTablero[Fila][Columna] = Tipo;
-	if (Tipo == AMastergoalTablero::ROJO_ARQUERO_EN_AREA ||
-		Tipo == AMastergoalTablero::ROJO_ARQUERO_FUERA_AREA ||
-		Tipo == AMastergoalTablero::BLANCO_ARQUERO_EN_AREA ||
-		Tipo == AMastergoalTablero::BLANCO_ARQUERO_FUERA_AREA)
+	if (EsArquero(false))
 	{
 		if (Columna > 0)
 		{
@@ -104,6 +114,25 @@ FVector AMastergoalFicha::GetSize()
 	mesh->GetLocalBounds(min, max);
 
 	return max - min;
+}
+
+/*
+ * Chequea si la ficha es un arquero. En caso de chequear por el área, también chequea que esté en el área.
+ */
+bool AMastergoalFicha::EsArquero(bool ChequearArea)
+{
+	if (!Arquero)
+		return false;
+
+	if (ChequearArea && !ArqueroEnArea)
+		return false;
+
+	return true;
+}
+
+bool AMastergoalFicha::EsArqueroFueraDeArea()
+{
+	return Arquero && !ArqueroEnArea;
 }
 
 void AMastergoalFicha::ActualizarComponenteMesh()
