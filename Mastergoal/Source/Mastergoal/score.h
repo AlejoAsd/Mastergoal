@@ -3,10 +3,10 @@
 #pragma once
 
 #include "GameFramework/Actor.h"
-#include "score.generated.h"
+#include "Score.generated.h"
 
 UCLASS()
-class MASTERGOAL_API Ascore : public AActor
+class MASTERGOAL_API AScore : public AActor
 {
 	GENERATED_BODY()
 
@@ -16,22 +16,23 @@ class MASTERGOAL_API Ascore : public AActor
 
 	/** Text component for the score */
 	UPROPERTY(Category = Grid, VisibleDefaultsOnly, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
-	class UTextRenderComponent* ScoreText;
+	class UTextRenderComponent* ScoreTextBlanco;
 	UPROPERTY(Category = Grid, VisibleDefaultsOnly, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
-	class UTextRenderComponent* ScoreText2;
+	class UTextRenderComponent* ScoreTextRojo;
 
 public:
 	// Sets default values for this actor's properties
-	//Ascore();
-	Ascore(const FObjectInitializer& ObjectInitializer);
-	int32 Score, Score2;
-	void AddScore();
-	void AddScore2();
+	AScore(const FObjectInitializer& ObjectInitializer);
+	int32 ScoreBlanco, ScoreRojo;
+	void Reset();
+	void AddScoreBlanco();
+	void AddScoreRojo();
 
 public:
 	/** Returns DummyRoot subobject **/
 	FORCEINLINE class USceneComponent* GetDummyRoot() const { return DummyRoot; }
 	/** Returns ScoreText subobject **/
-	FORCEINLINE class UTextRenderComponent* GetScoreText() const { return ScoreText; return ScoreText2; }
+	FORCEINLINE class UTextRenderComponent* GetScoreText() const { return ScoreTextBlanco; return ScoreTextRojo; }
 
+	virtual void BeginPlay() override;
 };

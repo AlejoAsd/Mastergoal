@@ -24,8 +24,14 @@ public:
 	/** Returns ScoreText subobject **/
 	FORCEINLINE class UTextRenderComponent* GetScoreText() const { return CountdownText; }
 
+	// Referencia al tablero de juego
+	class AMastergoalTablero* Tablero;
+
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	void Inicializar(class AMastergoalTablero* Tablero);
+	void Start(int Tiempo);
 
 	// Called every frame
 	virtual void Tick(float DeltaSeconds) override;
@@ -34,7 +40,7 @@ public:
 	UPROPERTY(EditAnywhere)
 		int32 CountdownTime;
 
-	int32 bandera;
+	int32 Bandera;
 
 
 	void UpdateTimerDisplay();

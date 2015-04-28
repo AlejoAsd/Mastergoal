@@ -78,6 +78,16 @@ public:
 	FORCEINLINE class UStaticMeshComponent* GetLineasTablero() const { return LineasTablero; }
 	FORCEINLINE class UStaticMeshComponent* GetSeleccion() const { return Seleccion; }
 
+	/// UI
+	UPROPERTY(Category = UI, EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	class ACountdown* Temporizador;
+	UPROPERTY(Category = UI, EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	class AMensaje* Mensajes;
+	UPROPERTY(Category = UI, EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	class AMensaje* IndicadorTurno;
+	UPROPERTY(Category = UI, EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	class AScore* Contador;
+
 	/// Referencias del tablero
 	// Casillas con las fichas del tablero
 	class AMastergoalCasilla *Casillas[15][11];
@@ -86,7 +96,7 @@ public:
 	int32 EstadoTablero[15][11];
 	class AMastergoalFicha* Pelota;
 	class AMastergoalFicha* FichaSeleccionada;
-	
+
 	/// Tablero
 	//Propiedades
 	FVector Origen;
@@ -165,19 +175,23 @@ public:
 	
 	/// Juego
 	// Propiedades
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Juego, meta = (AllowPrivateAccess = "true"))
 	int32 Turno;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Juego, meta = (AllowPrivateAccess = "true"))
+	int32 TiempoTurno;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Juego, meta = (AllowPrivateAccess = "true"))
+	bool EspecialTurno;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Juego, meta = (AllowPrivateAccess = "true"))
 	int32 CantidadTurnos;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Juego, meta = (AllowPrivateAccess = "true"))
 	int32 Pases;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Juego, meta = (AllowPrivateAccess = "true"))
 	int32 GolesBlanco;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Juego, meta = (AllowPrivateAccess = "true"))
 	int32 GolesRojo;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Juego, meta = (AllowPrivateAccess = "true"))
 	int32 Estado;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Juego, meta = (AllowPrivateAccess = "true"))
 	int32 FichasEnMovimiento;
 
 	// Métodos
@@ -194,7 +208,7 @@ public:
 	// Selecciona una ficha para realizar un movimiento
 	bool Seleccionar(AMastergoalFicha* Ficha);
 	// Verifica que sea obligatorio el movimiento de una ficha hacia la pelota
-	bool AMastergoalTablero::NecesidadRoturaInfluencia();
+	//bool AMastergoalTablero::NecesidadRoturaInfluencia();
 	// Reinicia los estados de la partida, manteniendo los goles
 	void Reiniciar(int32 Turno);
 	// Termina el juego

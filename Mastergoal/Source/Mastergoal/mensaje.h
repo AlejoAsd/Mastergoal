@@ -3,10 +3,10 @@
 #pragma once
 
 #include "GameFramework/Actor.h"
-#include "mensaje.generated.h"
+#include "Mensaje.generated.h"
 
 UCLASS()
-class MASTERGOAL_API Amensaje : public AActor
+class MASTERGOAL_API AMensaje : public AActor
 {
 	GENERATED_BODY()
 
@@ -19,7 +19,7 @@ class MASTERGOAL_API Amensaje : public AActor
 	
 public:	
 
-	Amensaje();
+	AMensaje();
 
 	FORCEINLINE class USceneComponent* GetDummyRoot() const { return DummyRoot; }
 	/** Returns ScoreText subobject **/
@@ -33,16 +33,18 @@ public:
 
 	//How long, in seconds, the countdown will run
 	UPROPERTY(EditAnywhere)
-		int32 CountdownTime;
+	int32 CountdownTime;
+	UPROPERTY(EditAnywhere)
+	bool Forever;
 
-	int32 bandera;
+	int32 Bandera;
 
 	void AdvanceTimer();
 
-	void AddScore(FString ScoreString);
+	void AddScore(FString ScoreString, bool Forever);
 
 	UFUNCTION(BlueprintNativeEvent)
-		void CountdownHasFinished();
+	void CountdownHasFinished();
 	virtual void CountdownHasFinished_Implementation();
 
 	FTimerHandle CountdownTimerHandle;
@@ -50,3 +52,4 @@ public:
 	
 	
 };
+

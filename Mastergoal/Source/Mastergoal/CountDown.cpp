@@ -3,6 +3,7 @@
 #include "Mastergoal.h"
 #include "CountDown.h"
 #include "Components/TextRenderComponent.h"
+#include "MastergoalTablero.h"
 
 
 ACountdown::ACountdown()
@@ -14,36 +15,43 @@ ACountdown::ACountdown()
 	CountdownText = CreateDefaultSubobject<UTextRenderComponent>(TEXT("CountdownNumber"));
 	CountdownText->SetHorizontalAlignment(EHTA_Center);
 	CountdownText->SetWorldSize(150.0f);
+	CountdownText->SetText("");
 	CountdownText->AttachTo(DummyRoot);
 
+	Tablero = nullptr;
 
-	CountdownTime = 15;
-	bandera = 0;
+	CountdownTime = 0;
+	Bandera = 0;
 }
 
 // Called when the game starts or when spawned
 void ACountdown::BeginPlay()
 {
 	Super::BeginPlay();
-
-	UpdateTimerDisplay();
-	GetWorldTimerManager().SetTimer(CountdownTimerHandle, this, &ACountdown::AdvanceTimer, 1.0f, true);
-
-
 }
 
 // Called every frame
 void ACountdown::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+}
 
+void ACountdown::Inicializar(AMastergoalTablero* Tablero)
+{
+	this->Tablero = Tablero;
+}
+
+void ACountdown::Start(int Tiempo)
+{
+	GetWorldTimerManager().ClearTimer(CountdownTimerHandle);
+	CountdownTime = Tiempo;
+	UpdateTimerDisplay();
+	GetWorldTimerManager().SetTimer(CountdownTimerHandle, this, &ACountdown::AdvanceTimer, 1.0f, true);
 }
 
 void ACountdown::UpdateTimerDisplay()
 {
 	CountdownText->SetText(FString::FromInt(FMath::Max(CountdownTime, 0)));
-
-
 }
 
 void ACountdown::AdvanceTimer()
@@ -53,30 +61,17 @@ void ACountdown::AdvanceTimer()
 	if (CountdownTime < 0)
 	{
 		// We're done counting down, so stop running the timer.
-
 		GetWorldTimerManager().ClearTimer(CountdownTimerHandle);
 
 		//Perform any special actions we want to do when the timer ends.
 		CountdownHasFinished();
 	}
 
-
 }
 
 void ACountdown::CountdownHasFinished_Implementation()
 {
 	//Change to a special readout
-
-	CountdownText->SetText(TEXT("OPA TURNO!"));
-
-	if (bandera < 5){
-		bandera++;
-		CountdownTime = 15;
-		UpdateTimerDisplay();
-		GetWorldTimerManager().SetTimer(CountdownTimerHandle, this, &ACountdown::AdvanceTimer, 1.0f, true);
-		//BeginPlay();
-
-
-	}
-
+	UE_LOG(LogTemp, Warning, TEXT("Countdown finished"))
+	Tablero->CambiarTurno();
 }
