@@ -31,11 +31,16 @@ public:
 	// Tablero al que pertenece la casilla
 	UPROPERTY(Category = Tablero, VisibleDefaultsOnly, BlueprintReadOnly)
 	class AMastergoalTablero* Tablero;
+	// Ficha que se encuentra actualmente en la casilla
+	UPROPERTY(Category = Tablero, VisibleDefaultsOnly, BlueprintReadOnly)
+	class AMastergoalFicha* Ficha;
 
 	UPROPERTY(Category = Juego, VisibleDefaultsOnly, BlueprintReadOnly)
 	int32 Equipo;
 	UPROPERTY(Category = Juego, VisibleDefaultsOnly, BlueprintReadOnly)
-	int32 Influencia;
+	int32 InfluenciaBlanco;
+	UPROPERTY(Category = Juego, VisibleDefaultsOnly, BlueprintReadOnly)
+	int32 InfluenciaRojo;
 	UPROPERTY(Category = Juego, VisibleDefaultsOnly, BlueprintReadOnly)
 	bool Area;
 	UPROPERTY(Category = Juego, VisibleDefaultsOnly, BlueprintReadOnly)
@@ -69,6 +74,8 @@ public:
 	// Obtiene el tamaño del modelo
 	UFUNCTION(Category = Modelo, BlueprintCallable)
 	FVector GetSize();
+	bool CeroInfluencia();
+	bool TieneInfluencia(int32 Equipo);
 
 	/// Handlers
 	// Click

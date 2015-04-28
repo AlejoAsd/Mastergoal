@@ -14,11 +14,14 @@ AMastergoalCasilla::AMastergoalCasilla(const FObjectInitializer& ObjectInitializ
 	ComponenteMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
 
 	// Valores por defecto
-	Influencia = 0;
+	InfluenciaRojo = 0;
+	InfluenciaBlanco = 0;
 	Arquero = 0;
 
 	Fila = -1;
 	Columna = -1;
+
+	Ficha = nullptr;
 }
 
 void AMastergoalCasilla::Inicializar(class AMastergoalTablero* Tablero, int32 Equipo, bool Area, bool Corner, bool Arco, 
@@ -58,6 +61,29 @@ FVector AMastergoalCasilla::GetSize()
 	return max - min;
 }
 
+/*
+ * Indica si ningún equipo influye en la casilla.
+ */
+bool AMastergoalCasilla::CeroInfluencia()
+{
+	return InfluenciaBlanco == 0 && InfluenciaRojo == 0;
+}
+
+/*
+ * Indica si un equipo tiene posesión de esta casilla.
+ * Parámetros:
+ * Equipo - Equipo sobre el que se valora la influencia
+ * Retorna: 
+ * true si hay un empate o mayoría de influencia del equipo
+ */
+bool AMastergoalCasilla::TieneInfluencia(int32 Equipo)
+{
+	return ((InfluenciaRojo - InfluenciaBlanco) * Equipo) >= 0;
+}
+
+/*
+ * Actualiza el modelo y material de la casilla en base a los asignados.
+ */
 void AMastergoalCasilla::ActualizarComponenteMesh()
 {
 	// Actualizar el modelo y el material de la casilla
@@ -69,7 +95,7 @@ void AMastergoalCasilla::ActualizarComponenteMesh()
 void AMastergoalCasilla::OnClick(UPrimitiveComponent* ClickedComp)
 {
 	UE_LOG(LogTemp, Warning, TEXT("==="));
-	UE_LOG(LogTemp, Warning, TEXT("Clicked cell %d,%d {STATE: %d} Inf:%d Area:%d Goalie:%d Goal:%d Corner:%d Team:%d Special:%d"), Fila, Columna, Tablero->EstadoTablero[Fila][Columna], Influencia, Area, Arquero, Arco, Corner, Equipo, Especial);
+	UE_LOG(LogTemp, Warning, TEXT("Clicked cell %d,%d {STATE: %d} Piece:%d InfB:%d InfR:%d Area:%d Goalie:%d Goal:%d Corner:%d Team:%d Special:%d"), Fila, Columna, Tablero->EstadoTablero[Fila][Columna], Ficha != nullptr, InfluenciaBlanco, InfluenciaRojo, Area, Arquero, Arco, Corner, Equipo, Especial);
 	if (Tablero->FichaSeleccionada != NULL)
 	{
 		bool result = Tablero->MoverFicha(Tablero->FichaSeleccionada, Fila, Columna);

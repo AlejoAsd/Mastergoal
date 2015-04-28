@@ -83,6 +83,7 @@ public:
 
 	// Estado del tablero
 	int32 EstadoTablero[15][11];
+	class AMastergoalFicha* Pelota;
 	class AMastergoalFicha* FichaSeleccionada;
 	
 	/// Tablero
@@ -92,9 +93,11 @@ public:
 	// Nivel
 	UPROPERTY(Category = Propiedades, EditAnywhere, BlueprintReadWrite,
 	  		  meta = (ClampMin = "1", ClampMax = "3", UIMin = "1", UIMax = "3"))
+	int32 Nivel;
+	UPROPERTY(Category = Propiedades, EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	int32 PasesMaximos;
 
 	// Dimensiones
-	int32 Nivel;
 	UPROPERTY(Category = Dimensiones, EditAnywhere, BlueprintReadWrite)
 	int32 Alto;
 	UPROPERTY(Category = Dimensiones, EditAnywhere, BlueprintReadWrite)
@@ -164,6 +167,8 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	int32 Turno;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
+	int32 Pases;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	int32 Estado;
 
 	// Métodos
@@ -179,6 +184,8 @@ public:
 	bool ValidarMovimiento(AMastergoalFicha* Ficha, int32 Fila, int32 Columna);
 	// Selecciona una ficha para realizar un movimiento
 	bool Seleccionar(AMastergoalFicha* Ficha);
+	// Obtiene el jugador que realizó el pase
+	class AMastergoalFicha* ObtenerFichaPase(int Fila, int Columna);
 
 	/// Interfaz AActor
 	// Llamado cuando inicia el juego o se crea la instancia

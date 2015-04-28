@@ -41,11 +41,16 @@ AMastergoalTablero::AMastergoalTablero(const FObjectInitializer& ObjectInitializ
 
 	// Valores por defecto
 	Nivel = 3;
+	PasesMaximos = 4;
 	Alto = 13;
 	Ancho = 11;
 	AnchoArco = 5;
 
+	Estado = JUEGO;
 	Turno = BLANCO;
+	Pases = 0;
+	FichaSeleccionada = nullptr;
+	Pelota = nullptr;
 }
 
 // Función llamada cuando inicia el juego o se crea la instancia. 
@@ -92,12 +97,12 @@ void AMastergoalTablero::BeginPlay()
 	{
 		for (int32 j = 0; j < Ancho; j++)
 		{
-			CrearCasilla(i, j);
+			Casilla = CrearCasilla(i, j);
 
 			// Crear la ficha correspondiente a la casilla en caso que corresponda
 			if (FichaLista[i][j])
 			{
-				CrearFicha(FichaLista[i][j], i, j);
+				Casilla->Ficha = CrearFicha(FichaLista[i][j], i, j);
 			}
 		}
 	}
@@ -121,7 +126,7 @@ void AMastergoalTablero::BeginPlay()
 	}
 	else
 	{
-		UE_LOG(LogTemp, Warning, TEXT("No se pudieron cargar las líneas del tablero. El modelo o el material no están definidos."))
+		UE_LOG(LogTemp, Warning, TEXT("No se pudieron cargar las lineas del tablero. El modelo o el material no estan definidos."))
 	}
 
 	// Crear selección
@@ -134,7 +139,7 @@ void AMastergoalTablero::BeginPlay()
 	}
 	else
 	{
-		UE_LOG(LogTemp, Warning, TEXT("No se pudo cargar el selector. El modelo o el material no están definidos."))
+		UE_LOG(LogTemp, Warning, TEXT("No se pudo cargar el selector. El modelo o el material no estan definidos."))
 	}
 }
 
@@ -224,6 +229,14 @@ class AMastergoalFicha* AMastergoalTablero::CrearFicha(int32 Tipo, int32 Fila, i
 		class UMaterialInstance* Material;
 		if (Tipo == PELOTA)
 		{
+			// Asegurar que sólo exista una pelota en el juego
+			if (Pelota != nullptr)
+			{
+				UE_LOG(LogTemp, Warning, TEXT("Se intento crear una pelota habiendo una pelota en el juego. No se va a crear la nueva pelota."))
+				return nullptr;
+			}
+
+			Pelota = Ficha;
 			Equipo = NINGUNO;
 			Modelo = FichaModeloPelota;
 			Material = FichaMaterialPelota;
@@ -254,7 +267,7 @@ class AMastergoalFicha* AMastergoalTablero::CrearFicha(int32 Tipo, int32 Fila, i
 		}
 		else
 		{
-			UE_LOG(LogTemp, Warning, TEXT("Se intentó crear una ficha de tipo desconocido: %d."), Tipo)
+			UE_LOG(LogTemp, Warning, TEXT("Se intento crear una ficha de tipo desconocido: %d."), Tipo)
 			return nullptr;
 		}
 
@@ -339,7 +352,65 @@ AMastergoalTablero::TipoFicha** AMastergoalTablero::FichaObtenerLista()
  */
 void AMastergoalTablero::PasarTurno()
 {
-	
+	if (Estado == JUEGO || Estado == PASE)
+	{
+		if (Pelota == nullptr)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Se intento pasar de turno sin haber una pelota en juego"));
+			return;
+		}
+
+		// Si el equipo tiene influencia sobre la pelota, debe moverla
+		if (Pases < (PasesMaximos - 1) &&
+			Casillas[Pelota->Fila][Pelota->Columna]->TieneInfluencia(Turno))
+		{
+			Estado = PASE;
+			Seleccionar(Pelota);
+			Pases++;
+			UE_LOG(LogTemp, Warning, TEXT("Entering pass state %d"), Pases)
+		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Estado:%d Pases:%d PasesMaximos:%d"), Estado, Pases, PasesMaximos)
+				UE_LOG(LogTemp, Warning, TEXT("T:%d IB:%d IR:%d R:%d Changing turn"), Turno, Casillas[Pelota->Fila][Pelota->Columna]->InfluenciaBlanco, Casillas[Pelota->Fila][Pelota->Columna]->InfluenciaRojo, Casillas[Pelota->Fila][Pelota->Columna]->TieneInfluencia(Turno))
+				CambiarTurno();
+			Estado = JUEGO;
+		}
+	}
+}
+
+/*
+ * Obtiene la ficha que realizó el pase. En caso de haber múltiples jugadores posibles, se retorna nullptr.
+ */
+class AMastergoalFicha* AMastergoalTablero::ObtenerFichaPase(int Fila, int Columna)
+{
+	AMastergoalFicha* Ficha = nullptr;
+
+	for (int i = (Fila - 1); i <= (Fila + 1); i++)
+	{
+		for (int j = (Columna - 1); j <= (Columna + 1); j++)
+		{
+			if ((i != Fila || j != Columna) &&
+				(i >= 0 || i < Alto) &&
+				(j >= 0 || j < Ancho) &&
+				Casillas[i][j] != nullptr &&
+				Casillas[i][j]->Ficha != nullptr &&
+				Casillas[i][j]->Ficha->Equipo == Turno)
+			{
+				if (Ficha == nullptr)
+				{
+					Ficha = Casillas[i][j]->Ficha;
+				}
+				else
+				{
+					Ficha = nullptr;
+					return Ficha;
+				}
+			}
+		}
+	}
+
+	return Ficha;
 }
 
 /*
@@ -347,6 +418,8 @@ void AMastergoalTablero::PasarTurno()
  */
 void AMastergoalTablero::CambiarTurno()
 {
+	Pases = 0;
+
 	if (Turno == BLANCO)
 		Turno = ROJO;
 	else
@@ -355,9 +428,9 @@ void AMastergoalTablero::CambiarTurno()
 
 void AMastergoalTablero::ModificarInfluencia(AMastergoalFicha* Ficha, bool Inverso)
 {
-	int32 Cantidad = Ficha->Equipo;
-	if (Ficha->Tipo == BLANCO_ARQUERO_EN_AREA ||
-		Ficha->Tipo == ROJO_ARQUERO_EN_AREA)
+	int32 Cantidad = 1 * (Inverso ? -1 : 1);
+
+	if (Ficha->EsArquero(true))
 	{
 		Cantidad *= 6;
 	}
@@ -366,14 +439,19 @@ void AMastergoalTablero::ModificarInfluencia(AMastergoalFicha* Ficha, bool Inver
 	{
 		for (int j = (Ficha->Columna - 1); j <= (Ficha->Columna + 1); j++)
 		{
-			if (!Ficha->EsArquero(false))
-				continue;
 			if ((i != Ficha->Fila || j != Ficha->Columna) &&
 				(i >= 0 || i < Alto) &&
 				(j >= 0 || j < Ancho) &&
-				Casillas[i][j] != NULL)
+				Casillas[i][j] != nullptr)
 			{
-				Casillas[i][j]->Influencia += Cantidad * (Inverso ? -1 : 1);
+				if (Ficha->Equipo == BLANCO)
+				{
+					Casillas[i][j]->InfluenciaBlanco += Cantidad;
+				}
+				else if (Ficha->Equipo == ROJO)
+				{
+					Casillas[i][j]->InfluenciaRojo += Cantidad;
+				}
 			}
 		}
 	}
@@ -400,8 +478,8 @@ bool AMastergoalTablero::MoverFicha(AMastergoalFicha* Ficha, int32 Fila, int32 C
 
 		///// Actualizar el estado del tablero
 		/// Limpiar el estado anterior
-		ModificarInfluencia(Ficha, true);
 		EstadoTablero[Ficha->Fila][Ficha->Columna] = AMastergoalTablero::VACIO;
+		Casillas[Ficha->Fila][Ficha->Columna]->Ficha = nullptr;
 		Casillas[Ficha->Fila][Ficha->Columna]->Arquero = false;
 		// Arquero
 		if (Ficha->EsArquero(false))
@@ -439,6 +517,8 @@ bool AMastergoalTablero::MoverFicha(AMastergoalFicha* Ficha, int32 Fila, int32 C
 
 		/// Escribir el estado actual
 		EstadoTablero[Fila][Columna] = Ficha->Tipo;
+		Casillas[Fila][Columna]->Ficha = Ficha;
+		Casillas[Fila][Columna]->Arquero = Ficha->EsArquero(true);
 		if (Ficha->EsArquero(false))
 		{
 			// Brazo izquierdo
@@ -479,11 +559,9 @@ bool AMastergoalTablero::MoverFicha(AMastergoalFicha* Ficha, int32 Fila, int32 C
 		Destino += Ficha->GetActorLocation();
 
 		/// Mover la ficha
+		ModificarInfluencia(Ficha, true);
 		Ficha->Mover(Fila, Columna, Destino);
 		ModificarInfluencia(Ficha, false);
-
-		/// Verificar la existencia de un pase
-
 	}
 
 	return Valido;
@@ -517,10 +595,24 @@ bool AMastergoalTablero::ValidarMovimiento(AMastergoalFicha* Ficha, int32 Fila, 
 	}
 
 	// Asegurar que no sea un corner del equipo
-	if (Ficha->Equipo == Casillas[Fila][Columna]->Equipo &&
+	if ((Ficha->Equipo == Casillas[Fila][Columna]->Equipo ||
+		(Ficha->Tipo == PELOTA && Turno == Casillas[Fila][Columna]->Equipo))&&
 		Casillas[Fila][Columna]->Corner)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Cannot move to own corner"))
+		return false;
+	}
+
+	// Asegurar que al mover la pelota la casilla pertenezca al equipo de turno
+	if (Ficha->Tipo == PELOTA && !Casillas[Fila][Columna]->TieneInfluencia(Turno))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Cannot move to enemy influenced cell"))
+		return false;
+	}
+
+	if (Ficha->Tipo == PELOTA && !Casillas[Fila][Columna]->TieneInfluencia(Turno))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Already made 3 passes, cannot make another one"))
 		return false;
 	}
 
@@ -536,6 +628,7 @@ bool AMastergoalTablero::ValidarMovimiento(AMastergoalFicha* Ficha, int32 Fila, 
 		(DeltaFila && DeltaColumna &&
 		DeltaFila != DeltaColumna))
 	{
+		UE_LOG(LogTemp, Warning, TEXT("Movement is not straight"))
 		return false;
 	}
 
@@ -587,6 +680,18 @@ bool AMastergoalTablero::ValidarMovimiento(AMastergoalFicha* Ficha, int32 Fila, 
 		}
 	}
 
+	// Asegurar que no sea un autopase
+	if (Ficha->Tipo == PELOTA)
+	{
+		AMastergoalFicha* FichaPase = ObtenerFichaPase(Ficha->Fila, Ficha->Columna);
+		AMastergoalFicha* FichaReceptora = ObtenerFichaPase(Fila, Columna);
+
+		if (FichaPase != nullptr && FichaPase == FichaReceptora)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Autopasses are not allowed"))
+			return false;
+		}
+	}
 
 	/// Determinar dirección
 	int32 DireccionFila = 0;
@@ -646,42 +751,47 @@ bool AMastergoalTablero::ValidarMovimiento(AMastergoalFicha* Ficha, int32 Fila, 
  */
 bool AMastergoalTablero::Seleccionar(AMastergoalFicha* Ficha)
 {
-	if (Ficha == nullptr || Estado != JUEGO)
+	if (Ficha == nullptr || Estado == MOVIMIENTO || Estado == FIN)
 	{
 		return false;
 	}
 	
 	// Seleccionar
-	if (FichaSeleccionada == nullptr || FichaSeleccionada != Ficha)
+	if (Estado == PASE)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Selecting piece at %d,%d Type:%d T:%d"), Ficha->Fila, Ficha->Columna, Ficha->Tipo, Ficha->Equipo);
-		FichaSeleccionada = Ficha;
-
-		if (Seleccion != nullptr)
-		{
-			FVector Posicion = Ficha->GetActorLocation();
-			FVector Size = Ficha->GetSize() + ProfundidadCasillas;
-
-			Posicion.Z += Size.Z;
-
-			Seleccion->SetVisibility(true);
-			Seleccion->SetRelativeLocation(Posicion);
-		}
-
-		return true;
+		FichaSeleccionada = Pelota;
 	}
-	// Deseleccionar
-	else if (FichaSeleccionada == Ficha)
+	else if (Ficha->Equipo == Turno)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Deselecting piece at %d,%d"), Ficha->Fila, Ficha->Columna);
-		FichaSeleccionada = nullptr;
-
-		Seleccion->SetVisibility(false);
-
-		return false;
+		if (FichaSeleccionada == nullptr || FichaSeleccionada != Ficha)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Selecting piece at %d,%d Type:%d T:%d"), Ficha->Fila, Ficha->Columna, Ficha->Tipo, Ficha->Equipo);
+			FichaSeleccionada = Ficha;
+		}
+		// Deseleccionar
+		else if (FichaSeleccionada == Ficha)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Deselecting piece at %d,%d"), Ficha->Fila, Ficha->Columna);
+			FichaSeleccionada = nullptr;
+		}
 	}
 
-	return false;
+	// Cambiar la visibilidad
+	Seleccion->SetVisibility(FichaSeleccionada != nullptr);
+
+	// Mover la selección
+	if (Seleccion != nullptr)
+	{
+		FVector Posicion = Ficha->GetActorLocation();
+		FVector Size = Ficha->GetSize() + ProfundidadCasillas;
+
+		Posicion.Z += Size.Z;
+
+		Seleccion->SetRelativeLocation(Posicion);
+	}
+
+	return FichaSeleccionada != nullptr;
 }
 
 /*

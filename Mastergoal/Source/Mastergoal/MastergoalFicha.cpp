@@ -100,6 +100,8 @@ void AMastergoalFicha::Tick(float DeltaTime)
 			MovimientoSaltar = false;
 
 			SetActorLocation(MovimientoDestino);
+
+			Tablero->PasarTurno();
 		}	
 	}
 }
