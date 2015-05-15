@@ -393,14 +393,14 @@ void AMastergoalTablero::PasarTurno()
 			{
 				GolesRojo++;
 				UE_LOG(LogTemp, Warning, TEXT("Gol de las rojas"));
-				Mensajes->AddScore(TEXT("¡Gol de las rojas!"), false);
+				Mensajes->AddScore(TEXT("Gol de las rojas"), false);
 				Contador->AddScoreRojo();
 			}
 			else if (Casillas[Pelota->Fila][Pelota->Columna]->Equipo == ROJO)
 			{
 				GolesBlanco++;
 				UE_LOG(LogTemp, Warning, TEXT("Gol de las blancas"));
-				Mensajes->AddScore(TEXT("¡Gol de las blancas!"), false);
+				Mensajes->AddScore(TEXT("Gol de las blancas"), false);
 				Contador->AddScoreBlanco();
 			}
 
@@ -893,7 +893,7 @@ bool AMastergoalTablero::ValidarMovimiento(AMastergoalFicha* Ficha, int32 Fila, 
 						 Casillas[Fila][Columna]->Ficha->Equipo != Turno)
 				{
 					UE_LOG(LogTemp, Warning, TEXT("Goalie Block Tipo:%d ET:%d PELOTA:%d BAEA:%d RAEA:%d"), Ficha->Tipo, EstadoTablero[Fila][Columna], (int32)PELOTA, (int32)BLANCO_ARQUERO_EN_AREA, (int32)ROJO_ARQUERO_EN_AREA)
-					Mensajes->AddScore(TEXT("El arquero atajaría ese tiro"), false);
+					Mensajes->AddScore(TEXT("El arquero atajaria ese tiro"), false);
 					return false;
 				}
 			}
@@ -1027,13 +1027,13 @@ void AMastergoalTablero::TerminarJuego(bool Invalido)
 	{
 		// UI Ganaste
 		UE_LOG(LogTemp, Warning, TEXT("Ganaron las blancas"))
-		Mensajes->AddScore(TEXT("¡Ganaron las blancas!"), false);
+		Mensajes->AddScore(TEXT("Ganaron las blancas"), false);
 	}
 	else if (GolesRojo > GolesBlanco)
 	{
 		// UI Perdiste
 		UE_LOG(LogTemp, Warning, TEXT("Ganaron las rojas"))
-		Mensajes->AddScore(TEXT("¡Ganaron las rojas!"), false);
+		Mensajes->AddScore(TEXT("Ganaron las rojas"), false);
 	}
 }
 
