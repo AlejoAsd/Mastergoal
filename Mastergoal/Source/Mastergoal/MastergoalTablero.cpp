@@ -4,6 +4,7 @@
 #include "MastergoalTablero.h"
 #include "MastergoalCasilla.h"
 #include "MastergoalFicha.h"
+#include "MastergoalGameInstance.h"
 #include "Mensaje.h"
 #include "Score.h"
 #include "CountDown.h"
@@ -332,6 +333,12 @@ AMastergoalTablero::TipoFicha** AMastergoalTablero::FichaObtenerLista()
 
 	// Asignar los valores
 	Fichas[7][5] = PELOTA;
+	
+	UMastergoalGameInstance* GameInstance = Cast<UMastergoalGameInstance>(GetGameInstance());
+	if (GameInstance && GameInstance->Nivel)
+		Nivel = GameInstance->Nivel;
+	else
+		UE_LOG(LogTemp, Warning, TEXT("This engine sucks fucking ass."))
 	if (Nivel == 1)
 	{
 		// Blanco

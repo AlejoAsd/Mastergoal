@@ -17,7 +17,7 @@ AScore::AScore(const FObjectInitializer& ObjectInitializer)
 	ScoreTextBlanco = CreateDefaultSubobject<UTextRenderComponent>(TEXT("Blanco"));
 	ScoreTextBlanco->SetRelativeLocation(FVector(0.f, 0.f, 0.f));
 	ScoreTextBlanco->SetRelativeRotation(FRotator(0.0f, 0.0f, 0.0f));
-	ScoreTextBlanco->SetText(TEXT("Blanco 0 -"));
+	ScoreTextBlanco->SetText(TEXT("Blanco 0"));
 	ScoreTextBlanco->AttachTo(DummyRoot);
 
 	ScoreTextRojo = CreateDefaultSubobject<UTextRenderComponent>(TEXT("Rojo"));
@@ -39,7 +39,7 @@ void AScore::Reset()
 {
 	ScoreBlanco = ScoreRojo = 0;
 
-	FString ScoreStringBlanco = FString::Printf(TEXT("Blanco %d - "), ScoreBlanco);
+	FString ScoreStringBlanco = FString::Printf(TEXT("Blanco %d"), ScoreBlanco);
 	ScoreTextRojo->SetText(ScoreStringBlanco);
 
 	FString ScoreStringRojo = FString::Printf(TEXT("%d Rojo"), ScoreRojo);
@@ -52,7 +52,7 @@ void AScore::AddScoreBlanco()
 	ScoreBlanco++;
 
 	// Update text
-	FString ScoreString = FString::Printf(TEXT("Blanco %d - "), ScoreBlanco);
+	FString ScoreString = FString::Printf(TEXT("Blanco %d"), ScoreBlanco);
 	ScoreTextBlanco->SetText(ScoreString);
 }
 
