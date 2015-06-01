@@ -9,6 +9,8 @@
 #include "Score.h"
 #include "CountDown.h"
 #include "MemoryBase.h"
+#include "../../EvoGoal/include/Game.h"
+#include "../../EvoGoal/include/Player.h"
 #include <iostream>
 
 // Define los valores por defecto del objeto
@@ -337,8 +339,6 @@ AMastergoalTablero::TipoFicha** AMastergoalTablero::FichaObtenerLista()
 	UMastergoalGameInstance* GameInstance = Cast<UMastergoalGameInstance>(GetGameInstance());
 	if (GameInstance && GameInstance->Nivel)
 		Nivel = GameInstance->Nivel;
-	else
-		UE_LOG(LogTemp, Warning, TEXT("This engine sucks fucking ass."))
 	if (Nivel == 1)
 	{
 		// Blanco

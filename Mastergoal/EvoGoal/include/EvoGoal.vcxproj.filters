@@ -1,0 +1,324 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Source Files\Mastergoal">
+      <UniqueIdentifier>{c567becb-2325-4e59-9faa-e6717f53be63}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Mastergoal\Utils">
+      <UniqueIdentifier>{ff882bba-de21-4982-8c1e-af0192b404d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Mastergoal\Common">
+      <UniqueIdentifier>{7ec25c5d-728a-4f0a-868d-3007ac989548}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Mastergoal\AI">
+      <UniqueIdentifier>{fe9260a2-e6a8-426d-8e90-7f7208092885}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Mastergoal\AI\GA">
+      <UniqueIdentifier>{67f75ec4-ed85-4217-a909-bf52dd7ebbce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Mastergoal\AI\GA\Tournaments">
+      <UniqueIdentifier>{39de50f8-0bf3-46f8-a5c3-f4a005b7a631}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Header Files\Mastergoal">
+      <UniqueIdentifier>{dba68688-af42-48a6-9efb-b9f1841f76d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Mastergoal\Utils">
+      <UniqueIdentifier>{29647dde-13da-4f8e-8206-2de7bc9e22f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Mastergoal\Common">
+      <UniqueIdentifier>{868bca19-f1bf-4f57-8907-778e0096dc0c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Mastergoal\AI">
+      <UniqueIdentifier>{e67d3eca-d8a4-4b13-b150-5f59ea8d54a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Mastergoal\AI\GA">
+      <UniqueIdentifier>{1825c1a4-37f0-4b5f-8946-c32693d56ff2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Mastergoal\AI\GA\Tournaments">
+      <UniqueIdentifier>{10956463-7d6c-430b-bb8a-6dbc374fba13}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="EvoGoal.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Definitions.cpp">
+      <Filter>Source Files\Mastergoal</Filter>
+    </ClCompile>
+    <ClCompile Include="RulesManager.cpp">
+      <Filter>Source Files\Mastergoal\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="BallMovement.cpp">
+      <Filter>Source Files\Mastergoal\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Board.cpp">
+      <Filter>Source Files\Mastergoal\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Game.cpp">
+      <Filter>Source Files\Mastergoal\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Movement.cpp">
+      <Filter>Source Files\Mastergoal\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Piece.cpp">
+      <Filter>Source Files\Mastergoal\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Play.cpp">
+      <Filter>Source Files\Mastergoal\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Source Files\Mastergoal\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerMovement.cpp">
+      <Filter>Source Files\Mastergoal\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerPiece.cpp">
+      <Filter>Source Files\Mastergoal\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Square.cpp">
+      <Filter>Source Files\Mastergoal\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="State.cpp">
+      <Filter>Source Files\Mastergoal\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="AbstractSearcher.cpp">
+      <Filter>Source Files\Mastergoal\AI</Filter>
+    </ClCompile>
+    <ClCompile Include="ActionSearcher.cpp">
+      <Filter>Source Files\Mastergoal\AI</Filter>
+    </ClCompile>
+    <ClCompile Include="Agent.cpp">
+      <Filter>Source Files\Mastergoal\AI</Filter>
+    </ClCompile>
+    <ClCompile Include="DeltaEvaluatorLevel1.cpp">
+      <Filter>Source Files\Mastergoal\AI</Filter>
+    </ClCompile>
+    <ClCompile Include="DeltaEvaluatorLevel2.cpp">
+      <Filter>Source Files\Mastergoal\AI</Filter>
+    </ClCompile>
+    <ClCompile Include="DeltaEvaluatorLevel3.cpp">
+      <Filter>Source Files\Mastergoal\AI</Filter>
+    </ClCompile>
+    <ClCompile Include="DeltaEvaluatorLevel4.cpp">
+      <Filter>Source Files\Mastergoal\AI</Filter>
+    </ClCompile>
+    <ClCompile Include="EvaluatorLevel1.cpp">
+      <Filter>Source Files\Mastergoal\AI</Filter>
+    </ClCompile>
+    <ClCompile Include="EvaluatorLevel2.cpp">
+      <Filter>Source Files\Mastergoal\AI</Filter>
+    </ClCompile>
+    <ClCompile Include="EvaluatorLevel3.cpp">
+      <Filter>Source Files\Mastergoal\AI</Filter>
+    </ClCompile>
+    <ClCompile Include="EvaluatorLevel4.cpp">
+      <Filter>Source Files\Mastergoal\AI</Filter>
+    </ClCompile>
+    <ClCompile Include="NegamaxSearcher.cpp">
+      <Filter>Source Files\Mastergoal\AI</Filter>
+    </ClCompile>
+    <ClCompile Include="SuccessorGenerator.cpp">
+      <Filter>Source Files\Mastergoal\AI</Filter>
+    </ClCompile>
+    <ClCompile Include="HallOfFame.cpp">
+      <Filter>Source Files\Mastergoal\AI\GA</Filter>
+    </ClCompile>
+    <ClCompile Include="History.cpp">
+      <Filter>Source Files\Mastergoal\AI\GA</Filter>
+    </ClCompile>
+    <ClCompile Include="SampleTourGA.cpp">
+      <Filter>Source Files\Mastergoal\AI\GA</Filter>
+    </ClCompile>
+    <ClCompile Include="EliminatoryTournament.cpp">
+      <Filter>Source Files\Mastergoal\AI\GA\Tournaments</Filter>
+    </ClCompile>
+    <ClCompile Include="Encoder.cpp">
+      <Filter>Source Files\Mastergoal\AI\GA\Tournaments</Filter>
+    </ClCompile>
+    <ClCompile Include="FullCompTournament.cpp">
+      <Filter>Source Files\Mastergoal\AI\GA\Tournaments</Filter>
+    </ClCompile>
+    <ClCompile Include="OneVsOneTournament.cpp">
+      <Filter>Source Files\Mastergoal\AI\GA\Tournaments</Filter>
+    </ClCompile>
+    <ClCompile Include="SamplePopData.cpp">
+      <Filter>Source Files\Mastergoal\AI\GA\Tournaments</Filter>
+    </ClCompile>
+    <ClCompile Include="SampleTourData.cpp">
+      <Filter>Source Files\Mastergoal\AI\GA\Tournaments</Filter>
+    </ClCompile>
+    <ClCompile Include="SampleTournament.cpp">
+      <Filter>Source Files\Mastergoal\AI\GA\Tournaments</Filter>
+    </ClCompile>
+    <ClCompile Include="SampParTournament.cpp">
+      <Filter>Source Files\Mastergoal\AI\GA\Tournaments</Filter>
+    </ClCompile>
+    <ClCompile Include="Tournament.cpp">
+      <Filter>Source Files\Mastergoal\AI\GA\Tournaments</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ComParams.h">
+      <Filter>Header Files\Mastergoal</Filter>
+    </ClInclude>
+    <ClInclude Include="Definitions.h">
+      <Filter>Header Files\Mastergoal</Filter>
+    </ClInclude>
+    <ClInclude Include="RulesManager.h">
+      <Filter>Header Files\Mastergoal\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="BallMovement.h">
+      <Filter>Header Files\Mastergoal\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="BallPiece.h">
+      <Filter>Header Files\Mastergoal\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Board.h">
+      <Filter>Header Files\Mastergoal\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Game.h">
+      <Filter>Header Files\Mastergoal\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Movement.h">
+      <Filter>Header Files\Mastergoal\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="MovementIterator.h">
+      <Filter>Header Files\Mastergoal\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Movements.h">
+      <Filter>Header Files\Mastergoal\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Piece.h">
+      <Filter>Header Files\Mastergoal\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Pieces.h">
+      <Filter>Header Files\Mastergoal\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Play.h">
+      <Filter>Header Files\Mastergoal\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Header Files\Mastergoal\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerMovement.h">
+      <Filter>Header Files\Mastergoal\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerPiece.h">
+      <Filter>Header Files\Mastergoal\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Square.h">
+      <Filter>Header Files\Mastergoal\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="State.h">
+      <Filter>Header Files\Mastergoal\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="AbstractSearcher.h">
+      <Filter>Header Files\Mastergoal\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionSearcher.h">
+      <Filter>Header Files\Mastergoal\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="Agent.h">
+      <Filter>Header Files\Mastergoal\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="DeltaEvaluator.h">
+      <Filter>Header Files\Mastergoal\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="DeltaEvaluatorLevel1.h">
+      <Filter>Header Files\Mastergoal\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="DeltaEvaluatorLevel2.h">
+      <Filter>Header Files\Mastergoal\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="DeltaEvaluatorLevel3.h">
+      <Filter>Header Files\Mastergoal\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="DeltaEvaluatorLevel4.h">
+      <Filter>Header Files\Mastergoal\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="Evaluator.h">
+      <Filter>Header Files\Mastergoal\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="EvaluatorLevel1.h">
+      <Filter>Header Files\Mastergoal\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="EvaluatorLevel2.h">
+      <Filter>Header Files\Mastergoal\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="EvaluatorLevel3.h">
+      <Filter>Header Files\Mastergoal\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="EvaluatorLevel4.h">
+      <Filter>Header Files\Mastergoal\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="Evaluators.h">
+      <Filter>Header Files\Mastergoal\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="NegamaxSearcher.h">
+      <Filter>Header Files\Mastergoal\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="SuccessorGenerator.h">
+      <Filter>Header Files\Mastergoal\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="HallOfFame.h">
+      <Filter>Header Files\Mastergoal\AI\GA</Filter>
+    </ClInclude>
+    <ClInclude Include="History.h">
+      <Filter>Header Files\Mastergoal\AI\GA</Filter>
+    </ClInclude>
+    <ClInclude Include="SampleTourGA.h">
+      <Filter>Header Files\Mastergoal\AI\GA</Filter>
+    </ClInclude>
+    <ClInclude Include="EliminatoryTournament.h">
+      <Filter>Header Files\Mastergoal\AI\GA\Tournaments</Filter>
+    </ClInclude>
+    <ClInclude Include="Encoder.h">
+      <Filter>Header Files\Mastergoal\AI\GA\Tournaments</Filter>
+    </ClInclude>
+    <ClInclude Include="FullCompTournament.h">
+      <Filter>Header Files\Mastergoal\AI\GA\Tournaments</Filter>
+    </ClInclude>
+    <ClInclude Include="OneVsOneTournament.h">
+      <Filter>Header Files\Mastergoal\AI\GA\Tournaments</Filter>
+    </ClInclude>
+    <ClInclude Include="SamplePopData.h">
+      <Filter>Header Files\Mastergoal\AI\GA\Tournaments</Filter>
+    </ClInclude>
+    <ClInclude Include="SampleTourData.h">
+      <Filter>Header Files\Mastergoal\AI\GA\Tournaments</Filter>
+    </ClInclude>
+    <ClInclude Include="SampleTournament.h">
+      <Filter>Header Files\Mastergoal\AI\GA\Tournaments</Filter>
+    </ClInclude>
+    <ClInclude Include="SampParTournament.h">
+      <Filter>Header Files\Mastergoal\AI\GA\Tournaments</Filter>
+    </ClInclude>
+    <ClInclude Include="Tournament.h">
+      <Filter>Header Files\Mastergoal\AI\GA\Tournaments</Filter>
+    </ClInclude>
+    <ClInclude Include="Tournaments.h">
+      <Filter>Header Files\Mastergoal\AI\GA\Tournaments</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+</Project>
