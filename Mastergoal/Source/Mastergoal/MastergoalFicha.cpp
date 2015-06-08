@@ -32,14 +32,14 @@ void AMastergoalFicha::Inicializar(class AMastergoalTablero* Tablero, int32 Equi
 	this->Columna = Columna;
 	this->ColumnaInicial = Columna;
 
-	if (Tipo == AMastergoalTablero::BLANCO_ARQUERO_EN_AREA || 
-		Tipo == AMastergoalTablero::ROJO_ARQUERO_EN_AREA)
+	if (Tipo == BLANCO_ARQUERO_EN_AREA || 
+		Tipo == ROJO_ARQUERO_EN_AREA)
 	{
 		Arquero = true;
 		ArqueroEnArea = true;
 	}
-	else if (Tipo == AMastergoalTablero::BLANCO_ARQUERO_FUERA_AREA ||
-			 Tipo == AMastergoalTablero::ROJO_ARQUERO_FUERA_AREA)
+	else if (Tipo == BLANCO_ARQUERO_FUERA_AREA ||
+			 Tipo == ROJO_ARQUERO_FUERA_AREA)
 	{
 		Arquero = true;
 		ArqueroEnArea = false;
@@ -72,6 +72,9 @@ void AMastergoalFicha::Inicializar(class AMastergoalTablero* Tablero, int32 Equi
 
 void AMastergoalFicha::Mover(int32 Fila, int32 Columna)
 {
+	/// Modificar influencia
+	Tablero->ModificarInfluencia(this, true);
+
 	/// Obtener el punto objetivo
 	MovimientoDestino = FVector((Fila - this->Fila) * Tablero->AltoCasillas,
 		(Columna - this->Columna) * Tablero->AnchoCasillas,
@@ -80,11 +83,14 @@ void AMastergoalFicha::Mover(int32 Fila, int32 Columna)
 
 	Movimiento = true;
 
-	Tablero->Estado = AMastergoalTablero::MOVIMIENTO;
+	Tablero->Estado = MOVIMIENTO;
 	Tablero->FichasEnMovimiento++;
 	
 	this->Fila = Fila;
 	this->Columna = Columna;
+
+	/// Modificar influencia
+	Tablero->ModificarInfluencia(this, false);
 }
 
 void AMastergoalFicha::Tick(float DeltaTime)
@@ -157,7 +163,7 @@ void AMastergoalFicha::ActualizarComponenteMesh()
 /// Handlers
 void AMastergoalFicha::OnClick(UPrimitiveComponent* ClickedComp)
 {
-	if (Tablero->Estado == AMastergoalTablero::JUEGO)
+	if (Tablero->Estado == JUEGO)
 	{
 		Tablero->Seleccionar(this);
 	}

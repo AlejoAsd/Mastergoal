@@ -37,7 +37,7 @@ namespace AI
 		// Se verifica si es gol del que acaba de jugar
 		if (IsGoal(*after.GetBoard(), before.GetTurn()))
 		{
-			return INFINITY;
+			return EVOGOAL_INFINITY;
 		}
 
 		CalculateDeltas(before, after, play);
@@ -126,7 +126,7 @@ namespace AI
 
 		for (int i = 1; i < board.GetNPieces(); i++)
 		{
-			minDist = min(board.GetBall()->GetPosition()->Distance(*players[i]->GetPosition()), minDist);
+			minDist = MIN(board.GetBall()->GetPosition()->Distance(*players[i]->GetPosition()), minDist);
 		}
 		return minDist;
 	}

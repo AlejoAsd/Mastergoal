@@ -12,5 +12,3 @@ class AMastergoalPlayerController : public APlayerController
 public:
 	AMastergoalPlayerController(const FObjectInitializer& ObjectInitializer);
 };
-
-

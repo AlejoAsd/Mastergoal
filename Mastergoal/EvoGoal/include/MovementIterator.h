@@ -22,7 +22,7 @@ namespace Common
 			this->movements = movements;
 		}
 
-		MovementIterator::MovementIterator(const MovementIterator& movIt)
+		MovementIterator(const MovementIterator& movIt)
 		{
 			this->movements = movIt.movements;
 			this->nMovements = movIt.nMovements;

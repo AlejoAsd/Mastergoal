@@ -74,7 +74,7 @@ namespace Common
 			return 0;
 
 		// Se realiza la jugada
-		this->currentState->DoPlay(*this->plays[this->nPlays]);	
+		this->currentState->DoPlay(*this->plays[this->nPlays]);
 
 		// Si hay un ciclo, termina el partido
 		if (DetectCycle())
@@ -92,12 +92,12 @@ namespace Common
 		// Si se metió gol, termina el juego
 		if (this->currentState->GetBoard()->GetBall()->GetRow() == 0)
 		{
-			this->currentState->SetGoalsLeft(1);
+			this->currentState->SetGoalsLeft(currentState->GetGoalsLeft() + 1);
 			return 0;
 		}
 		if (this->currentState->GetBoard()->GetBall()->GetRow() == 14)
 		{
-			this->currentState->SetGoalsRight(1);
+			this->currentState->SetGoalsRight(currentState->GetGoalsRight() + 1);
 			return 0;
 		}
 
@@ -117,11 +117,11 @@ namespace Common
 
 	Agent* Game::GetWinner()
 	{
-		if (this->currentState->GetGoalsLeft() == 1)
+		if (this->currentState->GetGoalsLeft() == 2)
 		{
 			return agentL;
 		}
-		else if (this->currentState->GetGoalsRight() == 1)
+		else if (this->currentState->GetGoalsRight() == 2)
 		{
 			return agentR;
 		}

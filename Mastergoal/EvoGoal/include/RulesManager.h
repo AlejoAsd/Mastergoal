@@ -189,7 +189,7 @@ namespace Utils
 			rowAfter = movement->GetSquareAfter()->GetRow();
 
 			/* El jugador se puede mover hasta 2 casillas */
-			if(abs(colBefore-colAfter)>2 || abs(rowBefore-rowAfter)>2) 
+			if(ABS(colBefore-colAfter)>2 || ABS(rowBefore-rowAfter)>2) 
 				return false; 
 
 			/* No moverse fuera de las dimensiones del tablero (el usuario tal vez no, pero la inteligencia si) */
@@ -199,12 +199,12 @@ namespace Utils
 			/* El jugador no puede saltar sobre ninguna ficha */
 			if(colBefore == colAfter) //si se mueve hacia la derecha o hacia la izquierda (avanza o retrocede)
 			{					
-				if((rowAfter>rowBefore) && (abs(rowAfter-rowBefore) != 1))	//si se mueve hacia la derecha 2 casillas
+				if((rowAfter>rowBefore) && (ABS(rowAfter-rowBefore) != 1))	//si se mueve hacia la derecha 2 casillas
 				{
 					if(IsPieceInSquare(board, colBefore,rowAfter-1)) //si hay alguna pieza en esa casilla intermedia
 						return false; //movimiento no valido
 				}
-				else if((rowBefore>rowAfter) && (abs(rowAfter-rowBefore) != 1)) //si se mueve hacia la izquierda 2 casillas
+				else if((rowBefore>rowAfter) && (ABS(rowAfter-rowBefore) != 1)) //si se mueve hacia la izquierda 2 casillas
 				{
 					if(IsPieceInSquare(board, colBefore,rowAfter+1)) 
 						return false;
@@ -212,12 +212,12 @@ namespace Utils
 			}
 			else if(rowBefore == rowAfter) //si se mueve hacia arriba o hacia abajo (hacia los costados)
 			{
-				if((colAfter > colBefore) && (abs(colAfter-colBefore)!=1)) //si se mueve hacia abajo 2 casillas
+				if((colAfter > colBefore) && (ABS(colAfter-colBefore)!=1)) //si se mueve hacia abajo 2 casillas
 				{
 					if(IsPieceInSquare(board, colAfter-1,rowBefore)) 
 						return false;
 				}
-				else if((colBefore > colAfter) && (abs(colAfter-colBefore)!=1)) //si se mueve hacia arriba 2 casillas
+				else if((colBefore > colAfter) && (ABS(colAfter-colBefore)!=1)) //si se mueve hacia arriba 2 casillas
 				{
 					if(IsPieceInSquare(board, colAfter+1,rowBefore)) 
 						return false;
@@ -226,10 +226,10 @@ namespace Utils
 			else //si se mueve en diagonal
 			{	
 				/* Movimiento en L no es valido */
-				if(abs(colBefore-colAfter) != abs(rowBefore-rowAfter)) //movimiento diagonal, diferencias entre i's y j's iguales
+				if(ABS(colBefore-colAfter) != ABS(rowBefore-rowAfter)) //movimiento diagonal, diferencias entre i's y j's iguales
 					return false;
 
-				if(abs(colBefore-colAfter)!=1) //si se mueve 2 casillas, no 1
+				if(ABS(colBefore-colAfter)!=1) //si se mueve 2 casillas, no 1
 				{
 					if(colBefore>colAfter && rowBefore<rowAfter) //hacia arriba der
 					{
@@ -400,10 +400,10 @@ namespace Utils
 				int rowInc = ballRow - rowBefore;
 				int colInc = ballCol - colBefore;
 				int nSteps;
-				if ( Abs(rowInc) >= Abs(colInc) )
-					nSteps = Abs(rowInc);
+				if ( ABS(rowInc) >= ABS(colInc) )
+					nSteps = ABS(rowInc);
 				else
-					nSteps = Abs(colInc);
+					nSteps = ABS(colInc);
 				
 				if (rowInc > 0) rowInc = 1;
 				else if (rowInc < 0) rowInc = -1;

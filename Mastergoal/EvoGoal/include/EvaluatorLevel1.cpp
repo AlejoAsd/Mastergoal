@@ -44,7 +44,7 @@ namespace AI
 
 			// Se suma la menor distancia a la pelota de manera que cuando sea gol cantado 
 			// del oponente, por lo menos el jugador se acerque a la pelota
-			return -INFINITY - distToBall;
+			return -EVOGOAL_INFINITY - distToBall;
 		}
 
 		CalculateFeatures(state);
@@ -96,8 +96,8 @@ namespace AI
 		/** ~Players & opponents advance **/
 
 		/** Players & opponents distance to ball's column **/
-		features[PL_BALL_COL_DIST] = (float)Abs(state.GetBoard()->GetBall()->GetCol() - pls[0]->GetCol());
-		features[OP_BALL_COL_DIST] = (float)Abs(state.GetBoard()->GetBall()->GetCol() - ops[0]->GetCol());
+		features[PL_BALL_COL_DIST] = (float)ABS(state.GetBoard()->GetBall()->GetCol() - pls[0]->GetCol());
+		features[OP_BALL_COL_DIST] = (float)ABS(state.GetBoard()->GetBall()->GetCol() - ops[0]->GetCol());
 		/** ~Players & opponents distance to ball's column **/
 
 		/** Closer to ball **/

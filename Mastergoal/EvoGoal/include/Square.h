@@ -1,10 +1,8 @@
 #ifndef SQUARE_H
 #define SQUARE_H
 
-#include <xstring>
+#include <string.h>
 #include "Definitions.h"
-
-
 
 namespace Common
 {
@@ -60,8 +58,8 @@ namespace Common
 		// Retorna true si dos Squares son adyacentes; si son el mismo los considera adyacentes
 		inline bool Adjacent(const Square& square) const
 		{
-			if (Abs(this->row - square.row) <= 1
-				&& Abs(this->col - square.col) <= 1)
+			if (ABS(this->row - square.row) <= 1
+				&& ABS(this->col - square.col) <= 1)
 				return true;
 
 			return false;
@@ -79,8 +77,8 @@ namespace Common
 		// Retorna true si dos posiciones son adyacentes; si son el mismo los considera adyacentes
 		inline static bool Adjacent(int row1, int col1, int row2, int col2)
 		{
-			if (Abs(row2 - row2) <= 1
-				&& Abs(col1 - col2) <= 1)
+			if (ABS(row2 - row2) <= 1
+				&& ABS(col1 - col2) <= 1)
 				return true;
 
 			return false;
@@ -88,16 +86,16 @@ namespace Common
 
 		// Retorna la distantica (no Manhattan) entre dos squares
 		inline int Distance(const Square& square) const { 
-			if ( abs(this->col - square.col) >=  abs(this->row - square.row) )
-				return abs(this->col - square.col);
-			return abs(this->row - square.row);
+			if ( ABS(this->col - square.col) >=  ABS(this->row - square.row) )
+				return ABS(this->col - square.col);
+			return ABS(this->row - square.row);
 		}
 
 		// Retorna la distantica (no Manhattan) a una coordenada
 		inline int Distance(int row, int col) const { 
-			if ( abs(this->col - col) >= abs(this->row - row) )
-				return abs(this->col - col);
-			return abs(this->row - row);
+			if ( ABS(this->col - col) >= ABS(this->row - row) )
+				return ABS(this->col - col);
+			return ABS(this->row - row);
 		}
 
 	private:

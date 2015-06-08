@@ -83,8 +83,10 @@ bool AMastergoalCasilla::InfluenciaCero()
  * Indica si un equipo tiene posesión de esta casilla.
  * Parámetros:
  * Equipo - Equipo sobre el que se valora la influencia
+ * Estricto - 
  * Retorna: 
- * true si hay un empate o mayoría de influencia del equipo
+ * true si hay un empate o mayoría de influencia del equipo en el caso no estricto.
+ * true si hay mayoría de influencia del equipo en el caso estricto.
  */
 bool AMastergoalCasilla::TieneInfluencia(int32 Equipo, bool Estricto)
 {

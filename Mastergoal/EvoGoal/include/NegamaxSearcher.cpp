@@ -106,12 +106,12 @@ namespace AI
 				|| it->GetNMovements() == 1)
 			{
 				state.SwitchTurn();
-				bestValue = max(-Search(state, depth - 1, -beta, -alpha), bestValue);
+				bestValue = MAX(-Search(state, depth - 1, -beta, -alpha), bestValue);
 				state.SwitchTurn();
 			}
 			else
 			{
-				bestValue = max(Search(state, depth - 1, alpha, beta), bestValue);
+				bestValue = MAX(Search(state, depth - 1, alpha, beta), bestValue);
 			}
 
 			state.UndoPlay(*it);

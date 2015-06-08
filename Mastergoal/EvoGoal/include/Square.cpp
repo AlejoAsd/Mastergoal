@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "Square.h"
-#include <xstring>
+#include <string.h>
 
 namespace Common
 {

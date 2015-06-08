@@ -106,17 +106,17 @@ namespace AI
 			//if (state.GetTurn() == LEFT)
 			//{
 			//	if (state.GetGoalsLeft() > state.GetGoalsRight())
-			//		return INFINITY;
+			//		return EVOGOAL_INFINITY;
 			//	else if (state.GetGoalsLeft() < state.GetGoalsRight())
-			//		return -INFINITY;
+			//		return -EVOGOAL_INFINITY;
 			//	else
 			//		return 0;
 			//}
 			////else state.GetTurn() == RIGHT
 			//if (state.GetGoalsLeft() < state.GetGoalsRight())
-			//	return INFINITY;
+			//	return EVOGOAL_INFINITY;
 			//else if (state.GetGoalsLeft() > state.GetGoalsRight())
-			//	return -INFINITY;
+			//	return -EVOGOAL_INFINITY;
 
 			return 0.0f;
 		}

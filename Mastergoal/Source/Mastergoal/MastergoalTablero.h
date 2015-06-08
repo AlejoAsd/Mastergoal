@@ -5,6 +5,36 @@
 #include "GameFramework/Actor.h"
 #include "MastergoalTablero.generated.h"
 
+/// Definiciones
+enum Equipo
+{
+	BLANCO = -1,
+	NINGUNO,
+	ROJO,
+	AMBOS
+};
+
+enum EstadoJuego
+{
+	JUEGO,
+	PASE,
+	MOVIMIENTO,
+	REINICIANDO,
+	FIN
+};
+
+enum TipoFicha
+{
+	VACIO,
+	PELOTA,
+	BLANCO_FICHA,
+	BLANCO_ARQUERO_EN_AREA,
+	BLANCO_ARQUERO_FUERA_AREA,
+	ROJO_FICHA,
+	ROJO_ARQUERO_EN_AREA,
+	ROJO_ARQUERO_FUERA_AREA
+};
+
 /*
  * Tablero de Mastergoal Configurable
  * El tablero genera e instancia el tablero y todas las fichas necesarias.
@@ -29,7 +59,10 @@ class MASTERGOAL_API AMastergoalTablero : public AActor
 
 	// Cámara
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camara, meta = (AllowPrivateAccess = "true"))
-	class UCameraComponent* Camara;
+	class UCameraComponent* CamaraBlanco;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camara, meta = (AllowPrivateAccess = "true"))
+	class UCameraComponent* CamaraRojo;
 
 	UPROPERTY(Category = LineasTablero, VisibleDefaultsOnly, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	class UStaticMeshComponent* LineasTablero;
@@ -41,40 +74,11 @@ public:
 	// Define los valores por defecto de la instancia
 	AMastergoalTablero(const FObjectInitializer& ObjectInitializer);
 
-	/// Definiciones
-	typedef enum Equipo
-	{
-		BLANCO = -1,
-		NINGUNO,
-		ROJO,
-		AMBOS
-	} Equipo;
-
-	typedef enum EstadoJuego
-	{
-		JUEGO,
-		PASE,
-		MOVIMIENTO,
-		REINICIANDO,
-		FIN
-	} EstadoJuego;
-
-	typedef enum TipoFicha
-	{
-		VACIO,
-		PELOTA,
-		BLANCO_FICHA,
-		BLANCO_ARQUERO_EN_AREA,
-		BLANCO_ARQUERO_FUERA_AREA,
-		ROJO_FICHA,
-		ROJO_ARQUERO_EN_AREA,
-		ROJO_ARQUERO_FUERA_AREA
-	} TipoFicha;
-
 	/// Accesores
 	FORCEINLINE class USceneComponent* GetRoot() const { return Root; }
-	FORCEINLINE class USpringArmComponent* GetBrazoCamara() const { return BrazoCamara; }
-	FORCEINLINE class UCameraComponent* GetCamara() const { return Camara; }
+	FORCEINLINE class USpringArmComponent* GetBrazoCamaraBlanco() const { return BrazoCamara; }
+	FORCEINLINE class UCameraComponent* GetCamaraBlanco() const { return CamaraBlanco; }
+	FORCEINLINE class UCameraComponent* GetCamaraRojo() const { return CamaraRojo; }
 	FORCEINLINE class UStaticMeshComponent* GetLineasTablero() const { return LineasTablero; }
 	FORCEINLINE class UStaticMeshComponent* GetSeleccion() const { return Seleccion; }
 
@@ -89,8 +93,11 @@ public:
 	class AScore* Contador;
 
 	/// Referencias del tablero
+	// Agente AI
+	class MastergoalAI* AI;
+
 	// Casillas con las fichas del tablero
-	class AMastergoalCasilla *Casillas[15][11];
+	class AMastergoalCasilla* Casillas[15][11];
 
 	// Estado del tablero
 	int32 EstadoTablero[15][11];
@@ -170,11 +177,13 @@ public:
 	// Métodos
 	class AMastergoalFicha* CrearFicha(int32 Tipo, int32 Fila, int32 Columna);
 
-	AMastergoalTablero::TipoFicha** FichaObtenerLista();
+	TipoFicha** FichaObtenerLista();
 	void FichaDestruirLista(TipoFicha**& Lista);
 	
 	/// Juego
 	// Propiedades
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Juego, meta = (AllowPrivateAccess = "true"))
+	bool ContraPC;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Juego, meta = (AllowPrivateAccess = "true"))
 	int32 Turno;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Juego, meta = (AllowPrivateAccess = "true"))
@@ -207,14 +216,12 @@ public:
 	bool ValidarMovimiento(AMastergoalFicha* Ficha, int32 Fila, int32 Columna);
 	// Selecciona una ficha para realizar un movimiento
 	bool Seleccionar(AMastergoalFicha* Ficha);
-	// Verifica que sea obligatorio el movimiento de una ficha hacia la pelota
-	//bool AMastergoalTablero::NecesidadRoturaInfluencia();
+	// Obtiene el jugador que realizó el pase
+	class AMastergoalFicha* ObtenerFichaPase(int Fila, int Columna);
 	// Reinicia los estados de la partida, manteniendo los goles
 	void Reiniciar(int32 Turno);
 	// Termina el juego
 	void TerminarJuego(bool Invalido);
-	// Obtiene el jugador que realizó el pase
-	class AMastergoalFicha* ObtenerFichaPase(int Fila, int Columna);
 
 	/// Interfaz AActor
 	// Llamado cuando inicia el juego o se crea la instancia

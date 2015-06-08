@@ -10,4 +10,6 @@ AMastergoalPlayerController::AMastergoalPlayerController(const FObjectInitialize
 	bEnableClickEvents = true;
 	bEnableTouchEvents = true;
 	DefaultMouseCursor = EMouseCursor::Crosshairs;
+
+	
 }

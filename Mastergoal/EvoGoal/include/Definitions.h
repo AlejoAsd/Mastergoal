@@ -56,7 +56,7 @@ using namespace std;
 #define DRAW_SCORE 1.0f
 
 // Máximo valor posible para un estado (gol)
-#define INFINITY 200000.0f
+#define EVOGOAL_INFINITY 200000.0f
 
 // Mínimo valor posible para un peso
 #define MIN_WEIGHT -100.0f
@@ -102,20 +102,20 @@ using namespace std;
 #define GAID_SAMPLE_TOUR_GA 201
 #define GAID_SAMPLE_SCALING 202
 
-#ifndef max
-#define max(a,b)            (((a) > (b)) ? (a) : (b))
+#ifndef MAX
+#define MAX(a,b)            (((a) > (b)) ? (a) : (b))
 #endif
 
-#ifndef min
-#define min(a,b)            (((a) < (b)) ? (a) : (b))
+#ifndef MIN
+#define MIN(a,b)            (((a) < (b)) ? (a) : (b))
 #endif
 
-#ifndef Abs
-#define Abs(a) ((a) >= 0 ? (a) : (-(a)))
+#ifndef ABS
+#define ABS(a) ((a) >= 0 ? (a) : (-(a)))
 #endif
 
-#ifndef Swap
-#define Swap(Type, a, b) { Type aux = a; a = b; b = aux; }
+#ifndef SWAP
+#define SWAP(Type, a, b) { Type aux = a; a = b; b = aux; }
 #endif
 
 void WriteConfig();

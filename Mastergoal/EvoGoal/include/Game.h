@@ -30,7 +30,10 @@ namespace Common
 		int DoPlay();
 
 		// Desarrolla el juego completo, hasta llegar a MAX_PLAYS o que uno de los agentes meta gol
-		void DoGame();	
+		void DoGame();
+
+		// Retorna la jugada actual
+		inline Play GetPlay() { return *this->plays[this->nPlays]; }
 
 		// Retorna un puntero al vencedor, NULL si hay empate
 		Agent* GetWinner();

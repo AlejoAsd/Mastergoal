@@ -48,7 +48,7 @@ namespace Common
 		bool Equals(const Board& board) const;
 
 		// Retorna true si la casilla está vacía
-		inline bool Board::IsEmpty(int row, int col) const
+		inline bool IsEmpty(int row, int col) const
 		{
 			if (this->ball->GetRow() == row && this->ball->GetCol() == col)
 				return false;

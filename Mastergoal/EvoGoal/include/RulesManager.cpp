@@ -147,18 +147,18 @@ namespace Utils
 		rowAfter = movement->GetSquareAfter()->GetRow();
 
 		/* El jugador se puede mover hasta 2 casillas */
-		if(abs(colBefore-colAfter)>2 || abs(rowBefore-rowAfter)>2) 
+		if(ABS(colBefore-colAfter)>2 || ABS(rowBefore-rowAfter)>2) 
 			return false; 
 
 		/* El jugador no puede saltar sobre ninguna ficha */
 		if(colBefore == colAfter) //si se mueve hacia la derecha o hacia la izquierda (avanza o retrocede)
 		{					
-			if((rowAfter>rowBefore) && (abs(rowAfter-rowBefore) != 1))	//si se mueve hacia la derecha 2 casillas
+			if((rowAfter>rowBefore) && (ABS(rowAfter-rowBefore) != 1))	//si se mueve hacia la derecha 2 casillas
 			{
 				if(IsPieceInSquare(board, colBefore,rowAfter-1)) //si hay alguna pieza en esa casilla intermedia
 					return false; //movimiento no valido
 			}
-			else if((rowBefore>rowAfter) && (abs(rowAfter-rowBefore) != 1)) //si se mueve hacia la izquierda 2 casillas
+			else if((rowBefore>rowAfter) && (ABS(rowAfter-rowBefore) != 1)) //si se mueve hacia la izquierda 2 casillas
 			{
 				if(IsPieceInSquare(board, colBefore,rowAfter+1)) 
 					return false;
@@ -166,12 +166,12 @@ namespace Utils
 		}
 		else if(rowBefore == rowAfter) //si se mueve hacia arriba o hacia abajo (hacia los costados)
 		{
-			if((colAfter > colBefore) && (abs(colAfter-colBefore)!=1)) //si se mueve hacia abajo 2 casillas
+			if((colAfter > colBefore) && (ABS(colAfter-colBefore)!=1)) //si se mueve hacia abajo 2 casillas
 			{
 				if(IsPieceInSquare(board, colAfter-1,rowBefore)) 
 					return false;
 			}
-			else if((colBefore > colAfter) && (abs(colAfter-colBefore)!=1)) //si se mueve hacia arriba 2 casillas
+			else if((colBefore > colAfter) && (ABS(colAfter-colBefore)!=1)) //si se mueve hacia arriba 2 casillas
 			{
 				if(IsPieceInSquare(board, colAfter+1,rowBefore)) 
 					return false;
@@ -180,10 +180,10 @@ namespace Utils
 		else //si se mueve en diagonal
 		{	
 			/* Movimiento en L no es valido */
-			if(abs(colBefore-colAfter) != abs(rowBefore-rowAfter)) //movimiento diagonal, diferencias entre i's y j's iguales
+			if(ABS(colBefore-colAfter) != ABS(rowBefore-rowAfter)) //movimiento diagonal, diferencias entre i's y j's iguales
 				return false;
 
-			if(abs(colBefore-colAfter)!=1) //si se mueve 2 casillas, no 1
+			if(ABS(colBefore-colAfter)!=1) //si se mueve 2 casillas, no 1
 			{
 				if(colBefore>colAfter && rowBefore<rowAfter) //hacia arriba der
 				{
@@ -508,7 +508,7 @@ namespace Utils
 		}
 
 		/* La pelota no se puede mover mas de 4 casillas */
-		if(abs(colBefore-colAfter)>4 || abs(rowBefore-rowAfter)>4) 
+		if(ABS(colBefore-colAfter)>4 || ABS(rowBefore-rowAfter)>4) 
 		{
 			response = INVALID_MOVE; 
 			return false;
@@ -516,7 +516,7 @@ namespace Utils
 
 		/* Movimiento en L no valido */
 		if(colBefore!=colAfter && rowBefore!=rowAfter) //si no mueve en linea recta
-			if(abs(colBefore-colAfter) != abs(rowBefore-rowAfter)) //movimiento diagonal, diferencias entre i's y j's iguales
+			if(ABS(colBefore-colAfter) != ABS(rowBefore-rowAfter)) //movimiento diagonal, diferencias entre i's y j's iguales
 			{
 				response = INVALID_MOVE; 	
 				return false;

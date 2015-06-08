@@ -1,0 +1,2 @@
+CALL "D:/Program Files/Epic Games/4.7/Engine/Binaries/DotNET/UnrealBuildTool.exe" Mastergoal Development Win64 -project="C:/Users/Asd/Documents/Unreal Projects/Mastergoal/Mastergoal/Mastergoal.uproject" -rocket -editorrecompile -progress
+PAUSE

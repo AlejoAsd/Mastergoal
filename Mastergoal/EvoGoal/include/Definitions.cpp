@@ -31,7 +31,7 @@ void WriteConfig()
 	file << "WIN_SCORE " << WIN_SCORE << endl;
 	file << "DRAW_SCORE " << DRAW_SCORE << endl;
 	file << "MINIMAX_DEPTH " << MINIMAX_DEPTH << endl;
-	file << "INFINITY " << INFINITY << endl;
+	file << "EVOGOAL_INFINITY " << EVOGOAL_INFINITY << endl;
 	file << "MIN_WEIGHT " << MIN_WEIGHT << endl;
 	file << "MAX_WEIGHT " << MAX_WEIGHT << endl;
 	file.close();

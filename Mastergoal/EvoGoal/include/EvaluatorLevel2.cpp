@@ -47,7 +47,7 @@ namespace AI
 
 			// Se suma la menor distancia a la pelota de manera que cuando sea gol cantado 
 			// del oponente, por lo menos el jugador se acerque a la pelota
-			return -INFINITY - minDistToBall;
+			return -EVOGOAL_INFINITY - minDistToBall;
 		}
 
 		CalculateFeatures(state);

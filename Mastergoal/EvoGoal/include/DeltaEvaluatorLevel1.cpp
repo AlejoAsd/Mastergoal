@@ -37,7 +37,7 @@ namespace AI
 		// Se verifica si es gol del que acaba de jugar
 		if (IsGoal(*after.GetBoard(), before.GetTurn()))
 		{
-			return INFINITY;
+			return EVOGOAL_INFINITY;
 		}
 
 		CalculateDeltas(before, after, play);
