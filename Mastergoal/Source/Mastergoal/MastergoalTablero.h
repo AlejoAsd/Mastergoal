@@ -67,7 +67,7 @@ class MASTERGOAL_API AMastergoalTablero : public AActor
 	UPROPERTY(Category = LineasTablero, VisibleDefaultsOnly, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	class UStaticMeshComponent* LineasTablero;
 
-	UPROPERTY(Category = Seleccion, VisibleDefaultsOnly, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(Replicated, Category = Seleccion, VisibleDefaultsOnly, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	class UStaticMeshComponent* Seleccion;
 
 public:	
@@ -220,21 +220,24 @@ public:
 	void CambiarTurno();
 	// Modifica la influencia de las casillas adyacentes a la ficha.
 	void ModificarInfluencia(AMastergoalFicha* Ficha, bool Inverso);
+	// Valida un posible movimiento
+	bool ValidarMovimiento(AMastergoalFicha* Ficha, int32 Fila, int32 Columna);
 	// Intenta mover una ficha del tablero. Devuelve true en caso de haberse realizado el movimiento. Utilizado por el servidor.
 	bool MoverFicha(AMastergoalFicha* Ficha, int32 Fila, int32 Columna);
 	// Versión RPC del método MoverFicha(). Utilizado por clientes.
 	void ClientMoverFicha(AMastergoalFicha* Ficha, int32 Fila, int32 Columna);
-
-	UFUNCTION(reliable, server, WithValidation)
+	UFUNCTION(Reliable, Server, WithValidation)
 	void ServerMoverFicha(AMastergoalFicha* Ficha, int32 Fila, int32 Columna);
 	virtual bool ServerMoverFicha_Validate(AMastergoalFicha* Ficha, int32 Fila, int32 Columna);
 	virtual void ServerMoverFicha_Implementation(AMastergoalFicha* Ficha, int32 Fila, int32 Columna);
-	// Valida un posible movimiento
-	bool ValidarMovimiento(AMastergoalFicha* Ficha, int32 Fila, int32 Columna);
-	// Selecciona una ficha para realizar un movimiento. Utilizado por el servidor.
+	// Selecciona una ficha para realizar un movimiento.
 	bool Seleccionar(AMastergoalFicha* Ficha);
 	// Versión RPC del método Seleccionar(). Utilizado por clientes.
-	bool ServerSeleccionar(AMastergoalFicha* Ficha);
+	void ClientSeleccionar(AMastergoalFicha* Ficha);
+	UFUNCTION(Reliable, Server, WithValidation)
+	void ServerSeleccionar(AMastergoalFicha* Ficha);
+	virtual bool ServerSeleccionar_Validate(AMastergoalFicha* Ficha);
+	virtual void ServerSeleccionar_Implementation(AMastergoalFicha* Ficha);
 	// Obtiene el jugador que realizó el pase
 	class AMastergoalFicha* ObtenerFichaPase(int32 Fila, int32 Columna);
 	// Reinicia los estados de la partida, manteniendo los goles

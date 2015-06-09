@@ -3,13 +3,21 @@
 #include "Mastergoal.h"
 #include "MastergoalTablero.h"
 #include "MastergoalCasilla.h"
-#include "MastergoalFicha.h"
+#include "MastergoalFichaPelota.h"
+#include "MastergoalFichaBlanco.h"
+#include "MastergoalFichaBlancoArquero.h"
+#include "MastergoalFichaRojo.h"
+#include "MastergoalFichaRojoArquero.h"
 #include "MastergoalGameInstance.h"
+#include "MastergoalGameMode.h"
 #include "MastergoalAI.h"
+#include "MastergoalPlayerController.h"
 #include "Mensaje.h"
 #include "Score.h"
 #include "CountDown.h"
 #include "MemoryBase.h"
+#include "EngineLogs.h"
+#include "UnrealNetwork.h"
 #include <iostream>
 
 // Define los valores por defecto del objeto
@@ -57,6 +65,21 @@ AMastergoalTablero::AMastergoalTablero(const FObjectInitializer& ObjectInitializ
 	Seleccion->AttachTo(Root);
 	Seleccion->CastShadow = false;
 	Seleccion->bGenerateOverlapEvents = false;
+	Seleccion->SetRelativeLocation(FVector(0.f, 0.f, 0.f));
+	Seleccion->bVisible = false;
+	Seleccion->SetMobility(EComponentMobility::Movable);
+
+	UStaticMesh* MeshToUse = Cast<UStaticMesh>(StaticLoadObject(UStaticMesh::StaticClass(), NULL, TEXT("/Game/Mastergoal/Modelos/Seleccion.Seleccion")));
+	if (MeshToUse && Seleccion)
+	{
+		Seleccion->SetStaticMesh(MeshToUse);
+	}
+
+	UMaterialInstance* MaterialToUse = Cast<UMaterialInstance>(StaticLoadObject(UMaterialInstance::StaticClass(), NULL, TEXT("/Game/Mastergoal/Materiales/M_Basic_Floor_Blue.M_Basic_Floor_Blue")));
+	if (MaterialToUse && Seleccion)
+	{
+		Seleccion->SetMaterial(0, MaterialToUse);
+	}
 
 	// Valores por defecto
 	ContraPC = true;
@@ -77,6 +100,13 @@ AMastergoalTablero::AMastergoalTablero(const FObjectInitializer& ObjectInitializ
 	FichasEnMovimiento = 0;
 	FichaSeleccionada = nullptr;
 	Pelota = nullptr;
+}
+
+void AMastergoalTablero::GetLifetimeReplicatedProps(TArray<FLifetimeProperty> & OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(AMastergoalTablero, Seleccion);
 }
 
 // Función llamada cuando inicia el juego o se crea la instancia. 
@@ -118,6 +148,18 @@ void AMastergoalTablero::BeginPlay()
 
 	Casilla->Destroy();
 
+	UStaticMesh* MeshToUse = Cast<UStaticMesh>(StaticLoadObject(UStaticMesh::StaticClass(), NULL, TEXT("/Game/Mastergoal/Modelos/Seleccion.Seleccion")));
+	if (MeshToUse && Seleccion)
+	{
+		Seleccion->SetStaticMesh(MeshToUse);
+	}
+
+	UMaterialInstance* MaterialToUse = Cast<UMaterialInstance>(StaticLoadObject(UMaterialInstance::StaticClass(), NULL, TEXT("/Game/Mastergoal/Materiales/M_Basic_Floor_Blue.M_Basic_Floor_Blue")));
+	if (MaterialToUse && Seleccion)
+	{
+		Seleccion->SetMaterial(0, MaterialToUse);
+	}
+
 	// Crear las fichas y casillas
 	for (int32 i = 0; i < Alto; i++)
 	{
@@ -126,7 +168,7 @@ void AMastergoalTablero::BeginPlay()
 			Casilla = CrearCasilla(i, j);
 
 			// Crear la ficha correspondiente a la casilla en caso que corresponda
-			if (FichaLista[i][j])
+			if (HasAuthority() && FichaLista[i][j])
 			{
 				Casilla->Ficha = CrearFicha(FichaLista[i][j], i, j);
 			}
@@ -154,19 +196,6 @@ void AMastergoalTablero::BeginPlay()
 	{
 		UE_LOG(LogTemp, Warning, TEXT("No se pudieron cargar las lineas del tablero. El modelo o el material no estan definidos."))
 	}
-
-	// Crear selección
-	if (SeleccionMesh != nullptr && SeleccionMaterial != nullptr)
-	{
-		Seleccion->SetStaticMesh(SeleccionMesh);
-		Seleccion->SetMaterial(0, SeleccionMaterial);
-		Seleccion->SetRelativeLocation(FVector(0.f, 0.f, 0.f));
-		Seleccion->bVisible = false;
-	}
-	else
-	{
-		UE_LOG(LogTemp, Warning, TEXT("No se pudo cargar el selector. El modelo o el material no estan definidos."))
-	}
 	
 	/// Inicializar el agente AI
 	if (ContraPC)
@@ -174,16 +203,8 @@ void AMastergoalTablero::BeginPlay()
 		AI = new MastergoalAI(this->Nivel);
 	}
 
-	/// Inicializar la UI
-	// Iniciar el contador de turno
-	//Temporizador->Inicializar(this);
-	//Temporizador->Start(TiempoTurno);
-
 	// Mostrar el turno
 	IndicadorTurno->AddScore(TEXT("Turno Blancas"), true);
-
-	// Limpiar el mensaje inicial
-	Mensajes->AddScore(TEXT(""), true);
 }
 
 void AMastergoalTablero::BeginDestroy()
@@ -261,7 +282,26 @@ class AMastergoalCasilla* AMastergoalTablero::CrearCasilla(int32 Fila, int32 Col
 class AMastergoalFicha* AMastergoalTablero::CrearFicha(int32 Tipo, int32 Fila, int32 Columna)
 {	
 	// Crear la ficha
-	AMastergoalFicha* Ficha = GetWorld()->SpawnActor<AMastergoalFicha>(FVector(0, 0, 0), FRotator(0, 0, 0));
+	AMastergoalFicha* Ficha = nullptr; 
+	switch (Tipo)
+	{
+	case PELOTA: 
+		Ficha = GetWorld()->SpawnActor<AMastergoalFichaPelota>(FVector(0, 0, 0), FRotator(0, 0, 0)); 
+		break;
+	case BLANCO_FICHA: 
+		Ficha = GetWorld()->SpawnActor<AMastergoalFichaBlanco>(FVector(0, 0, 0), FRotator(0, 0, 0));
+		break;
+	case BLANCO_ARQUERO_EN_AREA: 
+	case BLANCO_ARQUERO_FUERA_AREA:
+		Ficha = GetWorld()->SpawnActor<AMastergoalFichaBlancoArquero>(FVector(0, 0, 0), FRotator(0, 0, 0));
+		break;
+	case ROJO_FICHA: Ficha = GetWorld()->SpawnActor<AMastergoalFichaRojo>(FVector(0, 0, 0), FRotator(0, 0, 0));
+		break;
+	case ROJO_ARQUERO_EN_AREA:
+	case ROJO_ARQUERO_FUERA_AREA: 
+		Ficha = GetWorld()->SpawnActor<AMastergoalFichaRojoArquero>(FVector(0, 0, 0), FRotator(0, 0, 0));
+		break;
+	}
 
 	if (Ficha != nullptr)
 	{
@@ -354,10 +394,11 @@ TipoFicha** AMastergoalTablero::FichaObtenerLista()
 
 	// Asignar los valores
 	Fichas[7][5] = PELOTA;
-	
+
 	UMastergoalGameInstance* GameInstance = Cast<UMastergoalGameInstance>(GetGameInstance());
 	if (GameInstance && GameInstance->Nivel)
 		Nivel = GameInstance->Nivel;
+	
 	if (Nivel == 1)
 	{
 		// Blanco
@@ -420,14 +461,18 @@ void AMastergoalTablero::PasarTurno()
 			{
 				GolesRojo++;
 				UE_LOG(LogTemp, Warning, TEXT("Gol de las rojas"));
-				Mensajes->AddScore(TEXT("Gol de las rojas"), false);
+				AMastergoalPlayerController* PlayerController = Cast<AMastergoalPlayerController>(GetWorld()->GetFirstPlayerController());
+				Mensaje = FString(TEXT("Gol de la rojas"));
+				PlayerController->ActualizarMensaje(Mensaje, false);
 				Contador->AddScoreRojo();
 			}
 			else if (Casillas[Pelota->Fila][Pelota->Columna]->Equipo == ROJO)
 			{
 				GolesBlanco++;
 				UE_LOG(LogTemp, Warning, TEXT("Gol de las blancas"));
-				Mensajes->AddScore(TEXT("Gol de las blancas"), false);
+				AMastergoalPlayerController* PlayerController = Cast<AMastergoalPlayerController>(GetWorld()->GetFirstPlayerController());
+				Mensaje = FString(TEXT("Gol de las blancas"));
+				PlayerController->ActualizarMensaje(Mensaje, false);
 				Contador->AddScoreBlanco();
 			}
 
@@ -440,6 +485,7 @@ void AMastergoalTablero::PasarTurno()
 			else
 			{
 				TerminarJuego(false);
+				return;
 			}
 		}
 		// Si el equipo tiene influencia sobre la pelota, debe moverla
@@ -471,13 +517,14 @@ void AMastergoalTablero::PasarTurno()
 			if (CantidadTurnos == 51)
 			{
 				TerminarJuego(false);
+				return;
 			}
 
 			Estado = JUEGO;
 		}
 
 		// Si se está contra la PC y es su turno realizar su jugada
-		if (FichasEnMovimiento == 0 && ContraPC && Turno == ROJO)
+		if (Estado != FIN && FichasEnMovimiento == 0 && ContraPC && Turno == ROJO)
 		{
 			// Movimiento de Jugador
 			if (Estado == JUEGO)
@@ -747,6 +794,7 @@ void AMastergoalTablero::ServerMoverFicha_Implementation(AMastergoalFicha* Ficha
 bool AMastergoalTablero::ValidarMovimiento(AMastergoalFicha* Ficha, int32 Fila, int32 Columna)
 {
 	const int32 ArcoOffset = (Ancho - AnchoArco) / 2;
+	AMastergoalPlayerController* PlayerController = Cast<AMastergoalPlayerController>(GetWorld()->GetFirstPlayerController());
 
 	/// Validar destino
 	// Asegurar que esté dentro del tablero. Los tableros cuentan como fuera del arco excepto en el caso de la pelota.
@@ -755,7 +803,7 @@ bool AMastergoalTablero::ValidarMovimiento(AMastergoalFicha* Ficha, int32 Fila, 
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Invalid destination"));
 		Mensaje = FString(TEXT("Casilla invalida"));
-		Mensajes->AddScore(Mensaje, false);
+		PlayerController->ActualizarMensaje(Mensaje, false);
 		return false;
 	}
 
@@ -766,7 +814,7 @@ bool AMastergoalTablero::ValidarMovimiento(AMastergoalFicha* Ficha, int32 Fila, 
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Players cannot enter the goal"));
 		Mensaje = FString(TEXT("Los jugadores no pueden entrar al arco"));
-		Mensajes->AddScore(Mensaje, false);
+		PlayerController->ActualizarMensaje(Mensaje, false);
 		return false;
 	}
 
@@ -777,7 +825,7 @@ bool AMastergoalTablero::ValidarMovimiento(AMastergoalFicha* Ficha, int32 Fila, 
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Cannot move to own corner"));
 		Mensaje = FString(TEXT("No se puede mover a un corner propio"));
-		Mensajes->AddScore(Mensaje, false);
+		PlayerController->ActualizarMensaje(Mensaje, false);
 		return false;
 	}
 
@@ -786,7 +834,7 @@ bool AMastergoalTablero::ValidarMovimiento(AMastergoalFicha* Ficha, int32 Fila, 
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Cannot move to enemy influenced cell"));
 		Mensaje = FString(TEXT("La pelota no puede terminar en posesion del oponente"));
-		Mensajes->AddScore(Mensaje, false);
+		PlayerController->ActualizarMensaje(Mensaje, false);
 		return false;
 	}
 
@@ -797,7 +845,7 @@ bool AMastergoalTablero::ValidarMovimiento(AMastergoalFicha* Ficha, int32 Fila, 
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Already made 3 passes, must end in a neutral cell"));
 		Mensaje = FString(TEXT("Solo queda un pase disponible. La pelota debe quedar en una casilla neutra"));
-		Mensajes->AddScore(Mensaje, false);
+		PlayerController->ActualizarMensaje(Mensaje, false);
 		return false;
 	}
 
@@ -808,7 +856,7 @@ bool AMastergoalTablero::ValidarMovimiento(AMastergoalFicha* Ficha, int32 Fila, 
 	{
 		UE_LOG(LogTemp, Warning, TEXT("The ball cannot end in the opening team's side of the field"));
 		Mensaje = FString(TEXT("La pelota no puede terminar del lado del equipo que empieza"));
-		Mensajes->AddScore(Mensaje, false);
+		PlayerController->ActualizarMensaje(Mensaje, false);
 		return false;
 	}
 
@@ -826,7 +874,7 @@ bool AMastergoalTablero::ValidarMovimiento(AMastergoalFicha* Ficha, int32 Fila, 
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Movement is not straight"));
 		Mensaje = FString(TEXT("El movimiento debe ser recto"));
-		Mensajes->AddScore(Mensaje, false);
+		PlayerController->ActualizarMensaje(Mensaje, false);
 		return false;
 	}
 
@@ -836,7 +884,7 @@ bool AMastergoalTablero::ValidarMovimiento(AMastergoalFicha* Ficha, int32 Fila, 
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Not enough movements"));
 		Mensaje = FString(TEXT("No se puede desplazar esa cantidad de casillas"));
-		Mensajes->AddScore(Mensaje, false);
+		PlayerController->ActualizarMensaje(Mensaje, false);
 		return false;
 	}
 
@@ -866,7 +914,7 @@ bool AMastergoalTablero::ValidarMovimiento(AMastergoalFicha* Ficha, int32 Fila, 
 		{
 			UE_LOG(LogTemp, Warning, TEXT("ET:%d Not an empty cell at the end"), EstadoTablero[Fila][Columna]);
 			Mensaje = FString(TEXT("Se debe mover a una casilla libre"));
-			Mensajes->AddScore(Mensaje, false);
+			PlayerController->ActualizarMensaje(Mensaje, false);
 			return false;
 		}
 	}
@@ -888,7 +936,7 @@ bool AMastergoalTablero::ValidarMovimiento(AMastergoalFicha* Ficha, int32 Fila, 
 		{
 			UE_LOG(LogTemp, Warning, TEXT("(%d,%d) T:%d G:%d | (%d,%d) ET:%d Existing piece at an adjacent cell"), Ficha->Fila, Ficha->Columna, Ficha->Tipo, Ficha->EsArquero(false), Fila, Columna, EstadoTablero[Fila][Columna]);
 			Mensaje = FString(TEXT("Una casilla adyacente no se encuentra libre"));
-			Mensajes->AddScore(Mensaje, false);
+			Cast<AMastergoalPlayerController>(GetWorld()->GetFirstPlayerController())->ActualizarMensaje(Mensaje, false);
 			return false;
 		}
 	}
@@ -903,7 +951,7 @@ bool AMastergoalTablero::ValidarMovimiento(AMastergoalFicha* Ficha, int32 Fila, 
 		{
 			UE_LOG(LogTemp, Warning, TEXT("Autopasses are not allowed"));
 			Mensaje = FString(TEXT("No se puede hacer un autopase"));
-			Mensajes->AddScore(Mensaje, false);
+			PlayerController->ActualizarMensaje(Mensaje, false);
 
 			return false;
 		}
@@ -922,7 +970,7 @@ bool AMastergoalTablero::ValidarMovimiento(AMastergoalFicha* Ficha, int32 Fila, 
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Piece %d,%d cannot be selected, influence would break"), Ficha->Fila, Ficha->Columna);
 		Mensaje = FString(TEXT("No se puede perder la neutralidad de la pelota"));
-		Mensajes->AddScore(Mensaje, false);
+		PlayerController->ActualizarMensaje(Mensaje, false);
 
 		return false;
 	}
@@ -969,7 +1017,7 @@ bool AMastergoalTablero::ValidarMovimiento(AMastergoalFicha* Ficha, int32 Fila, 
 				{
 					UE_LOG(LogTemp, Warning, TEXT("Goalie Block Tipo:%d ET:%d PELOTA:%d BAEA:%d RAEA:%d"), Ficha->Tipo, EstadoTablero[Fila][Columna], (int32)PELOTA, (int32)BLANCO_ARQUERO_EN_AREA, (int32)ROJO_ARQUERO_EN_AREA);
 					Mensaje = FString(TEXT("El arquero atajaria ese tiro"));
-					Mensajes->AddScore(Mensaje, false);
+					PlayerController->ActualizarMensaje(Mensaje, false);
 					return false;
 				}
 			}
@@ -981,7 +1029,7 @@ bool AMastergoalTablero::ValidarMovimiento(AMastergoalFicha* Ficha, int32 Fila, 
 			{
 				UE_LOG(LogTemp, Warning, TEXT("Cannot go through other pieces"));
 				Mensaje = FString(TEXT("No se puede atravesar a otros jugadores"));
-				Mensajes->AddScore(Mensaje, false);
+				PlayerController->ActualizarMensaje(Mensaje, false);
 				return false;
 			}
 		}
@@ -1037,6 +1085,24 @@ bool AMastergoalTablero::Seleccionar(AMastergoalFicha* Ficha)
 	return FichaSeleccionada != nullptr;
 }
 
+void AMastergoalTablero::ClientSeleccionar(AMastergoalFicha* Ficha)
+{
+	if (Role < ROLE_Authority)
+	{
+		ServerSeleccionar(Ficha);
+	}
+}
+
+bool AMastergoalTablero::ServerSeleccionar_Validate(AMastergoalFicha* Ficha)
+{
+	return true;
+}
+
+void AMastergoalTablero::ServerSeleccionar_Implementation(AMastergoalFicha* Ficha)
+{
+	Seleccionar(Ficha);
+}
+
 void AMastergoalTablero::Reiniciar(int32 Jugador)
 {
 	// Resetear las variables
@@ -1073,19 +1139,25 @@ void AMastergoalTablero::TerminarJuego(bool Invalido)
 	{
 		// UI Empate
 		UE_LOG(LogTemp, Warning, TEXT("Empate"))
-		Mensajes->AddScore(TEXT("Empate..."), false);
+		AMastergoalPlayerController* PlayerController = Cast<AMastergoalPlayerController>(GetWorld()->GetFirstPlayerController());
+		Mensaje = FString(TEXT("Empate..."));
+		PlayerController->ActualizarMensaje(Mensaje, false);
 	}
 	else if (GolesBlanco > GolesRojo)
 	{
 		// UI Ganaste
 		UE_LOG(LogTemp, Warning, TEXT("Ganaron las blancas"))
-		Mensajes->AddScore(TEXT("Ganaron las blancas"), false);
+		AMastergoalPlayerController* PlayerController = Cast<AMastergoalPlayerController>(GetWorld()->GetFirstPlayerController());
+		Mensaje = FString(TEXT("Ganaron las blancas"));
+		PlayerController->ActualizarMensaje(Mensaje, false);
 	}
 	else if (GolesRojo > GolesBlanco)
 	{
 		// UI Perdiste
 		UE_LOG(LogTemp, Warning, TEXT("Ganaron las rojas"))
-		Mensajes->AddScore(TEXT("Ganaron las rojas"), false);
+		AMastergoalPlayerController* PlayerController = Cast<AMastergoalPlayerController>(GetWorld()->GetFirstPlayerController());
+		Mensaje = FString(TEXT("Ganaron las rojas"));
+		PlayerController->ActualizarMensaje(Mensaje, false);
 	}
 	// Definir el juego terminado
 	Estado = FIN;

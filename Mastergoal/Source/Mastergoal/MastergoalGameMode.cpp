@@ -12,4 +12,6 @@ AMastergoalGameMode::AMastergoalGameMode(const FObjectInitializer& ObjectInitial
 	// use our own player controller class
 	PlayerControllerClass = AMastergoalPlayerController::StaticClass();
 	//PlayerStateClass = AMastergoalPlayerState::StaticClass();
+
+	Nivel = 3;
 }

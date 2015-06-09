@@ -10,15 +10,15 @@ class MASTERGOAL_API AMastergoalFicha : public AActor
 {
 	GENERATED_BODY()
 
+public:
 	// Componente base raíz
 	UPROPERTY(Category = Ficha, VisibleDefaultsOnly, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	class USceneComponent* Root;
 
 	// Componente StaticMesh de la casilla
-	UPROPERTY(Category = Modelo, VisibleDefaultsOnly, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(Replicated, Category = Modelo, VisibleDefaultsOnly, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	class UStaticMeshComponent* ComponenteMesh;
-	
-public:	
+
 	// Define los valores por defecto de la instancia
 	AMastergoalFicha(const FObjectInitializer& ObjectInitializer);
 
@@ -60,10 +60,10 @@ public:
 	FVector MovimientoDestino;
 
 	// Modelo (Mesh) de la casilla
-	UPROPERTY(Category = Modelo, VisibleDefaultsOnly, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(Replicated, Category = Modelo, VisibleDefaultsOnly, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	class UStaticMesh* Mesh;
 	// Material del modelo de la casilla
-	UPROPERTY(Category = Modelo, VisibleDefaultsOnly, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	UPROPERTY(Replicated, Category = Modelo, VisibleDefaultsOnly, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	class UMaterialInstance* Material;
 
 	/// Métodos

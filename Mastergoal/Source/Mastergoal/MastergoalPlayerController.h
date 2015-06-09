@@ -13,7 +13,7 @@ public:
 	AMastergoalPlayerController(const FObjectInitializer& ObjectInitializer);
 
 	UFUNCTION(BlueprintImplementableEvent)
-	void ActualizarMensaje(const FString& Mensaje);
+	void ActualizarMensaje(const FString& Mensaje, bool Forever);
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void ActualizarTurno(int32 Turno);

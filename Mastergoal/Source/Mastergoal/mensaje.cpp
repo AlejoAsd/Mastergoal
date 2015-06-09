@@ -21,7 +21,6 @@ AMensaje::AMensaje()
 
 	CountdownTime = 0;
 	Bandera = 0;
-
 }
 
 // Called when the game starts or when spawned

@@ -48,8 +48,5 @@ public:
 	virtual void CountdownHasFinished_Implementation();
 
 	FTimerHandle CountdownTimerHandle;
-
-	
-	
 };
 

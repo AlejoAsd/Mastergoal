@@ -11,4 +11,7 @@ class AMastergoalGameMode : public AGameMode
 
 public:
 	AMastergoalGameMode(const FObjectInitializer& ObjectInitializer);
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Juego)
+	int32 Nivel;
 };

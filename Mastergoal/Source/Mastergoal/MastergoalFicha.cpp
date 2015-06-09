@@ -3,6 +3,8 @@
 #include "Mastergoal.h"
 #include "MastergoalFicha.h"
 #include "MastergoalTablero.h"
+#include "EngineLogs.h"
+#include "UnrealNetwork.h"
 
 
 // Sets default values
@@ -16,15 +18,28 @@ AMastergoalFicha::AMastergoalFicha(const FObjectInitializer& ObjectInitializer)
 	bReplicates = true;
 	bReplicateMovement = true;
 	bAlwaysRelevant = true;
-	bNetLoadOnClient = true;
 
 	// Crear el componente base y definirlo como la raíz
 	Root = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
 	RootComponent = Root;
 
 	ComponenteMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
+	ComponenteMesh->SetRelativeScale3D(FVector(1.f, 1.f, 1.f));
+	ComponenteMesh->SetRelativeLocation(FVector(0.f, 0.f, 0.f));
+	ComponenteMesh->AttachTo(Root);
+	ComponenteMesh->OnClicked.AddDynamic(this, &AMastergoalFicha::OnClick);
+	ComponenteMesh->OnInputTouchBegin.AddDynamic(this, &AMastergoalFicha::OnTouch);
 
 	MovimientoSaltar = false;
+}
+
+void AMastergoalFicha::GetLifetimeReplicatedProps(TArray<FLifetimeProperty> & OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(AMastergoalFicha, ComponenteMesh);
+	DOREPLIFETIME(AMastergoalFicha, Mesh);
+	DOREPLIFETIME(AMastergoalFicha, Material);
 }
 
 void AMastergoalFicha::Inicializar(class AMastergoalTablero* Tablero, int32 Equipo, int32 Fila, int32 Columna,
@@ -53,13 +68,6 @@ void AMastergoalFicha::Inicializar(class AMastergoalTablero* Tablero, int32 Equi
 
 	this->Mesh = Mesh;
 	this->Material = Material;
-
-	ActualizarComponenteMesh();
-	ComponenteMesh->SetRelativeScale3D(FVector(1.f, 1.f, 1.f));
-	ComponenteMesh->SetRelativeLocation(FVector(0.f, 0.f, 0.f));
-	ComponenteMesh->AttachTo(Root);
-	ComponenteMesh->OnClicked.AddDynamic(this, &AMastergoalFicha::OnClick);
-	ComponenteMesh->OnInputTouchBegin.AddDynamic(this, &AMastergoalFicha::OnTouch);
 
 	// Registrar posición en el tablero
 	this->Tablero->EstadoTablero[Fila][Columna] = Tipo;
