@@ -92,6 +92,16 @@ public:
 	UPROPERTY(Category = UI, EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	class AScore* Contador;
 
+	// Mensajes
+	UPROPERTY(Category = UI, EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	FString Mensaje;
+
+	/// Multiplayer
+	UPROPERTY(Category = Multiplayer, EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	bool Multiplayer;
+	UPROPERTY(Category = Multiplayer, EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	int32 JugadorJuega;
+
 	/// Referencias del tablero
 	// Agente AI
 	class MastergoalAI* AI;
@@ -210,14 +220,23 @@ public:
 	void CambiarTurno();
 	// Modifica la influencia de las casillas adyacentes a la ficha.
 	void ModificarInfluencia(AMastergoalFicha* Ficha, bool Inverso);
-	// Intenta mover una ficha del tablero. Devuelve true en caso de haberse realizado el movimiento.
+	// Intenta mover una ficha del tablero. Devuelve true en caso de haberse realizado el movimiento. Utilizado por el servidor.
 	bool MoverFicha(AMastergoalFicha* Ficha, int32 Fila, int32 Columna);
+	// Versión RPC del método MoverFicha(). Utilizado por clientes.
+	void ClientMoverFicha(AMastergoalFicha* Ficha, int32 Fila, int32 Columna);
+
+	UFUNCTION(reliable, server, WithValidation)
+	void ServerMoverFicha(AMastergoalFicha* Ficha, int32 Fila, int32 Columna);
+	virtual bool ServerMoverFicha_Validate(AMastergoalFicha* Ficha, int32 Fila, int32 Columna);
+	virtual void ServerMoverFicha_Implementation(AMastergoalFicha* Ficha, int32 Fila, int32 Columna);
 	// Valida un posible movimiento
 	bool ValidarMovimiento(AMastergoalFicha* Ficha, int32 Fila, int32 Columna);
-	// Selecciona una ficha para realizar un movimiento
+	// Selecciona una ficha para realizar un movimiento. Utilizado por el servidor.
 	bool Seleccionar(AMastergoalFicha* Ficha);
+	// Versión RPC del método Seleccionar(). Utilizado por clientes.
+	bool ServerSeleccionar(AMastergoalFicha* Ficha);
 	// Obtiene el jugador que realizó el pase
-	class AMastergoalFicha* ObtenerFichaPase(int Fila, int Columna);
+	class AMastergoalFicha* ObtenerFichaPase(int32 Fila, int32 Columna);
 	// Reinicia los estados de la partida, manteniendo los goles
 	void Reiniciar(int32 Turno);
 	// Termina el juego

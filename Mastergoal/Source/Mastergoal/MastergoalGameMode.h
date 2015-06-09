@@ -12,6 +12,3 @@ class AMastergoalGameMode : public AGameMode
 public:
 	AMastergoalGameMode(const FObjectInitializer& ObjectInitializer);
 };
-
-
-

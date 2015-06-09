@@ -12,6 +12,12 @@ AMastergoalFicha::AMastergoalFicha(const FObjectInitializer& ObjectInitializer)
 	// Activar la función de update
 	PrimaryActorTick.bCanEverTick = true;
 
+	// Opciones de replicación
+	bReplicates = true;
+	bReplicateMovement = true;
+	bAlwaysRelevant = true;
+	bNetLoadOnClient = true;
+
 	// Crear el componente base y definirlo como la raíz
 	Root = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
 	RootComponent = Root;

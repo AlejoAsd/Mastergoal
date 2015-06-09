@@ -34,6 +34,7 @@ AMastergoalTablero::AMastergoalTablero(const FObjectInitializer& ObjectInitializ
 	CamaraBlanco->AttachTo(BrazoCamara, USpringArmComponent::SocketName);
 	CamaraBlanco->bUsePawnControlRotation = false;
 	CamaraBlanco->bConstrainAspectRatio = true;
+	CamaraBlanco->bAutoActivate = true;
 	CamaraBlanco->AspectRatio = 0.5625f;
 	CamaraBlanco->FieldOfView = 30;
 
@@ -500,7 +501,7 @@ void AMastergoalTablero::PasarTurno()
 /*
  * Obtiene la ficha que realizó el pase. En caso de haber múltiples jugadores posibles, se retorna nullptr.
  */
-class AMastergoalFicha* AMastergoalTablero::ObtenerFichaPase(int Fila, int Columna)
+class AMastergoalFicha* AMastergoalTablero::ObtenerFichaPase(int32 Fila, int32 Columna)
 {
 	AMastergoalFicha* Ficha = nullptr;
 
@@ -720,6 +721,24 @@ bool AMastergoalTablero::MoverFicha(AMastergoalFicha* Ficha, int32 Fila, int32 C
 	return Valido;
 }
 
+void AMastergoalTablero::ClientMoverFicha(AMastergoalFicha* Ficha, int32 Fila, int32 Columna)
+{
+	if (Role < ROLE_Authority)
+	{
+		ServerMoverFicha(Ficha, Fila, Columna);
+	}
+}
+
+bool AMastergoalTablero::ServerMoverFicha_Validate(AMastergoalFicha* Ficha, int32 Fila, int32 Columna)
+{
+	return true;
+}
+
+void AMastergoalTablero::ServerMoverFicha_Implementation(AMastergoalFicha* Ficha, int32 Fila, int32 Columna)
+{
+	MoverFicha(Ficha, Fila, Columna);
+}
+
 /*
  * Valida que un movimiento sea posible. 
  * No toma en cuenta situaciones especiales como el hecho que la ficha sea la pelota,
@@ -734,8 +753,9 @@ bool AMastergoalTablero::ValidarMovimiento(AMastergoalFicha* Ficha, int32 Fila, 
 	if (Fila < 0 || Fila >= Alto ||
 		Columna < 0 || Columna >= Ancho)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Invalid destination"))
-		Mensajes->AddScore(TEXT("Casilla invalida"), false);
+		UE_LOG(LogTemp, Warning, TEXT("Invalid destination"));
+		Mensaje = FString(TEXT("Casilla invalida"));
+		Mensajes->AddScore(Mensaje, false);
 		return false;
 	}
 
@@ -744,8 +764,9 @@ bool AMastergoalTablero::ValidarMovimiento(AMastergoalFicha* Ficha, int32 Fila, 
 		(Fila == 0 || Fila == (Alto - 1)) &&
 		(Columna >= ArcoOffset || Columna <= ArcoOffset + AnchoArco))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Players cannot enter the goal"))
-		Mensajes->AddScore(TEXT("Los jugadores no pueden entrar al arco"), false);
+		UE_LOG(LogTemp, Warning, TEXT("Players cannot enter the goal"));
+		Mensaje = FString(TEXT("Los jugadores no pueden entrar al arco"));
+		Mensajes->AddScore(Mensaje, false);
 		return false;
 	}
 
@@ -754,16 +775,18 @@ bool AMastergoalTablero::ValidarMovimiento(AMastergoalFicha* Ficha, int32 Fila, 
 		(Ficha->Tipo == PELOTA && Turno == Casillas[Fila][Columna]->Equipo)) &&
 		Casillas[Fila][Columna]->Corner)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Cannot move to own corner"))
-		Mensajes->AddScore(TEXT("No se puede mover a un corner propio"), false);
+		UE_LOG(LogTemp, Warning, TEXT("Cannot move to own corner"));
+		Mensaje = FString(TEXT("No se puede mover a un corner propio"));
+		Mensajes->AddScore(Mensaje, false);
 		return false;
 	}
 
 	// Asegurar que al mover la pelota la casilla pertenezca al equipo de turno
 	if (Ficha->Tipo == PELOTA && !Casillas[Fila][Columna]->TieneInfluencia(Turno, false))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Cannot move to enemy influenced cell"))
-		Mensajes->AddScore(TEXT("La pelota no puede terminar en posesion del oponente"), false);
+		UE_LOG(LogTemp, Warning, TEXT("Cannot move to enemy influenced cell"));
+		Mensaje = FString(TEXT("La pelota no puede terminar en posesion del oponente"));
+		Mensajes->AddScore(Mensaje, false);
 		return false;
 	}
 
@@ -772,8 +795,9 @@ bool AMastergoalTablero::ValidarMovimiento(AMastergoalFicha* Ficha, int32 Fila, 
 		Pases == PasesMaximos &&
 		!Casillas[Fila][Columna]->InfluenciaNeutra())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Already made 3 passes, must end in a neutral cell"))
-		Mensajes->AddScore(TEXT("Solo queda un pase disponible. La pelota debe quedar en una casilla neutra"), false);
+		UE_LOG(LogTemp, Warning, TEXT("Already made 3 passes, must end in a neutral cell"));
+		Mensaje = FString(TEXT("Solo queda un pase disponible. La pelota debe quedar en una casilla neutra"));
+		Mensajes->AddScore(Mensaje, false);
 		return false;
 	}
 
@@ -782,8 +806,9 @@ bool AMastergoalTablero::ValidarMovimiento(AMastergoalFicha* Ficha, int32 Fila, 
 		Pases == PasesMaximos &&
 		Turno == Casillas[Fila][Columna]->Equipo)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("The ball cannot end in the opening team's side of the field"))
-		Mensajes->AddScore(TEXT("La pelota no puede terminar del lado del equipo que empieza"), false);
+		UE_LOG(LogTemp, Warning, TEXT("The ball cannot end in the opening team's side of the field"));
+		Mensaje = FString(TEXT("La pelota no puede terminar del lado del equipo que empieza"));
+		Mensajes->AddScore(Mensaje, false);
 		return false;
 	}
 
@@ -799,8 +824,9 @@ bool AMastergoalTablero::ValidarMovimiento(AMastergoalFicha* Ficha, int32 Fila, 
 		(DeltaFila && DeltaColumna &&
 		DeltaFila != DeltaColumna))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Movement is not straight"))
-		Mensajes->AddScore(TEXT("El movimiento debe ser recto"), false);
+		UE_LOG(LogTemp, Warning, TEXT("Movement is not straight"));
+		Mensaje = FString(TEXT("El movimiento debe ser recto"));
+		Mensajes->AddScore(Mensaje, false);
 		return false;
 	}
 
@@ -808,8 +834,9 @@ bool AMastergoalTablero::ValidarMovimiento(AMastergoalFicha* Ficha, int32 Fila, 
 	if (DeltaFila > MaximoMovimientos ||
 		DeltaColumna > MaximoMovimientos)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Not enough movements"))
-		Mensajes->AddScore(TEXT("No se puede desplazar esa cantidad de casillas"), false);
+		UE_LOG(LogTemp, Warning, TEXT("Not enough movements"));
+		Mensaje = FString(TEXT("No se puede desplazar esa cantidad de casillas"));
+		Mensajes->AddScore(Mensaje, false);
 		return false;
 	}
 
@@ -837,8 +864,9 @@ bool AMastergoalTablero::ValidarMovimiento(AMastergoalFicha* Ficha, int32 Fila, 
 
 		if (!Valido)
 		{
-			UE_LOG(LogTemp, Warning, TEXT("ET:%d Not an empty cell at the end"), EstadoTablero[Fila][Columna])
-			Mensajes->AddScore(TEXT("Se debe mover a una casilla libre"), false);
+			UE_LOG(LogTemp, Warning, TEXT("ET:%d Not an empty cell at the end"), EstadoTablero[Fila][Columna]);
+			Mensaje = FString(TEXT("Se debe mover a una casilla libre"));
+			Mensajes->AddScore(Mensaje, false);
 			return false;
 		}
 	}
@@ -858,8 +886,9 @@ bool AMastergoalTablero::ValidarMovimiento(AMastergoalFicha* Ficha, int32 Fila, 
 			EstadoTablero[Fila][Columna + 1] != Ficha->Tipo &&
 			EstadoTablero[Fila][Columna + 1] != (Ficha->Tipo + 1))))
 		{
-			UE_LOG(LogTemp, Warning, TEXT("(%d,%d) T:%d G:%d | (%d,%d) ET:%d Existing piece at an adjacent cell"), Ficha->Fila, Ficha->Columna, Ficha->Tipo, Ficha->EsArquero(false), Fila, Columna, EstadoTablero[Fila][Columna])
-			Mensajes->AddScore(TEXT("Una casilla adyacente no se encuentra libre"), false);
+			UE_LOG(LogTemp, Warning, TEXT("(%d,%d) T:%d G:%d | (%d,%d) ET:%d Existing piece at an adjacent cell"), Ficha->Fila, Ficha->Columna, Ficha->Tipo, Ficha->EsArquero(false), Fila, Columna, EstadoTablero[Fila][Columna]);
+			Mensaje = FString(TEXT("Una casilla adyacente no se encuentra libre"));
+			Mensajes->AddScore(Mensaje, false);
 			return false;
 		}
 	}
@@ -872,8 +901,9 @@ bool AMastergoalTablero::ValidarMovimiento(AMastergoalFicha* Ficha, int32 Fila, 
 
 		if (FichaPase != nullptr && FichaPase == FichaReceptora)
 		{
-			UE_LOG(LogTemp, Warning, TEXT("Autopasses are not allowed"))
-			Mensajes->AddScore(TEXT("No se puede hacer un autopase"), false);
+			UE_LOG(LogTemp, Warning, TEXT("Autopasses are not allowed"));
+			Mensaje = FString(TEXT("No se puede hacer un autopase"));
+			Mensajes->AddScore(Mensaje, false);
 
 			return false;
 		}
@@ -891,18 +921,12 @@ bool AMastergoalTablero::ValidarMovimiento(AMastergoalFicha* Ficha, int32 Fila, 
 	if (Ficha != Pelota && DeltaOrigen.X <= 1 && DeltaOrigen.Y <= 1 && (DeltaDestino.X > 1 || DeltaDestino.Y > 1))
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Piece %d,%d cannot be selected, influence would break"), Ficha->Fila, Ficha->Columna);
-		Mensajes->AddScore(TEXT("No se puede perder la neutralidad de la pelota"), false);
+		Mensaje = FString(TEXT("No se puede perder la neutralidad de la pelota"));
+		Mensajes->AddScore(Mensaje, false);
 
 		return false;
 	}
 
-	// Asegurar que se rompa la influencia si es posible
-	// Desactivado temporalmente. Es muy costoso computar.
-	/*if (NecesidadRoturaInfluencia())
-	{
-		UE_LOG(LogTemp, Warning, TEXT("A possible move to gain influence on the player's side cannot be ommitted"))
-		return false;
-	}*/
 	/// Determinar dirección
 	int32 DireccionFila = 0;
 	int32 DireccionColumna = 0;
@@ -943,8 +967,9 @@ bool AMastergoalTablero::ValidarMovimiento(AMastergoalFicha* Ficha, int32 Fila, 
 						 Casillas[Fila][Columna]->Ficha != nullptr &&
 						 Casillas[Fila][Columna]->Ficha->Equipo != Turno)
 				{
-					UE_LOG(LogTemp, Warning, TEXT("Goalie Block Tipo:%d ET:%d PELOTA:%d BAEA:%d RAEA:%d"), Ficha->Tipo, EstadoTablero[Fila][Columna], (int32)PELOTA, (int32)BLANCO_ARQUERO_EN_AREA, (int32)ROJO_ARQUERO_EN_AREA)
-					Mensajes->AddScore(TEXT("El arquero atajaria ese tiro"), false);
+					UE_LOG(LogTemp, Warning, TEXT("Goalie Block Tipo:%d ET:%d PELOTA:%d BAEA:%d RAEA:%d"), Ficha->Tipo, EstadoTablero[Fila][Columna], (int32)PELOTA, (int32)BLANCO_ARQUERO_EN_AREA, (int32)ROJO_ARQUERO_EN_AREA);
+					Mensaje = FString(TEXT("El arquero atajaria ese tiro"));
+					Mensajes->AddScore(Mensaje, false);
 					return false;
 				}
 			}
@@ -954,8 +979,9 @@ bool AMastergoalTablero::ValidarMovimiento(AMastergoalFicha* Ficha, int32 Fila, 
 					Casillas[Fila][Columna]->Ficha->Fila == Fila &&
 					Casillas[Fila][Columna]->Ficha->Columna == Columna)
 			{
-				UE_LOG(LogTemp, Warning, TEXT("Cannot go through other pieces"))
-				Mensajes->AddScore(TEXT("No se puede atravesar a otros jugadores"), false);
+				UE_LOG(LogTemp, Warning, TEXT("Cannot go through other pieces"));
+				Mensaje = FString(TEXT("No se puede atravesar a otros jugadores"));
+				Mensajes->AddScore(Mensaje, false);
 				return false;
 			}
 		}
@@ -1011,10 +1037,10 @@ bool AMastergoalTablero::Seleccionar(AMastergoalFicha* Ficha)
 	return FichaSeleccionada != nullptr;
 }
 
-void AMastergoalTablero::Reiniciar(int32 Turno)
+void AMastergoalTablero::Reiniciar(int32 Jugador)
 {
 	// Resetear las variables
-	this->Turno = Turno;
+	this->Turno = Jugador;
 	CantidadTurnos = 1;
 	EspecialTurno = true;
 

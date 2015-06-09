@@ -11,4 +11,13 @@ class AMastergoalPlayerController : public APlayerController
 
 public:
 	AMastergoalPlayerController(const FObjectInitializer& ObjectInitializer);
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void ActualizarMensaje(const FString& Mensaje);
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void ActualizarTurno(int32 Turno);
+	
+	UFUNCTION(BlueprintImplementableEvent)
+	void ActualizarPuntaje(int32 EquipoObjetivo, int32 Turno);
 };

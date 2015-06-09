@@ -11,4 +11,5 @@ AMastergoalGameMode::AMastergoalGameMode(const FObjectInitializer& ObjectInitial
 	DefaultPawnClass = NULL;
 	// use our own player controller class
 	PlayerControllerClass = AMastergoalPlayerController::StaticClass();
+	//PlayerStateClass = AMastergoalPlayerState::StaticClass();
 }

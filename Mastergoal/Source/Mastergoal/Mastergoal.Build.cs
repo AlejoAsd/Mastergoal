@@ -33,12 +33,12 @@ public class Mastergoal : ModuleRules
             string LibrariesPath = Path.Combine(EvoGoalPath, "lib");
  
             PublicAdditionalLibraries.Add(Path.Combine(LibrariesPath, "EvoGoal." + PlatformString + ".lib")); 
-        }
+        }      
  
         if (isLibrarySupported)
         {
             // Include path
-            PublicIncludePaths.Add( Path.Combine(EvoGoalPath, "Includes") );
+            PublicIncludePaths.Add( Path.Combine(EvoGoalPath, "include") );
         }
  
         Definitions.Add(string.Format("WITH_EVOGOAL_BINDING={0}", isLibrarySupported ? 1 : 0));
