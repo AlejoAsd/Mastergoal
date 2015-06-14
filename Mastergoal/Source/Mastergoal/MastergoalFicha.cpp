@@ -3,6 +3,7 @@
 #include "Mastergoal.h"
 #include "MastergoalFicha.h"
 #include "MastergoalTablero.h"
+#include "MastergoalPlayerController.h"
 #include "EngineLogs.h"
 #include "UnrealNetwork.h"
 
@@ -37,6 +38,9 @@ void AMastergoalFicha::GetLifetimeReplicatedProps(TArray<FLifetimeProperty> & Ou
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
+	DOREPLIFETIME(AMastergoalFicha, Tablero);
+	DOREPLIFETIME(AMastergoalFicha, Fila);
+	DOREPLIFETIME(AMastergoalFicha, Columna);
 	DOREPLIFETIME(AMastergoalFicha, ComponenteMesh);
 	DOREPLIFETIME(AMastergoalFicha, Mesh);
 	DOREPLIFETIME(AMastergoalFicha, Material);
@@ -177,10 +181,25 @@ void AMastergoalFicha::ActualizarComponenteMesh()
 /// Handlers
 void AMastergoalFicha::OnClick(UPrimitiveComponent* ClickedComp)
 {
-	if (Tablero->Estado == JUEGO)
+	if (Tablero != nullptr)
 	{
-		Tablero->Seleccionar(this);
+		//UE_LOG(LogTemp, Warning, TEXT("Setting owner."));
+		//Tablero->SetOwner(this);
+		//this->SetOwner(GetWorld()->GetFirstPlayerController());
+		/*if (Tablero->GetOwner() == Tablero)
+			UE_LOG(LogTemp, Error, TEXT("Owner is Tablero."));
+		if (Tablero->GetOwner() == GetWorld()->GetFirstPlayerController())
+			UE_LOG(LogTemp, Error, TEXT("Owner is local PlayerController."));*/
+		//UE_LOG(LogTemp, Warning, TEXT("Calling RPC."));
+		//Tablero->ServerSeleccionar(this->Fila, this->Columna);
+		AMastergoalPlayerController* PC = Cast<AMastergoalPlayerController>(GetWorld()->GetFirstPlayerController());
+		PC->Seleccionar(this->Fila, this->Columna);
 	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("RPC Attempted to call Seleccionar() on nonexisting Tablero."));
+	}
+	
 }
 
 // Handler del evento touch para una casilla

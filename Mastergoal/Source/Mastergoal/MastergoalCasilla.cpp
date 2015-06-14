@@ -3,6 +3,7 @@
 #include "Mastergoal.h"
 #include "MastergoalCasilla.h"
 #include "MastergoalTablero.h"
+#include "MastergoalPlayerController.h"
 
 AMastergoalCasilla::AMastergoalCasilla(const FObjectInitializer& ObjectInitializer)
 : Super(ObjectInitializer)
@@ -115,18 +116,9 @@ void AMastergoalCasilla::OnClick(UPrimitiveComponent* ClickedComp)
 {
 	UE_LOG(LogTemp, Warning, TEXT("==="));
 	UE_LOG(LogTemp, Warning, TEXT("Clicked cell %d,%d {STATE: %d} Piece:%d InfB:%d InfR:%d Area:%d Goalie:%d Goal:%d Corner:%d Team:%d Special:%d"), Fila, Columna, Tablero->EstadoTablero[Fila][Columna], Ficha != nullptr, InfluenciaBlanco, InfluenciaRojo, Area, Arquero, Arco, Corner, Equipo, Especial);
-	if (Tablero->FichaSeleccionada != NULL)
-	{
-		bool result = Tablero->MoverFicha(Tablero->FichaSeleccionada, Fila, Columna);
-		if (result)
-		{
-			UE_LOG(LogTemp, Warning, TEXT("Move successful"));
-		}
-		else
-		{
-			UE_LOG(LogTemp, Warning, TEXT("Invalid move"));
-		}
-	}
+
+	AMastergoalPlayerController* PC = Cast<AMastergoalPlayerController>(GetWorld()->GetFirstPlayerController());
+	PC->MoverFicha(Fila, Columna);
 }
 
 // Handler del evento touch para una casilla

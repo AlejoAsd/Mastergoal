@@ -67,9 +67,6 @@ class MASTERGOAL_API AMastergoalTablero : public AActor
 	UPROPERTY(Category = LineasTablero, VisibleDefaultsOnly, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	class UStaticMeshComponent* LineasTablero;
 
-	UPROPERTY(Replicated, Category = Seleccion, VisibleDefaultsOnly, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
-	class UStaticMeshComponent* Seleccion;
-
 public:	
 	// Define los valores por defecto de la instancia
 	AMastergoalTablero(const FObjectInitializer& ObjectInitializer);
@@ -80,7 +77,6 @@ public:
 	FORCEINLINE class UCameraComponent* GetCamaraBlanco() const { return CamaraBlanco; }
 	FORCEINLINE class UCameraComponent* GetCamaraRojo() const { return CamaraRojo; }
 	FORCEINLINE class UStaticMeshComponent* GetLineasTablero() const { return LineasTablero; }
-	FORCEINLINE class UStaticMeshComponent* GetSeleccion() const { return Seleccion; }
 
 	/// UI
 	UPROPERTY(Category = UI, EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
@@ -183,9 +179,12 @@ public:
 	class UMaterialInstance* FichaMaterialJugador;
 	UPROPERTY(Category = Fichas, EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	class UMaterialInstance* FichaMaterialJugadorAlternativo;
+	UPROPERTY(Category = Fichas, EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	class UMaterialInstance* FichaMaterialSeleccionado;
 
 	// Métodos
 	class AMastergoalFicha* CrearFicha(int32 Tipo, int32 Fila, int32 Columna);
+	void ActualizarMaterialFicha(AMastergoalFicha* Ficha, bool Seleccionado);
 
 	TipoFicha** FichaObtenerLista();
 	void FichaDestruirLista(TipoFicha**& Lista);
@@ -224,20 +223,10 @@ public:
 	bool ValidarMovimiento(AMastergoalFicha* Ficha, int32 Fila, int32 Columna);
 	// Intenta mover una ficha del tablero. Devuelve true en caso de haberse realizado el movimiento. Utilizado por el servidor.
 	bool MoverFicha(AMastergoalFicha* Ficha, int32 Fila, int32 Columna);
-	// Versión RPC del método MoverFicha(). Utilizado por clientes.
-	void ClientMoverFicha(AMastergoalFicha* Ficha, int32 Fila, int32 Columna);
-	UFUNCTION(Reliable, Server, WithValidation)
-	void ServerMoverFicha(AMastergoalFicha* Ficha, int32 Fila, int32 Columna);
-	virtual bool ServerMoverFicha_Validate(AMastergoalFicha* Ficha, int32 Fila, int32 Columna);
-	virtual void ServerMoverFicha_Implementation(AMastergoalFicha* Ficha, int32 Fila, int32 Columna);
+	bool MoverFicha(int32 Fila, int32 Columna);
 	// Selecciona una ficha para realizar un movimiento.
 	bool Seleccionar(AMastergoalFicha* Ficha);
-	// Versión RPC del método Seleccionar(). Utilizado por clientes.
-	void ClientSeleccionar(AMastergoalFicha* Ficha);
-	UFUNCTION(Reliable, Server, WithValidation)
-	void ServerSeleccionar(AMastergoalFicha* Ficha);
-	virtual bool ServerSeleccionar_Validate(AMastergoalFicha* Ficha);
-	virtual void ServerSeleccionar_Implementation(AMastergoalFicha* Ficha);
+	bool Seleccionar(int32 Fila, int32 Columna);
 	// Obtiene el jugador que realizó el pase
 	class AMastergoalFicha* ObtenerFichaPase(int32 Fila, int32 Columna);
 	// Reinicia los estados de la partida, manteniendo los goles

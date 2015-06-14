@@ -20,4 +20,23 @@ public:
 	
 	UFUNCTION(BlueprintImplementableEvent)
 	void ActualizarPuntaje(int32 EquipoObjetivo, int32 Turno);
+
+	UPROPERTY(Category = Tablero, VisibleAnywhere, BlueprintReadWrite)
+	class AMastergoalTablero* Tablero;
+
+	UPROPERTY(Category = Tablero, VisibleAnywhere, BlueprintReadWrite)
+	int32 Yep;
+
+	void MoverFicha(int32 Fila, int32 Columna);
+	UFUNCTION(Server, Reliable, WithValidation)
+	void ServerMoverFicha(class AMastergoalTablero* Board, int32 Fila, int32 Columna);
+	virtual bool ServerMoverFicha_Validate(class AMastergoalTablero* Board, int32 Fila, int32 Columna);
+	virtual void ServerMoverFicha_Implementation(class AMastergoalTablero* Board, int32 Fila, int32 Columna);
+
+	void Seleccionar(int32 Fila, int32 Columna);
+	UFUNCTION(Server, Reliable, WithValidation)
+	void ServerSeleccionar(class AMastergoalTablero* Board, int32 Fila, int32 Columna);
+	virtual bool ServerSeleccionar_Validate(class AMastergoalTablero* Board, int32 Fila, int32 Columna);
+	virtual void ServerSeleccionar_Implementation(class AMastergoalTablero* Board, int32 Fila, int32 Columna);
+
 };

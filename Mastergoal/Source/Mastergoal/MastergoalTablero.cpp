@@ -3,6 +3,7 @@
 #include "Mastergoal.h"
 #include "MastergoalTablero.h"
 #include "MastergoalCasilla.h"
+#include "MastergoalFicha.h"
 #include "MastergoalFichaPelota.h"
 #include "MastergoalFichaBlanco.h"
 #include "MastergoalFichaBlancoArquero.h"
@@ -10,7 +11,7 @@
 #include "MastergoalFichaRojoArquero.h"
 #include "MastergoalGameInstance.h"
 #include "MastergoalGameMode.h"
-#include "MastergoalAI.h"
+//#include "MastergoalAI.h"
 #include "MastergoalPlayerController.h"
 #include "Mensaje.h"
 #include "Score.h"
@@ -24,6 +25,9 @@
 AMastergoalTablero::AMastergoalTablero(const FObjectInitializer& ObjectInitializer)
 : Super(ObjectInitializer)
 {
+	// Replicación
+	bReplicates = true;
+
 	// Crear el componente base y definirlo como la raíz
 	Root = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
 	RootComponent = Root;
@@ -60,27 +64,6 @@ AMastergoalTablero::AMastergoalTablero(const FObjectInitializer& ObjectInitializ
 	LineasTablero->AttachTo(Root);
 	LineasTablero->CastShadow = false;
 
-	// Crear el elemento de selección
-	Seleccion = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Seleccion"));
-	Seleccion->AttachTo(Root);
-	Seleccion->CastShadow = false;
-	Seleccion->bGenerateOverlapEvents = false;
-	Seleccion->SetRelativeLocation(FVector(0.f, 0.f, 0.f));
-	Seleccion->bVisible = false;
-	Seleccion->SetMobility(EComponentMobility::Movable);
-
-	UStaticMesh* MeshToUse = Cast<UStaticMesh>(StaticLoadObject(UStaticMesh::StaticClass(), NULL, TEXT("/Game/Mastergoal/Modelos/Seleccion.Seleccion")));
-	if (MeshToUse && Seleccion)
-	{
-		Seleccion->SetStaticMesh(MeshToUse);
-	}
-
-	UMaterialInstance* MaterialToUse = Cast<UMaterialInstance>(StaticLoadObject(UMaterialInstance::StaticClass(), NULL, TEXT("/Game/Mastergoal/Materiales/M_Basic_Floor_Blue.M_Basic_Floor_Blue")));
-	if (MaterialToUse && Seleccion)
-	{
-		Seleccion->SetMaterial(0, MaterialToUse);
-	}
-
 	// Valores por defecto
 	ContraPC = true;
 	Nivel = 3;
@@ -100,13 +83,6 @@ AMastergoalTablero::AMastergoalTablero(const FObjectInitializer& ObjectInitializ
 	FichasEnMovimiento = 0;
 	FichaSeleccionada = nullptr;
 	Pelota = nullptr;
-}
-
-void AMastergoalTablero::GetLifetimeReplicatedProps(TArray<FLifetimeProperty> & OutLifetimeProps) const
-{
-	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-
-	DOREPLIFETIME(AMastergoalTablero, Seleccion);
 }
 
 // Función llamada cuando inicia el juego o se crea la instancia. 
@@ -148,18 +124,6 @@ void AMastergoalTablero::BeginPlay()
 
 	Casilla->Destroy();
 
-	UStaticMesh* MeshToUse = Cast<UStaticMesh>(StaticLoadObject(UStaticMesh::StaticClass(), NULL, TEXT("/Game/Mastergoal/Modelos/Seleccion.Seleccion")));
-	if (MeshToUse && Seleccion)
-	{
-		Seleccion->SetStaticMesh(MeshToUse);
-	}
-
-	UMaterialInstance* MaterialToUse = Cast<UMaterialInstance>(StaticLoadObject(UMaterialInstance::StaticClass(), NULL, TEXT("/Game/Mastergoal/Materiales/M_Basic_Floor_Blue.M_Basic_Floor_Blue")));
-	if (MaterialToUse && Seleccion)
-	{
-		Seleccion->SetMaterial(0, MaterialToUse);
-	}
-
 	// Crear las fichas y casillas
 	for (int32 i = 0; i < Alto; i++)
 	{
@@ -198,10 +162,10 @@ void AMastergoalTablero::BeginPlay()
 	}
 	
 	/// Inicializar el agente AI
-	if (ContraPC)
+	/*if (ContraPC)
 	{
 		AI = new MastergoalAI(this->Nivel);
-	}
+	}*/
 
 	// Mostrar el turno
 	IndicadorTurno->AddScore(TEXT("Turno Blancas"), true);
@@ -374,6 +338,21 @@ class AMastergoalFicha* AMastergoalTablero::CrearFicha(int32 Tipo, int32 Fila, i
 	return Ficha;
 }
 
+void AMastergoalTablero::ActualizarMaterialFicha(AMastergoalFicha* Ficha, bool Seleccionado)
+{
+
+	if (Seleccionado) 
+		Ficha->Material = this->FichaMaterialSeleccionado;
+	else if (Ficha->Tipo == PELOTA) 
+		Ficha->Material = this->FichaMaterialPelota;
+	else if (Ficha->Equipo == Equipo::BLANCO) 
+		Ficha->Material = this->FichaMaterialJugador;
+	else 
+		Ficha->Material = this->FichaMaterialJugadorAlternativo;
+
+	Ficha->ComponenteMesh->SetMaterial(0, Ficha->Material);
+}
+
 TipoFicha** AMastergoalTablero::FichaObtenerLista()
 {
 	// Crear la estructura
@@ -524,7 +503,7 @@ void AMastergoalTablero::PasarTurno()
 		}
 
 		// Si se está contra la PC y es su turno realizar su jugada
-		if (Estado != FIN && FichasEnMovimiento == 0 && ContraPC && Turno == ROJO)
+		/*if (Estado != FIN && FichasEnMovimiento == 0 && ContraPC && Turno == ROJO)
 		{
 			// Movimiento de Jugador
 			if (Estado == JUEGO)
@@ -541,7 +520,7 @@ void AMastergoalTablero::PasarTurno()
 				Accion MovimientoPelota = AI->ProximaJugada();
 				MoverFicha(MovimientoPelota.Ficha, MovimientoPelota.Fila, MovimientoPelota.Columna);
 			}
-		}
+		}*/
 	}
 }
 
@@ -655,7 +634,7 @@ bool AMastergoalTablero::MoverFicha(AMastergoalFicha* Ficha, int32 Fila, int32 C
 {
 	if (Ficha == nullptr)
 	{
-		UE_LOG(LogTemp, Error, TEXT("Attempted to move nonexisting piece to %d,%d"), Ficha->Columna, Fila, Columna);
+		UE_LOG(LogTemp, Error, TEXT("Attempted to move nonexisting piece to %d,%d"), Fila, Columna);
 	}
 
 	UE_LOG(LogTemp, Warning, TEXT("Moving selected piece from %d,%d to %d,%d"), Ficha->Fila, Ficha->Columna, Fila, Columna);
@@ -668,7 +647,7 @@ bool AMastergoalTablero::MoverFicha(AMastergoalFicha* Ficha, int32 Fila, int32 C
 
 	// Validar que el movimiento sea posible
 	bool Valido = true;
-	if (Estado != REINICIANDO && ((ContraPC && Turno != ROJO) || (!ContraPC)))
+	if (Estado != REINICIANDO /*&& ((ContraPC && Turno != ROJO) || (!ContraPC))*/)
 	{
 		Valido = ValidarMovimiento(Ficha, Fila, Columna);
 	}
@@ -768,22 +747,13 @@ bool AMastergoalTablero::MoverFicha(AMastergoalFicha* Ficha, int32 Fila, int32 C
 	return Valido;
 }
 
-void AMastergoalTablero::ClientMoverFicha(AMastergoalFicha* Ficha, int32 Fila, int32 Columna)
+bool AMastergoalTablero::MoverFicha(int32 Fila, int32 Columna)
 {
-	if (Role < ROLE_Authority)
-	{
-		ServerMoverFicha(Ficha, Fila, Columna);
-	}
-}
+	if (FichaSeleccionada != nullptr)
+		return MoverFicha(FichaSeleccionada, Fila, Columna);
 
-bool AMastergoalTablero::ServerMoverFicha_Validate(AMastergoalFicha* Ficha, int32 Fila, int32 Columna)
-{
-	return true;
-}
-
-void AMastergoalTablero::ServerMoverFicha_Implementation(AMastergoalFicha* Ficha, int32 Fila, int32 Columna)
-{
-	MoverFicha(Ficha, Fila, Columna);
+	UE_LOG(LogTemp, Error, TEXT("Attempted to move nonexisting Piece at %d,%d"), Fila, Columna);
+	return false;
 }
 
 /*
@@ -1050,57 +1020,49 @@ bool AMastergoalTablero::Seleccionar(AMastergoalFicha* Ficha)
 	{
 		return false;
 	}
-	
-	// Seleccionar
+
 	if (Ficha->Equipo == Turno || Estado == PASE)
 	{
+		// Seleccionar si no hay una ficha seleccionada o se está intentando seleccionar a otra ficha.
 		if (FichaSeleccionada == nullptr || FichaSeleccionada != Ficha)
 		{
 			UE_LOG(LogTemp, Warning, TEXT("Selecting piece at %d,%d Type:%d T:%d Goalie:%d Goalie(Area):%d"), Ficha->Fila, Ficha->Columna, Ficha->Tipo, Ficha->Equipo, Ficha->EsArquero(false), Ficha->EsArquero(true));
+
+			// Si existe una ficha anterior restablecer el material
+			if (FichaSeleccionada != nullptr)
+				ActualizarMaterialFicha(FichaSeleccionada, false);
+
 			FichaSeleccionada = Ficha;
 
-			// Mover la selección
-			if (Seleccion != nullptr)
-			{
-				FVector Posicion = Ficha->GetActorLocation();
-				FVector Size = Ficha->GetSize() + ProfundidadCasillas;
-
-				Posicion.Z += Size.Z;
-
-				Seleccion->SetRelativeLocation(Posicion);
-			}
+			// Definir el material de la ficha seleccionada
+			if (FichaSeleccionada != nullptr)
+				ActualizarMaterialFicha(FichaSeleccionada, true);
 			
 		}
 		// Deseleccionar
 		else if (FichaSeleccionada == Ficha)
 		{
 			UE_LOG(LogTemp, Warning, TEXT("Deselecting piece at %d,%d"), Ficha->Fila, Ficha->Columna);
+
+			// Reestablecer el material anterior
+			ActualizarMaterialFicha(FichaSeleccionada, false);
+
 			FichaSeleccionada = nullptr;
 		}
 	}
 
-	// Cambiar la visibilidad
-	Seleccion->SetVisibility(FichaSeleccionada != nullptr);
-
 	return FichaSeleccionada != nullptr;
 }
 
-void AMastergoalTablero::ClientSeleccionar(AMastergoalFicha* Ficha)
+bool AMastergoalTablero::Seleccionar(int32 Fila, int32 Columna)
 {
-	if (Role < ROLE_Authority)
+	if (Casillas != nullptr && Casillas[Fila][Columna] != nullptr && Casillas[Fila][Columna]->Ficha != nullptr)
 	{
-		ServerSeleccionar(Ficha);
+		return Seleccionar(Casillas[Fila][Columna]->Ficha);
 	}
-}
 
-bool AMastergoalTablero::ServerSeleccionar_Validate(AMastergoalFicha* Ficha)
-{
-	return true;
-}
-
-void AMastergoalTablero::ServerSeleccionar_Implementation(AMastergoalFicha* Ficha)
-{
-	Seleccionar(Ficha);
+	UE_LOG(LogTemp, Error, TEXT("Attempted to select nonexisting Piece at %d,%d"), Fila, Columna);
+	return false;
 }
 
 void AMastergoalTablero::Reiniciar(int32 Jugador)

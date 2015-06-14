@@ -37,17 +37,17 @@ public:
 
 	UPROPERTY(Category = Ficha, VisibleDefaultsOnly, BlueprintReadOnly)
 	int32 Tipo;
-	UPROPERTY(Category = Ficha, VisibleDefaultsOnly, BlueprintReadOnly)
+	UPROPERTY(Replicated, Category = Ficha, VisibleDefaultsOnly, BlueprintReadOnly)
 	int32 Fila;
 	UPROPERTY(Category = Ficha, VisibleDefaultsOnly, BlueprintReadOnly)
 	int32 FilaInicial;
-	UPROPERTY(Category = Ficha, VisibleDefaultsOnly, BlueprintReadOnly)
+	UPROPERTY(Replicated, Category = Ficha, VisibleDefaultsOnly, BlueprintReadOnly)
 	int32 Columna;
 	UPROPERTY(Category = Ficha, VisibleDefaultsOnly, BlueprintReadOnly)
 	int32 ColumnaInicial;
 
 	// Tablero al que pertenece la casilla
-	UPROPERTY(Category = Tablero, VisibleDefaultsOnly, BlueprintReadOnly)
+	UPROPERTY(Replicated, Category = Tablero, VisibleDefaultsOnly, BlueprintReadOnly)
 	class AMastergoalTablero* Tablero;
 	// Indica si la ficha se está moviendo actualmente
 	UPROPERTY(Category = Movimiento, VisibleDefaultsOnly, BlueprintReadOnly)
