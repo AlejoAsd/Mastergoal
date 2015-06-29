@@ -11,7 +11,7 @@
 #include "MastergoalFichaRojoArquero.h"
 #include "MastergoalGameInstance.h"
 #include "MastergoalGameMode.h"
-//#include "MastergoalAI.h"
+#include "MastergoalAI.h"
 #include "MastergoalPlayerController.h"
 #include "Mensaje.h"
 #include "Score.h"
@@ -162,10 +162,10 @@ void AMastergoalTablero::BeginPlay()
 	}
 	
 	/// Inicializar el agente AI
-	/*if (ContraPC)
+	if (ContraPC)
 	{
 		AI = new MastergoalAI(this->Nivel);
-	}*/
+	}
 
 	// Mostrar el turno
 	IndicadorTurno->AddScore(TEXT("Turno Blancas"), true);
@@ -503,7 +503,7 @@ void AMastergoalTablero::PasarTurno()
 		}
 
 		// Si se está contra la PC y es su turno realizar su jugada
-		/*if (Estado != FIN && FichasEnMovimiento == 0 && ContraPC && Turno == ROJO)
+		if (Estado != FIN && FichasEnMovimiento == 0 && ContraPC && Turno == ROJO)
 		{
 			// Movimiento de Jugador
 			if (Estado == JUEGO)
@@ -520,7 +520,7 @@ void AMastergoalTablero::PasarTurno()
 				Accion MovimientoPelota = AI->ProximaJugada();
 				MoverFicha(MovimientoPelota.Ficha, MovimientoPelota.Fila, MovimientoPelota.Columna);
 			}
-		}*/
+		}
 	}
 }
 
@@ -647,7 +647,7 @@ bool AMastergoalTablero::MoverFicha(AMastergoalFicha* Ficha, int32 Fila, int32 C
 
 	// Validar que el movimiento sea posible
 	bool Valido = true;
-	if (Estado != REINICIANDO /*&& ((ContraPC && Turno != ROJO) || (!ContraPC))*/)
+	if (Estado != REINICIANDO && ((ContraPC && Turno != ROJO) || (!ContraPC)))
 	{
 		Valido = ValidarMovimiento(Ficha, Fila, Columna);
 	}
